@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head id="head">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <!-- end of bootstrap -->
+</head>
+    <header id="pageheader">
+        
+    </header>
+<body>
+    <div class="container centercontents" id="indexoptions">
+        <div class="row">
+            <!-- login form -->
+            <div class="col-md-5 col-sm-12 index ">
+                <h1>login</h1>
+                <form action="">
+                    <label for="username">username</label>
+                    <input type="text" name="username" id="username">
+                    
+                    <label for="password">password</label>
+                    <input type="password" name="password" id="password">
+
+                    <input type="submit">
+                </form>
+            </div>
+
+            <div class="col-md-2 col-sm-12"></div>
+
+            <!-- sign-up form -->
+            <div class="col-md-5 col-sm-12 index">
+                <h1>sign-up</h1>
+                <form action="">
+                    <label for="username">username</label>
+                    <input type="text" name="username" id="username">
+
+                    <label for="firstname">first name</label>
+                    <input type="text" name="firstname" id="firstname">
+
+                    <label for="lastname">last name</label>
+                    <input type="text" name="lastname" id="lastname">
+
+                    <label for="dob">date of birth</label>
+                    <input type="date" name="dob" id="dob">
+
+                    <label for="email">email</label>
+                    <input type="text" name="email" id="dob">
+
+                    <label for="password">password</label>
+                    <input type="password" name="password" id="password">
+
+                    <input type="submit">
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="container" id="indexcardcontainer">
+        <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-12 indexcard">
+                <div>
+                    <div>
+                        <h1>Unmatched Quality</h1>
+                        <p>Explore a world of choices at our online shop, where our curated selection ensures you find exactly what you're
+                             looking for.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-12 indexcard">
+                <div>
+                    <div>
+                        <h1>Your Wallet's Best Friend</h1>
+                        <p>Shop smart and save big! Our online store is your go-to destination for unbeatable deals and exclusive discounts.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-12 indexcard">
+                <div>
+                    <div>
+                        <h1>Seamless Shopping</h1>
+                        <p>Experience the epitome of convenience with our user-friendly online shop. Navigating through our site is a breeze,
+                             and our dedicated customer service team ensures that your satisfaction is our priority.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+<footer id="footer">
+    
+</footer>
+
+<script>
+      $(document).ready(function(){
+        $("#head").load("assets/inc/head.html");
+        $("#pageheader").load("assets/inc/header.html");
+        $("#footer").load("assets/inc/footer.html");
+      })
+  // END OF GET YEAR 
+</script>
+</html>

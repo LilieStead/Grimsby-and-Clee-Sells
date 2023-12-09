@@ -1,0 +1,108 @@
+/* 
+whites
+f2f2f3
+F3F5F7
+
+orange
+F49015
+
+yellow
+EEBA0B
+
+text black
+292F36
+
+*/
+
+/* all elements */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+/* holds iteams in a dive or form next to each other */
+.flexcontainer{
+    display: flex; 
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+/* centers items held within a div  */
+.centercontents{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* sign-up and login (index.html) */
+
+.index{
+    gap: 2rem;
+}
+
+.index h1{
+    text-align: center;
+}
+
+.index form{
+    min-width: 100%;
+}
+
+.index form input{
+    min-width: 100%;
+}
+
+.indexcard div{
+    text-align: center;
+    background-color: #F49015;
+    border-radius: 2.5px;
+    min-height: 20vh;
+    max-height: 20vh;
+    margin-top: 2rem;
+    padding-bottom: 1rem;
+    box-shadow: 9px -10px 7px 2px rgba(0, 0, 0, 0.1);
+}
+
+@media screen and (max-width:770px) {
+    .indexcard div{
+        min-height: 10vh;
+    }
+}
+.indexcard div h1{
+    text-align: center;
+    color: #F3F5F7;
+}
+
+#indexcardcontainer{
+    min-width: 100%;
+    max-width: 100%;
+    margin-top: 5rem;
+    margin-bottom: 1.5rem;
+
+}
+
+#indexoptions {
+    min-height: 70vh;
+}
+
+
+/* body */
+
+body{
+    background-color: #F3F5F7;
+    overflow-x: hidden;
+}
+
+/* footer */
+
+footer{
+    background-color: #292F36;
+    min-height: 5vh;
+    text-align: center;
+    color: #F3F5F7;
+    padding: 0.2rem;
+}
+
+
+
+
+
