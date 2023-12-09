@@ -2,6 +2,7 @@ using Grimsby_and_Clee_Sells.Data;
 using Grimsby_and_Clee_Sells.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
+using System.Diagnostics;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,8 +37,12 @@ if (app.Environment.IsDevelopment())
     {
         FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "UI")),
         RequestPath = "/UI"
+
     });
+    var url = "https://192.168.0.135:44394/UI/index.html";
+    Process.Start(new ProcessStartInfo { FileName = url, UseShellExecute = true });
 }
+
 
 app.UseHttpsRedirection();
 

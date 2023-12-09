@@ -3,6 +3,12 @@ whites
 f2f2f3
 F3F5F7
 
+text white
+FAF9F6
+
+background white
+e3e3e4
+
 orange
 F49015
 
@@ -13,6 +19,25 @@ text black
 292F36
 
 */
+
+
+
+/* fonts */
+
+@font-face {
+    font-family: titlefnt;
+    src: url(fnt/Aeronef.ttf)
+}
+
+@font-face {
+    font-family: mainfnt;
+    src: url(fnt/Vera.ttf);
+}
+
+@font-face {
+    font-family: mainfnti;
+    src: url(fnt/VeraIt.ttf);
+}
 
 /* all elements */
 * {
@@ -34,6 +59,18 @@ text black
 }
 
 /* sign-up and login (index.html) */
+#indexheader{
+    background-color: #F49015;
+    padding-bottom: 0.1rem;
+    text-align: center;
+    font-family: titlefnt;
+}
+
+#indexheader h1{
+    font-size: 3rem;
+    color: #FAF9F6;
+}
+
 
 .index{
     gap: 2rem;
@@ -41,22 +78,41 @@ text black
 
 .index h1{
     text-align: center;
+    font-family: mainfnt;
+    color: #292F36;
 }
 
 .index form{
     min-width: 100%;
 }
 
-.index form input{
-    min-width: 100%;
+.index{
+    background-color: #e3e3e4;
+    padding-bottom: 2rem;
+    border-radius: 3px;
+    margin-top: 5rem;
+    padding-top: 0.5rem;
 }
 
+.index form input[type=text],.index form input[type=date],.index form input[type=password]{
+    min-width: 100%;
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: vertical;
+    }
+
+.index form input:focus{
+    border: solid #F49015;
+    outline: none;
+}
 .indexcard div{
     text-align: center;
     background-color: #F49015;
-    border-radius: 2.5px;
-    min-height: 20vh;
-    max-height: 20vh;
+    border-radius: 3px;
+    min-height: 27vh;
+    max-height: 27vh;
     margin-top: 2rem;
     padding-bottom: 1rem;
     box-shadow: 9px -10px 7px 2px rgba(0, 0, 0, 0.1);
@@ -70,6 +126,9 @@ text black
 .indexcard div h1{
     text-align: center;
     color: #F3F5F7;
+    font-size: 2rem;
+    font-family: titlefnt;
+    padding-top: 10px;
 }
 
 #indexcardcontainer{
@@ -81,14 +140,14 @@ text black
 }
 
 #indexoptions {
-    min-height: 70vh;
+    min-height: 60vh;
 }
 
 
 /* body */
 
 body{
-    background-color: #F3F5F7;
+    background-color: #FAF9F6;
     overflow-x: hidden;
 }
 
@@ -101,8 +160,5 @@ footer{
     color: #F3F5F7;
     padding: 0.2rem;
 }
-
-
-
 
 
