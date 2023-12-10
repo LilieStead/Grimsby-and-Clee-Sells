@@ -94,7 +94,7 @@ text black
     padding-top: 0.5rem;
 }
 
-.index form input[type=text],.index form input[type=date],.index form input[type=password]{
+.index form input[type=text],.index form input[type=date],.index form input[type=password],.index form input[type=number]{
     min-width: 100%;
     width: 100%;
     padding: 12px;
@@ -103,10 +103,32 @@ text black
     resize: vertical;
     }
 
+.index form .error{
+    color: red;
+    font-family: mainfnt;
+}
+
 .index form input:focus{
     border: solid #F49015;
     outline: none;
 }
+
+.index form label{
+    font-family: mainfnt;
+}
+
+.index form input[type=submit]{
+
+    background-color: #F49015;
+    border: none;
+    font-size: 1.5rem;
+    padding: 0.5rem;
+    margin-top: 1rem;
+    color: #FAF9F6;
+    font-family: mainfnt;
+    border-radius: 3px;
+}
+
 .indexcard div{
     text-align: center;
     background-color: #F49015;

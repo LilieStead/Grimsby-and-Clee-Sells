@@ -15,10 +15,10 @@
                 <h1>login</h1>
                 <form action="">
                     <label for="username">username</label>
-                    <input type="text" name="username" id="username">
+                    <input type="text" name="username" id="loginusername">
                     
                     <label for="password">password</label>
-                    <input type="password" name="password" id="password">
+                    <input type="password" name="password" id="loginpassword">
 
                     <input type="submit">
                 </form>
@@ -29,24 +29,34 @@
             <!-- sign-up form -->
             <div class="col-md-5 col-sm-12 index">
                 <h1>sign-up</h1>
-                <form action="">
+                <form action="" id="signup">
                     <label for="username">username</label>
-                    <input type="text" name="username" id="username">
+                    <input type="text" name="username" id="signupusername">
+                    <p id="signupusernameerror" class="error"></p>
 
                     <label for="firstname">first name</label>
                     <input type="text" name="firstname" id="firstname">
+                    <p id="firstnameerror" class="error"></p>
 
                     <label for="lastname">last name</label>
                     <input type="text" name="lastname" id="lastname">
+                    <p id="lastnameerror" class="error"></p>
 
                     <label for="dob">date of birth</label>
                     <input type="date" name="dob" id="dob">
+                    <p id="doberror" class="error"></p>
 
                     <label for="email">email</label>
-                    <input type="text" name="email" id="dob">
+                    <input type="text" name="email" id="email">
+                    <p id="emailerror" class="error"></p>
+
+                    <label for="phone">phone number</label>
+                    <input type="number" name="phone" id="phone">
+                    <p id="phoneerror" class="error"></p>
 
                     <label for="password">password</label>
-                    <input type="password" name="password" id="password">
+                    <input type="password" name="password" id="signuppassword">
+                    <p id="passworderror" class="error"></p>
 
                     <input type="submit">
                 </form>
@@ -95,6 +105,10 @@
         $("#head").load("assets/inc/head.html");
         $("#footer").load("assets/inc/footer.html");
       })
-  // END OF GET YEAR 
+      
+      document.getElementById('dob').max = new Date().toISOString().split('T')[0];
+    
 </script>
+
+<script src="assets/js/signup.js"></script>
 </html>
