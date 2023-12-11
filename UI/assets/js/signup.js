@@ -120,7 +120,7 @@ function hasspecialcharacter(password) {
 
     // Phone number validation
 
-    const phoneformat = /^0\d{10}$/;
+    const phoneformat = /^07\d{9}$/;
 
     if (phone == "" || phone == null){
         phoneerror.innerHTML = ("you need to enter your phone number");

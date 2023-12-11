@@ -7,5 +7,6 @@ namespace Grimsby_and_Clee_Sells.Repositories
 
         List <User> GetAllUsers();
 
+        User UserSignUp(User user);
     }
 }

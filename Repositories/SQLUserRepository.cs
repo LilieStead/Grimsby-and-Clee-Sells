@@ -16,5 +16,13 @@ namespace Grimsby_and_Clee_Sells.Repositories
         {
             return _context.Tbl_Users.ToList();
         }
+
+
+        public  User UserSignUp(User user)
+        {
+            _context.Tbl_Users.Add(user);
+            _context.SaveChanges();
+            return user;
+        }
     }
 }
