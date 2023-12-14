@@ -1,8 +1,13 @@
 using Grimsby_and_Clee_Sells.Data;
 using Grimsby_and_Clee_Sells.Repositories;
+using Grimsby_and_Clee_Sells.UserSession;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
 using System.Diagnostics;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +23,37 @@ var connectionString = configuration.GetConnectionString("ConnectionString");
 
 builder.Services.AddDbContext<GacsDbContext>(options =>
 options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
+
+
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromDays(5);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+    options.Cookie.SameSite = SameSiteMode.None;
+    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+});
+
+var sercetConfig = new SecretKeyGen();
+
+builder.Services.AddSingleton(sercetConfig);
+
+builder.Configuration.Bind("SercetConfig", new SecretKeyGen());
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = false,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(sercetConfig.SecretKey)),
+            ValidIssuer = "GrimsbyAndCleeSells",
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true
+        };
+    });
 
 //link repos to controller
 builder.Services.AddScoped<IUserRepository,SQLUserRepository>();
@@ -45,6 +81,8 @@ if (app.Environment.IsDevelopment())
 
 
 app.UseHttpsRedirection();
+
+app.UseSession();
 
 app.UseAuthorization();
 
