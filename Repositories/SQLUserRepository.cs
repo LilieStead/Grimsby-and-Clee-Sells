@@ -24,5 +24,10 @@ namespace Grimsby_and_Clee_Sells.Repositories
             _context.SaveChanges();
             return user;
         }
+
+        public User GetUserByUsername(string username)
+        {
+            return _context.Tbl_Users.FirstOrDefault(u => u.users_username == username);
+        }
     }
 }

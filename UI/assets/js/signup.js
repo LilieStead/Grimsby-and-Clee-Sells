@@ -194,6 +194,61 @@ function hasspecialcharacter(password) {
         return;
     }else{
 
+        const user_dob = new Date(dob).toISOString();
+        const userData = {
+
+            users_username: username,
+            users_firstname:firstname,
+            users_lastname:lastname,
+            users_email:email,
+            users_phone:phone,
+            users_dob:user_dob,
+            users_password:password
+        };
+
+
+        fetch(`https://192.168.0.135:44394/signup`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            }, 
+            body: JSON.stringify(userData),
+
+        })
+        .then(response => {
+            if(response.status === 201 && response.status === 200){
+                return response.json();
+            }else{
+                return console.error(response.status);
+            }
+        })
+        .then(data => {
+            // const usertoken = data.token;
+            fetch(`https://192.168.0.135:44394/login/${username}/${password}`)
+            .then(response => {
+                if (response.status === 200){
+                    return response.json();
+                }else{
+                    return console.error(response.status);
+                }
+            })
+            .then (data => {
+                console.log(data);
+                var cookies = document.cookie.split(";");
+                var cookieexp = cookies.find(cookie=>cookie.trim().startsWith("usercookieexpiry="));
+                if (cookieexp){
+                    window.location.href = "home.html";
+                }
+            })
+            .catch(error => {
+                return console.error(error);
+            })
+
+        })
+        .catch(error => {
+            return console.error(error);
+        })
+        
     }
 }
 

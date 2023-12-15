@@ -2,9 +2,11 @@
 using Grimsby_and_Clee_Sells.Models.Domain;
 using Grimsby_and_Clee_Sells.Models.DTOs;
 using Grimsby_and_Clee_Sells.Repositories;
+using Grimsby_and_Clee_Sells.UserSession;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Net.Mail;
+using System.Text;
 using BCryptNet = BCrypt.Net.BCrypt;
 
 namespace Grimsby_and_Clee_Sells.Controllers
@@ -15,11 +17,87 @@ namespace Grimsby_and_Clee_Sells.Controllers
     {
         private readonly GacsDbContext _context;
         private readonly IUserRepository _userRepository;
+        private readonly DecodeJWT decodeJWT;
 
-        public UserController(GacsDbContext context, IUserRepository userRepository)
+        public UserController(GacsDbContext context, IUserRepository userRepository, DecodeJWT decodeJWT)
         {
             _context = context;
             _userRepository = userRepository;
+            this.decodeJWT = decodeJWT;
+        }
+
+
+        [HttpGet ("decodetoken")]
+        public IActionResult DecodeToken () 
+        {
+            try
+            {
+                if (HttpContext.Session.TryGetValue("sessionid", out byte[] userbytes))
+                {
+                    string sessionid = Encoding.UTF8.GetString (userbytes);
+
+                    if (Request.Cookies.TryGetValue("usercookie", out string usertoken))
+                    {
+                        var token = decodeJWT.DecodeToken(usertoken);
+                        if (token.userid != null && token.username != null && token.firstname != null && token.lastname != null)
+                        {
+                            return Ok(new
+                            {
+                                Userid = token.userid,
+                                Username = token.username,
+                                Firstname = token.firstname,
+                                Lastname = token.lastname
+                            });
+                        }
+                        else
+                        {
+                            return BadRequest (new
+                            {
+                                Message = "Failed to decode token"
+                            });
+                        }
+                    }
+                    else
+                    {
+                        return BadRequest(new
+                        {
+                            Message = "Cookie not found"
+                        });
+                    }
+
+
+                }
+                else
+                {
+                    Response.Cookies.Delete("usercookie", new CookieOptions
+                    {
+                        HttpOnly = true,
+                        SameSite = SameSiteMode.None,
+                        Secure = true
+                    });
+                    Response.Cookies.Delete("usercookieexpiry", new CookieOptions
+                    {
+                        HttpOnly = false,
+                        SameSite = SameSiteMode.None,
+                        Secure = true
+                    });
+                    HttpContext.Session.Clear();
+
+                    return Unauthorized(new
+                    {
+                        Message = "API has restarted token can not be decoded"
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new
+                {
+                    Message = "error deocding token",
+                    Error = ex.Message
+                });
+            }
+
         }
 
 
@@ -123,5 +201,106 @@ namespace Grimsby_and_Clee_Sells.Controllers
                 return BadRequest();
             }
         }
+
+
+        [HttpGet]
+        [Route("/login/{username}/{password}")]
+        public IActionResult UserLogin([FromRoute]string username, string password)
+        {
+            var usersDM = _userRepository.GetUserByUsername(username);
+            if (usersDM == null)
+            {
+                return NotFound("user does not exist");
+            }
+
+            bool verifyPass = BCryptNet.EnhancedVerify(password, usersDM.users_password);
+            if (!verifyPass)
+            {
+                return Unauthorized("password is incorrect");
+            }
+
+            var secret = new SecretKeyGen();
+            var jwtgen = new JWTGen(secret);
+
+            string jwttoken = jwtgen.Generate(usersDM.users_id.ToString(), usersDM.users_username.ToString(), usersDM.users_firstname.ToString(), usersDM.users_lastname.ToString());
+
+            var exptime = DateTime.Now.AddDays(5);
+
+            Response.Cookies.Append("usercookie", jwttoken, new CookieOptions
+            {
+                HttpOnly = true,
+                SameSite = SameSiteMode.None,
+                Secure = true,
+                Expires = exptime
+            });
+
+            Response.Cookies.Append("usercookieexpiry", exptime.ToString("R"), new CookieOptions
+            {
+                HttpOnly= false,
+                SameSite= SameSiteMode.None,
+                Secure = true,
+                Expires = exptime
+            });
+
+            byte[] sessionidbytes = new byte[16];
+            using (var rng = new System.Security.Cryptography.RNGCryptoServiceProvider())
+            {
+                rng.GetBytes(sessionidbytes);
+            };
+
+            string sessionid = BitConverter.ToString(sessionidbytes).Replace("-", "");
+
+            HttpContext.Session.SetString("sessionid", sessionid);
+
+            var usersDTO = new UserDTO
+            {
+                users_id = usersDM.users_id,
+                users_username = usersDM.users_username,
+                users_firstname = usersDM.users_firstname,
+                users_lastname = usersDM.users_lastname,
+                users_email = usersDM.users_email,
+                users_phone = usersDM.users_phone,
+                users_dob = usersDM.users_dob,
+                users_password = usersDM.users_password,
+            };
+
+            return Ok(new
+            {
+                Token = jwttoken,
+                user = usersDTO,
+                Sessionid = sessionid
+            });
+        }
+
+        [HttpGet]
+        [Route("/Logout")]
+        public IActionResult Logout() 
+        {
+            if (HttpContext.Session.TryGetValue("sessionid", out byte[] userbytes))
+            {
+                string sessionid = Encoding.UTF8.GetString(userbytes);
+                Response.Cookies.Delete("usercookie", new CookieOptions
+                {
+                    HttpOnly = true,
+                    SameSite = SameSiteMode.None,
+                    Secure = true
+                });
+                Response.Cookies.Delete("usercookieexpiry", new CookieOptions
+                {
+                    HttpOnly = false,
+                    SameSite = SameSiteMode.None,
+                    Secure = true
+                });
+                HttpContext.Session.Clear();
+                return Ok(new { Message = "user logged out" });
+            }
+
+            else
+            {
+                return BadRequest("user is not signed in");
+            }
+
+        }
     }
+    
 }

@@ -55,6 +55,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
+builder.Services.AddScoped<DecodeJWT>();
+
 //link repos to controller
 builder.Services.AddScoped<IUserRepository,SQLUserRepository>();
 
