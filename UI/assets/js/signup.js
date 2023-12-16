@@ -208,18 +208,18 @@ function hasspecialcharacter(password) {
 
 
         fetch(`https://192.168.0.135:44394/signup`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            }, 
-            body: JSON.stringify(userData),
-
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        }, 
+        body: JSON.stringify(userData),
         })
         .then(response => {
-            if(response.status === 201 && response.status === 200){
+            if (response.status === 201 || response.status === 200) {
                 return response.json();
-            }else{
-                return console.error(response.status);
+            } else {
+                // Reject the Promise with an error status
+                throw new Error(response.status);
             }
         })
         .then(data => {
@@ -246,7 +246,16 @@ function hasspecialcharacter(password) {
 
         })
         .catch(error => {
-            return console.error(error);
+            if (error.message.includes("error : 409")) {
+                // Extract the error message from the API response
+                console.log(error.message);
+                const errorMessage = error.message.split(":")[1].trim();
+                console.log(errorMessage)
+                customPopup(errorMessage);
+            } else {
+                // If no specific handling for this type of error, use the error message directly
+                customPopup("Error: " + error);
+            }
         })
         
     }
