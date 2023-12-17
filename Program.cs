@@ -18,11 +18,10 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-var configuration = builder.Configuration;
-var connectionString = configuration.GetConnectionString("ConnectionString");
+
 
 builder.Services.AddDbContext<GacsDbContext>(options =>
-options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
+options.UseSqlServer(builder.Configuration.GetConnectionString("connectionString")));
 
 
 builder.Services.AddDistributedMemoryCache();

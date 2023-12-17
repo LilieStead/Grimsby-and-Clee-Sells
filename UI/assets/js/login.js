@@ -1,5 +1,6 @@
 function login(event){
     event.preventDefault();
+    const loader = document.getElementById("preloader");
     const loginform = new FormData(document.getElementById("loginform"));
     const username = loginform.get('username');
     const password = loginform.get('password');
@@ -28,11 +29,17 @@ function login(event){
     if(nopass){
         return;
     }else{
+        loader.style.display = "block";
         console.log("after");
         fetch(`https://192.168.0.135:44394/login/${username}/${password}`)
         .then(response => {
             if (response.status === 200){
                 return response.json();
+            }else if(response.status === 404 || response.status === 401){
+
+                return response.json().then(error => {
+                    return Promise.reject(error.message);
+                })
             }else{
                 return console.error(response.status);
             }
@@ -46,7 +53,9 @@ function login(event){
             }
         })
         .catch(error => {
-            return console.error(error);
+            loader.style.display = "none";
+            return customPopup(error);
+            
         })
     }
 }

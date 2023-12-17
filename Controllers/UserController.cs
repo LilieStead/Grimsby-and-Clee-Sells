@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Net.Mail;
 using System.Text;
+
 using BCryptNet = BCrypt.Net.BCrypt;
 
 namespace Grimsby_and_Clee_Sells.Controllers
@@ -144,7 +145,18 @@ namespace Grimsby_and_Clee_Sells.Controllers
                 {
                     return BadRequest();
                 }
+                // validate passowrd
+                if (!System.Text.RegularExpressions.Regex.IsMatch(UserDM.users_password, @"[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]"))
+                {
+                    return BadRequest();
+                }
 
+                // validate age
+                var minimumage = DateTime.Now.AddYears(-18);
+                if (UserDM.users_dob > minimumage)
+                {
+                    return BadRequest();
+                }
 
                 // hash password
                 string passwordhash = BCryptNet.EnhancedHashPassword(UserDM.users_password);
@@ -161,7 +173,7 @@ namespace Grimsby_and_Clee_Sells.Controllers
                 {
                     if (Users != null )
                     {
-                        return Conflict("Username has been taken.");
+                        return Conflict(new { Message = "Username has been taken."});
                     }
                 }
 
@@ -169,7 +181,7 @@ namespace Grimsby_and_Clee_Sells.Controllers
                 {
                     if (Phone != null)
                     {
-                        return Conflict("Phone number is already in use.");
+                        return Conflict(new { Message = "Phone number is already in use." });
                     }
                 }
 
@@ -177,7 +189,7 @@ namespace Grimsby_and_Clee_Sells.Controllers
                 {
                     if (Email != null)
                     {
-                        return Conflict("Email Adress is already in use.");
+                        return Conflict(new { Message = "Email Adress is already in use." });
                     }
                 }
                 _userRepository.UserSignUp(UserDM);
@@ -210,13 +222,13 @@ namespace Grimsby_and_Clee_Sells.Controllers
             var usersDM = _userRepository.GetUserByUsername(username);
             if (usersDM == null)
             {
-                return NotFound("user does not exist");
+                return NotFound(new { Message = "user does not exist" });
             }
 
             bool verifyPass = BCryptNet.EnhancedVerify(password, usersDM.users_password);
             if (!verifyPass)
             {
-                return Unauthorized("password is incorrect");
+                return Unauthorized(new { Message = "password is incorrect" });
             }
 
             var secret = new SecretKeyGen();

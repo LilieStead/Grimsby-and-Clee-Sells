@@ -1,6 +1,7 @@
 function signup(event) {
     event.preventDefault();
 
+    const loader = document.getElementById("preloader");
     const signupform = new FormData(document.getElementById("signup"));
 
     // Gets all inputs from the signup form
@@ -193,7 +194,7 @@ function hasspecialcharacter(password) {
     if (nopass) {
         return;
     }else{
-
+        loader.style.display = "block";
         const user_dob = new Date(dob).toISOString();
         const userData = {
 
@@ -217,9 +218,17 @@ function hasspecialcharacter(password) {
         .then(response => {
             if (response.status === 201 || response.status === 200) {
                 return response.json();
-            } else {
+            } else if(response.status === 409){
+                
+                return response.json().then(error => {
+                    return Promise.reject(error.message);
+                })
+
+            }else {
                 // Reject the Promise with an error status
-                throw new Error(response.status);
+                return response.json().then(error => {
+                    return Promise.reject("You have run into an error. please try again later.");
+                })
             }
         })
         .then(data => {
@@ -241,21 +250,14 @@ function hasspecialcharacter(password) {
                 }
             })
             .catch(error => {
+                loader.style.display = "none";
                 return console.error(error);
             })
 
         })
         .catch(error => {
-            if (error.message.includes("error : 409")) {
-                // Extract the error message from the API response
-                console.log(error.message);
-                const errorMessage = error.message.split(":")[1].trim();
-                console.log(errorMessage)
-                customPopup(errorMessage);
-            } else {
-                // If no specific handling for this type of error, use the error message directly
-                customPopup("Error: " + error);
-            }
+            loader.style.display = "none";
+            return customPopup(error);
         })
         
     }
