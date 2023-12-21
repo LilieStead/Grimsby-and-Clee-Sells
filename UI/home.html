@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head id="head">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+</head>
+<header id="header">
+
+</header>
+
+<body>
+    <div style = "background-color: red; min-height: 40vh;" class="container">
+        <h2><i style="z-index: 2;" class="fa fa-user" aria-hidden="true"></i></h2>
+    </div>
+    
+
+
+    <div id="popupcontainer"></div>
+    <div id ="loading"></div>
+</body>
+
+
+
+
+
+
+
+<script>
+    $(document).ready(function(){
+      $("#head").load("assets/inc/head.html");
+      $("#footer").load("assets/inc/footer.html");
+      $("#popupcontainer").load("assets/inc/popup.html");
+      $("#loading").load("assets/inc/loading.html");
+      $("header").load("assets/inc/header.html");
+
+    })
+  
+</script>
