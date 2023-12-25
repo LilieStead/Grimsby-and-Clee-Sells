@@ -1,22 +1,29 @@
-
-
-
-
 <h1 id ="header title">Grimsby And Clee Sells</h1>
-<div id="navbar" class="flexcontainer">
-    <div id="usernameToggle" onclick="toggleMenu()">
-        <h2>Username</h2><p id="menuarrow"></p>
-    </div>
+<div id="navbar">
+     <div id="navdiv">
+        <div id="usernameToggle" onclick="toggleMenu()">
+            <h2>Username</h2><p id="menuarrow"></p>
+        </div>
+            <nav id="hamburgerMenu">
+                <div id="navdiv">
+                    <!-- Your menu items go here -->
+                    <a class="hamburgerMenuLink" href="userdetails.html">Edit Details</a>
+                    <a class="hamburgerMenuLink" href="mygames.html">my items</a>
+                    <a class="hamburgerMenuLink" href="userreviews.html">my orders</a>
+                    <a class="hamburgerMenuLink" href="settings.html">Settings</a>
+                    <a class="hamburgerMenuLink" onclick="logout();">Logout</a>
+                    <!-- Add more menu items as needed -->
+                </div>
+            </div> 
+     </div>
+    
     <div id="navdiv">
-        <nav id="hamburgerMenu">
-            <!-- Your menu items go here -->
-            <a href="userdetails.html">Edit Details</a>
-            <a href="mygames.html">My games</a>
-            <a href="userreviews.html">My Reviews</a>
-            <a href="settings.html">Settings</a>
-            <a onclick="logout();">Logout</a>
-            <!-- Add more menu items as needed -->
-        </nav> 
+        <form action="">
+            <label for="Search">Search</label>
+            <input type="text" name="Search">
+
+            <input type="submit">
+        </form>
     </div>
 
 </div>
@@ -30,20 +37,17 @@
 </div>
     <div class="container" id="navdiv">
         <nav class="row">
-            <a class="col-lg-2 col-md-4 col-sm-12" href="#">Home</a>
+            <a class="col-md-4 col-sm-12" href="#">Home</a>
             <a class="col-lg-2 col-md-4 col-sm-12" href="#">Search items</a>
             <a class="col-lg-2 col-md-4 col-sm-12" href="#">My Cart</a>
-            <a class="col-lg-2 col-md-4 col-sm-12" href="#">My Orders</a>
-            <a class="col-lg-2 col-md-4 col-sm-12" href="#">Account settings</a>
-            <a class="col-lg-2 col-md-4 col-sm-12" href="#">Logout</a>
         </nav>
     </div>
 
 <style>
 
     #navdiv{
-        min-width: 50%;
-        max-width: 50%;
+        min-width: 30%;
+        max-width: 30%;
     }
 
     #navbar{
@@ -65,15 +69,26 @@
     @media screen and (max-width: 400px) {
         #hamburgerMenu{
             flex-direction: column;
+            min-width: 100% !important;
+        }
+        #navdiv{
+            flex-direction: column !important;
+            min-width: 100%;
+        }
+        #hamburgerMenu{
+            min-width: 100% !important;
         }
     }
 
 
     #usernameToggle{
-        min-width: 25%;
-        max-width: 25%;
+        min-width: 35%;
+        max-width: 35%;
     }
 
+    #hamburgermenu a{
+        padding: 0.2rem;
+    }
 
     #navdiv nav{
         min-width: 100vw;
@@ -93,14 +108,18 @@
     #navdiv{
         padding: 0;
         margin: 0;
+        min-width: 45%;
+        flex-direction: row;
+        display: flex;
     }
 
     #hamburgerMenu {
     display: none;
+
   }
   
-  #hamburgerMenu a {
-
+  .hamburgerMenuLink {
+    padding: 0.2rem;
   }
   
   #hamburgerMenu a:hover {
