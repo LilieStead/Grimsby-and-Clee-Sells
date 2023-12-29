@@ -1,146 +1,142 @@
-<h1 id ="header title">Grimsby And Clee Sells</h1>
-<div id="navbar">
-     <div id="navdiv">
-        <div id="usernameToggle" onclick="toggleMenu()">
-            <h2>Username</h2><p id="menuarrow"></p>
-        </div>
-            <nav id="hamburgerMenu">
-                <div id="navdiv">
-                    <!-- Your menu items go here -->
-                    <a class="hamburgerMenuLink" href="userdetails.html">Edit Details</a>
-                    <a class="hamburgerMenuLink" href="mygames.html">my items</a>
-                    <a class="hamburgerMenuLink" href="userreviews.html">my orders</a>
-                    <a class="hamburgerMenuLink" href="settings.html">Settings</a>
-                    <a class="hamburgerMenuLink" onclick="logout();">Logout</a>
-                    <!-- Add more menu items as needed -->
-                </div>
-            </div> 
-     </div>
-    
-    <div id="navdiv">
-        <form action="">
-            <label for="Search">Search</label>
-            <input type="text" name="Search">
+<div id="mySidenav" class="sidenav">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()"><i class="fa fa-times-circle" aria-hidden="true"></i></a>
+    <a href="#">Change account details</a>
+    <a href="#">My Cart</a>
+    <a href="#">My Orders</a>
+    <a href="#">My Products</a>
+    <a href="#">Accessability  settings/a>
+    <a href="#">Logout</a>
+  </div>
 
-            <input type="submit">
-        </form>
+
+<h1 id="title">Grinsby & Clee Sells</h1>
+<div class="flexcontainer" id="headercontent">
+    <div>
+        <h1 onclick="openNav()"> <i class="fa fa-bars" aria-hidden="true"></i> Account settings </h1>
     </div>
-
+    <nav>
+        <a href="#">Home</a>
+        <a href="#">Search Products</a>
+        <a href="#">My Cart</a>
+        <a href="#">Sell Product</a>
+        <a href="#">Trending</a>
+    </nav>
 </div>
+<form action="" class="centercontents">
+    <input type="search" name="search" id="search" placeholder="Search Product">
+</form>
 
 
-    
-    
-    
-    
-</div>
-</div>
-    <div class="container" id="navdiv">
-        <nav class="row">
-            <a class="col-md-4 col-sm-12" href="#">Home</a>
-            <a class="col-lg-2 col-md-4 col-sm-12" href="#">Search items</a>
-            <a class="col-lg-2 col-md-4 col-sm-12" href="#">My Cart</a>
-        </nav>
-    </div>
+
+
+
 
 <style>
 
-    #navdiv{
-        min-width: 30%;
-        max-width: 30%;
-    }
-
-    #navbar{
-        min-width: 100vw;
-        max-width: 100vw;
-    }
-
-    @media screen and (max-width: 630px) {
-        #navbar{
-            flex-direction: column;
-        }
-
-        #navdiv{
-            min-width: 100%;
-            max-width: 100%;
-        }
-    }
-
-    @media screen and (max-width: 400px) {
-        #hamburgerMenu{
-            flex-direction: column;
-            min-width: 100% !important;
-        }
-        #navdiv{
-            flex-direction: column !important;
-            min-width: 100%;
-        }
-        #hamburgerMenu{
-            min-width: 100% !important;
-        }
-    }
-
-
-    #usernameToggle{
-        min-width: 35%;
-        max-width: 35%;
-    }
-
-    #hamburgermenu a{
-        padding: 0.2rem;
-    }
-
-    #navdiv nav{
-        min-width: 100vw;
-        
-    }
     header{
         background-color: #0471A6;
+        padding-bottom: 1.2rem;
     }
 
-    header h1{
+    header #title{
         color: #FAF9F6;
         font-family: titlefnt;
         font-size: 3rem;
         text-align: center;
+        flex-shrink: 1;
     }
 
-    #navdiv{
-        padding: 0;
-        margin: 0;
-        min-width: 45%;
-        flex-direction: row;
-        display: flex;
+    header #headercontent{
+        justify-content: flex-start;
+
+        
     }
 
-    #hamburgerMenu {
+    header form{
+        min-width: 100vw;
+        max-width: 100vw;
+        
+    }
+
+    header form input[type=search]{
+    min-width: 70%;
+    width: 90%;
+    padding: 10px;
+    border: 1px solid #E8E9F3;
+    border-radius: 4px;
+    resize: vertical;
+    }
+
+
+
+
+    /* Side menu */
+  .sidenav {
+    height: 100%;
+    max-width: 40vw;
+    min-width: 40vw;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #a5a5a5;
+    opacity: 1;
+    background-color: #0471A6;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 200 200'%3E%3Cdefs%3E%3ClinearGradient id='a' gradientUnits='userSpaceOnUse' x1='100' y1='33' x2='100' y2='-3'%3E%3Cstop offset='0' stop-color='%23000' stop-opacity='0'/%3E%3Cstop offset='1' stop-color='%23000' stop-opacity='1'/%3E%3C/linearGradient%3E%3ClinearGradient id='b' gradientUnits='userSpaceOnUse' x1='100' y1='135' x2='100' y2='97'%3E%3Cstop offset='0' stop-color='%23000' stop-opacity='0'/%3E%3Cstop offset='1' stop-color='%23000' stop-opacity='1'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cg fill='%23006094' fill-opacity='0.6'%3E%3Crect x='100' width='100' height='100'/%3E%3Crect y='100' width='100' height='100'/%3E%3C/g%3E%3Cg fill-opacity='0.5'%3E%3Cpolygon fill='url(%23a)' points='100 30 0 0 200 0'/%3E%3Cpolygon fill='url(%23b)' points='100 100 0 130 0 100 200 100 200 130'/%3E%3C/g%3E%3C/svg%3E");
+    opacity: 1;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
     display: none;
 
   }
   
-  .hamburgerMenuLink {
-    padding: 0.2rem;
+  .sidenav a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    display: block;
+    transition: 0.3s;
+    font-family: titlefnt;
+    font-size: 2.2rem;
+    
   }
   
-  #hamburgerMenu a:hover {
+  .sidenav a:hover {
+    color: #f1f1f1;
+    transition: 0.3s;
+  }
 
+  .fa-times-circle:hover{
+    color: rgb(156, 8, 8);
+    transition: 0.3s;
   }
   
+  .sidenav .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+  }
+  
+
+
+  /* side menu */
+
 
 </style>
 
 <script>
 
-function toggleMenu() {
-  var arrow = document.getElementById("menuarrow")
-    var menu = document.getElementById("hamburgerMenu");
-    menu.style.display = (menu.style.display === "flex") ? "none" : "flex";
-    if (menu.style.display === "none"){
-      arrow.innerHTML = ("null");
-      arrow.innerHTML = ('<i class="fa fa-caret-down" aria-hidden="true"></i>');
-    }else {
-      arrow.innerHTML = ("null");
-      arrow.innerHTML = ('<i class="fa fa-caret-up" aria-hidden="true"></i>');
-    }
-  }
+function openNav() {
+  document.getElementById("mySidenav").style.display = "block";
+}
+
+function closeNav() {
+  document.getElementById("mySidenav").style.display = "none";
+}
+
+
 </script>
