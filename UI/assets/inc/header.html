@@ -4,15 +4,15 @@
     <a href="#">My Cart</a>
     <a href="#">My Orders</a>
     <a href="#">My Products</a>
-    <a href="#">Accessability  settings/a>
-    <a href="#">Logout</a>
+    <a href="#">Accessability settings</a>
+    <a  id="logout" >Logout</a>
   </div>
 
 
 <h1 id="title">Grinsby & Clee Sells</h1>
 <div class="flexcontainer" id="headercontent">
-    <div>
-        <h1 onclick="openNav()"> <i class="fa fa-bars" aria-hidden="true"></i> Account settings </h1>
+    <div class="flexcontainer" onclick="openNav()">
+      <i class="fa fa-bars" aria-hidden="true"></i><span id="username" ></span>
     </div>
     <nav>
         <a href="#">Home</a>
@@ -43,7 +43,7 @@
         font-family: titlefnt;
         font-size: 3rem;
         text-align: center;
-        flex-shrink: 1;
+        flex-wrap: wrap;
     }
 
     header #headercontent{
@@ -140,3 +140,6 @@ function closeNav() {
 
 
 </script>
+
+
+<script src="assets/js/navbar.js"></script>

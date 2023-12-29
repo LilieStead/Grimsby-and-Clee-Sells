@@ -29,5 +29,11 @@ namespace Grimsby_and_Clee_Sells.Repositories
         {
             return _context.Tbl_Users.FirstOrDefault(u => u.users_username == username);
         }
+
+
+        public User GetUserByID(int id)
+        {
+            return _context.Tbl_Users.FirstOrDefault(u => u.users_id == id);
+        }
     }
 }

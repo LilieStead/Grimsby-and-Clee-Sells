@@ -114,6 +114,18 @@ namespace Grimsby_and_Clee_Sells.Controllers
             return Ok(UserDM);
         }
 
+        [HttpGet]
+        [Route("/getuserbyid/{id:int}")]
+        public IActionResult GetUserByID([FromRoute]int id)
+        {
+            var UserDM = _userRepository.GetUserByID(id);
+            if (UserDM == null)
+            {
+                return NotFound();
+            }
+            return Ok(UserDM);
+        }
+
 
 
         [HttpPost]
@@ -205,7 +217,7 @@ namespace Grimsby_and_Clee_Sells.Controllers
                 };
 
 
-                return Ok();
+                return CreatedAtAction("GetUserByID", new {id = CreateUsersDTO.users_id}, CreateUsersDTO);
 
             }
             else

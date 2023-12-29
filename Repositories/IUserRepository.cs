@@ -10,5 +10,7 @@ namespace Grimsby_and_Clee_Sells.Repositories
         User UserSignUp(User user);
 
         User GetUserByUsername (string username);
+
+        User GetUserByID (int id);
     }
 }

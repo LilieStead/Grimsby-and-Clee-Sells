@@ -257,6 +257,7 @@ function hasspecialcharacter(password) {
         })
         .catch(error => {
             loader.style.display = "none";
+            console.error(error)
             return customPopup(error);
         })
         
