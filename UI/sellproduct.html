@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head id="head">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <!-- end of bootstrap -->
+</head>
+<header id="head">
+</header>
+
+<body>
+
+    <div class="centercontents">
+        <form action="" id="sellproduct">
+            <h1>create an product!</h1>
+
+            <label for="name">product name</label>
+            <input type="text" name="name" id="name">
+
+            <label for="description">product description </label>
+            <textarea name="description" id="description" cols="30" rows="10"></textarea>
+
+            <label for="images">Select up to two images:</label>
+            <input type="file" id="images" name="images[]" accept="image/*" multiple>
+
+            <label for="category">Product category</label>
+           <select name="category" id="category">
+
+           </select>
+
+            <label for="manufacture">Product manufacture</label>
+            <input type="text" name="">
+
+            <label for="price">Product price</label>
+            <input type="text" id="price" name="price" placeholder="&pound;0.00" oninput="validatePrice(this)" required autocomplete="off" resize="off">
+
+            <input type="submit">
+
+        </form>
+    </div>
+    
+    <div id="popupcontainer"></div>
+    <div id ="loading"></div>
+</body>
+
+<footer id="footer">
+
+</footer>
+
+<script>
+      $(document).ready(function(){
+        $("#head").load("assets/inc/head.html");
+        $("#footer").load("assets/inc/footer.html");
+        $("#popupcontainer").load("assets/inc/popup.html");
+        $("#loading").load("assets/inc/loading.html");
+        $("header").load("assets/inc/header.html");
+
+      })
+      
+      document.getElementById('dob').max = new Date().toISOString().split('T')[0];
+    
+</script>
+
+<script>
+
+
+    function validatePrice(input) {
+    // Remove any non-numeric characters except for the pound symbol (£)
+    input.value = input.value.replace(/[^0-9£.]/g, '');
+
+    // If the input starts with a dot, add a leading zero
+    if (input.value.startsWith('.')) {
+        input.value = '0' + input.value;
+    }
+
+    // If the input contains more than one dot, remove extra dots
+    if (input.value.split('.').length > 2) {
+        input.value = input.value.replace(/\.+$/, '');
+    }
+
+    // Limit to two decimal places
+    input.value = input.value.replace(/(\.\d{2})\d+$/, '$1');
+}
+
+</script>
+<script src="assets/js/loginstatus.js"></script>
+<script src="assets/js/productcategories.js"></script>

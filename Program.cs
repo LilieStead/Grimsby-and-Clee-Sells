@@ -58,6 +58,7 @@ builder.Services.AddScoped<DecodeJWT>();
 
 //link repos to controller
 builder.Services.AddScoped<IUserRepository,SQLUserRepository>();
+builder.Services.AddScoped<ICategoryRepository, SQLCategoryRepository>();
 
 var app = builder.Build();
 

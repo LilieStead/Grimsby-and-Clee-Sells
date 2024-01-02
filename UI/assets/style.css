@@ -201,5 +201,20 @@ footer{
     padding: 0.2rem;
 }
 
+/* sell product */
+#sellproduct{
+    min-width: 50vw;
+    max-width: 80vw;
+}
 
-/* start of popup */
+#sellproduct  input[type=text],#sellproduct  input[type=date],#sellproduct  input[type=password],#sellproduct  input[type=number], #sellproduct textarea{
+    min-width: 100%;
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #E8E9F3;
+    border-radius: 4px;
+    resize: vertical;
+    display: flex;
+    justify-content: center;
+}
+

@@ -12,11 +12,13 @@ namespace Grimsby_and_Clee_Sells.Data
 
         // DbSet Here
        public  DbSet<User> Tbl_Users { get; set; }
+       public DbSet<Category> Tbl_Category { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<User>().HasKey(p=>p.users_id);
+            modelBuilder.Entity<Category>().HasKey(p => p.category_id);
         }
     }
 }
