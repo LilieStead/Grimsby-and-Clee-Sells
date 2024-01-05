@@ -1,6 +1,6 @@
 
 function getCategories(){
-    fetch('https://192.168.0.135:44394/getallcategory')
+    fetch('https://localhost:44394/getallcategory')
     .then(response => response.json())
     .then(data =>{
         const categoryselect = document.getElementById('category');

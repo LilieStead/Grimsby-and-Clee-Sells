@@ -208,7 +208,7 @@ function hasspecialcharacter(password) {
         };
 
 
-        fetch(`https://192.168.0.135:44394/signup`, {
+        fetch(`https://localhost:44394/signup`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -233,7 +233,7 @@ function hasspecialcharacter(password) {
         })
         .then(data => {
             // const usertoken = data.token;
-            fetch(`https://192.168.0.135:44394/login/${username}/${password}`)
+            fetch(`https://localhost:44394/login/${username}/${password}`)
             .then(response => {
                 if (response.status === 200){
                     return response.json();

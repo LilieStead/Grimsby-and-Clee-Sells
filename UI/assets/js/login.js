@@ -31,7 +31,7 @@ function login(event){
     }else{
         loader.style.display = "block";
         console.log("after");
-        fetch(`https://192.168.0.135:44394/login/${username}/${password}`)
+        fetch(`https://localhost:44394/login/${username}/${password}`)
         .then(response => {
             if (response.status === 200){
                 return response.json();

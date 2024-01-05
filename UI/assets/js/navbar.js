@@ -4,7 +4,7 @@ function displayUser(){
     const cookie = getCookie("usercookieexpiry");
     const username = document.getElementById("username");
     if (cookie){
-        fetch(`https://192.168.0.135:44394/api/User/decodetoken`, {
+        fetch(`https://localhost:44394/api/User/decodetoken`, {
             method: "GET", 
             credentials: "include"
         })
@@ -52,7 +52,7 @@ function displayUser(){
 function logout(){
     const cookie = getCookie("usercookieexpiry");
     if(cookie){
-        fetch(`https://192.168.0.135:44394/logout`,{
+        fetch(`https://localhost:44394/logout`,{
             method:"GET",
             credentials:"include"
         })

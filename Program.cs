@@ -78,7 +78,7 @@ if (app.Environment.IsDevelopment())
         RequestPath = "/UI"
 
     });
-    var url = "https://192.168.0.135:44394/UI/index.html";
+    var url = "https://localhost:44394/UI/index.html";
     Process.Start(new ProcessStartInfo { FileName = url, UseShellExecute = true });
 }
 

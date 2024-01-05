@@ -189,6 +189,11 @@ text black
 body{
     background-color: #F4F7F5;
     overflow-x: hidden;
+    min-height: 90vh;
+}
+
+#content{
+    height: 85vh;
 }
 
 /* footer */
@@ -207,7 +212,7 @@ footer{
     max-width: 80vw;
 }
 
-#sellproduct  input[type=text],#sellproduct  input[type=date],#sellproduct  input[type=password],#sellproduct  input[type=number], #sellproduct textarea{
+#sellproduct  input[type=text],#sellproduct  input[type=date],#sellproduct  input[type=password],#sellproduct  input[type=number], #sellproduct textarea, #sellproduct select {
     min-width: 100%;
     width: 100%;
     padding: 12px;
@@ -218,3 +223,8 @@ footer{
     justify-content: center;
 }
 
+/* text area  */
+
+textarea{
+    resize:none !important;
+}
