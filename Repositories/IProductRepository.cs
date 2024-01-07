@@ -6,5 +6,15 @@ namespace Grimsby_and_Clee_Sells.Repositories
     public interface IProductRepository
     {
         List<Product> GetAllProduct();
+
+        Product GetProductById(int id);
+
+        Product CreateProduct(Product product);
+
+        Task<Productimg> GetProductImgById(int id);
+
+        Task<Productimg> CreateProductImg(Productimg productimg);
+
+        Task<Productimg> GetProductImgsById(int id, int index);
     }
 }
