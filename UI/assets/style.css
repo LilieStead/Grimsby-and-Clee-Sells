@@ -57,6 +57,11 @@ text black
     align-items: center;
 }
 
+.flexcoloum{
+    display: flex;
+    flex-direction: column;
+}
+
 
 /* sign-up and login (index.html) */
 #indexheader{

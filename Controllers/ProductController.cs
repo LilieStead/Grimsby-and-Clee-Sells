@@ -4,6 +4,7 @@ using Grimsby_and_Clee_Sells.Models.DTOs;
 using Grimsby_and_Clee_Sells.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.RegularExpressions;
 
 namespace Grimsby_and_Clee_Sells.Controllers
 {
@@ -14,10 +15,14 @@ namespace Grimsby_and_Clee_Sells.Controllers
 
         private readonly GacsDbContext _context;
         private readonly IProductRepository _ProductRepository;
-        public ProductController(GacsDbContext context, IProductRepository ProductRepository)
+        private readonly IUserRepository _UserRepository;
+        private readonly ICategoryRepository _CategoryRepository;
+        public ProductController(GacsDbContext context, IProductRepository ProductRepository, IUserRepository userRepository, ICategoryRepository categoryRepository)
         {
             _context = context;
             _ProductRepository = ProductRepository;
+            _UserRepository = userRepository;
+            _CategoryRepository = categoryRepository;
         }
         [HttpGet("GetAllProducts")]
         public IActionResult GetAllProduct() {
@@ -48,6 +53,33 @@ namespace Grimsby_and_Clee_Sells.Controllers
                     product_status = status,
                     product_price = createProductDTO.product_price,
                 };
+
+                var userexits = _UserRepository.GetAllUsers().Where(x => x.users_id == ProductDM.product_userid);
+
+                if (!userexits.Any())
+                {
+                    return Conflict(new { Message = "User not registered" });
+                }
+
+                var catgoryexsits = _CategoryRepository.GetAllCategory().Where(x => x.category_id == ProductDM.product_category);
+
+                if (!catgoryexsits.Any())
+                {
+                    return Conflict(new { Message = "category does not exisit" });
+                }
+
+
+
+
+                const string priceformate = @"^\d+(\.\d{1,2})?$";
+
+                string test = ProductDM.product_price.ToString();
+
+                if (!System.Text.RegularExpressions.Regex.IsMatch(test, priceformate))
+                {
+                    return BadRequest();
+                }
+
 
                 _ProductRepository.CreateProduct(ProductDM);
                 var CreateProductDTO = new ProductDTO

@@ -15,24 +15,27 @@
 
         <label for="name">product name</label>
         <input type="text" name="name" id="name">
+        <p class="error" id="nameerror"></p>
 
         <label for="description">product description </label>
-        <textarea name="description" id="description" cols="30" rows="10"></textarea>
-
-        <label for="images">Select up to two images:</label>
-        <input type="file" id="images" name="images[]" accept="image/*" multiple>
+        <textarea name="description" id="description" cols="30" rows="10" maxlength="200" onkeyup="countupdate(this.value)" ></textarea>
+        <span id="counter"></span>
+        <p class="error" id="descriptionerror"></p>
+        <div class="flexcoloum">
+            <label for="images">Select up to two images:</label>
+            <input type="file" id="images" name="images[]" accept="image/*" multiple>
+        </div>
+        
 
         <label for="category">Product category</label>
         <select name="category" id="category">
 
         </select>
-
-        <label for="manufacture">Product manufacture</label>
-        <input type="text" name="">
+        <p id="categoryerror" class="error"></p>
 
         <label for="price">Product price</label>
-        <input type="text" id="price" name="price" placeholder="&pound;0.00" oninput="validatePrice(this)" required autocomplete="off" resize="off">
-
+        <input type="text" id="price" name="price" placeholder="&pound;0.00" oninput="validatePrice(this)" autocomplete="off" resize="off">
+        <p id="priceerror" class="error"></p>
         <input type="submit">
 
     </form>
@@ -63,26 +66,9 @@
 </script>
 
 <script>
-
-
-    function validatePrice(input) {
-    // Remove any non-numeric characters except for the pound symbol (£)
-    input.value = input.value.replace(/[^0-9£.]/g, '');
-
-    // If the input starts with a dot, add a leading zero
-    if (input.value.startsWith('.')) {
-        input.value = '0' + input.value;
-    }
-
-    // If the input contains more than one dot, remove extra dots
-    if (input.value.split('.').length > 2) {
-        input.value = input.value.replace(/\.+$/, '');
-    }
-
-    // Limit to two decimal places
-    input.value = input.value.replace(/(\.\d{2})\d+$/, '$1');
-}
-
 </script>
 <script src="assets/js/loginstatus.js"></script>
 <script src="assets/js/productcategories.js"></script>
+<script src="assets/js/sellproduct.js"></script>
+<script src="assets/js/counter.js"></script>
+<script src="assets/js/priceformat.js"></script>
