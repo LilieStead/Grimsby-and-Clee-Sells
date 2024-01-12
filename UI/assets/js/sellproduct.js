@@ -78,13 +78,6 @@ function sellproduct(event) {
         loader.style.display = "block";
         const userid = sessionStorage.getItem("userid")
         console.log(userid);
-        // const productData = {
-        //     product_name: name,
-        //     product_description: description,
-        //     product_category: category,
-        //     product_userid: userid,
-        //     product_price: price
-        // };
         sellproductform.append("product_userid", userid);
 
 
@@ -128,29 +121,33 @@ function sellproduct(event) {
                 if (response.status === 201 || response.status === 200 ){
                     return response.json();
                 }else if (response.status === 409){
-                    loader.style.display = "none";
                     return response.json().then(error => {
                         return Promise.reject(error.message);''
                     })
                     
                 }else{
-                    loader.style.display = "none";
                 return response.json().then(error => {
                     return Promise.reject("You have run into an error. please try again later.");
                 })
                 }
             })
             .then(data => {
-                console.log(data);
+                window.location.href= "success.html";
             })
             .catch(error => {
                 console.error(error);
             })
+            .finally(() => {
+                loader.style.display = "none";
+            })
         })
         .catch(error => {
-            loader.style.display = "none";
+            
             console.error(error);
             return customPopup(error);
+        })
+        .finally(() => {
+            loader.style.display = "none";
         })
     }
 

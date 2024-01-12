@@ -5,6 +5,9 @@ using Grimsby_and_Clee_Sells.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.RegularExpressions;
+using System.Text;
+using System.Drawing.Imaging;
+using System.Drawing;
 
 namespace Grimsby_and_Clee_Sells.Controllers
 {
@@ -135,12 +138,16 @@ namespace Grimsby_and_Clee_Sells.Controllers
                 }
                 else
                 {
+                    var stream = img.OpenReadStream();
+                    var thumbnail = CreateThumbnail(660, 500, stream);
+                    ProductDM.productimg_thumbnail = thumbnail;
                     await _ProductRepository.CreateProductImg(ProductDM);
                     var productDTO = new productimgDTO
                     {
                         productimg_id = ProductDM.productimg_id,
                         productimg_img = ProductDM.productimg_img,
-                        productimg_productid = ProductDM.productimg_productid
+                        productimg_productid = ProductDM.productimg_productid,
+                        productimg_thumbnail = ProductDM.productimg_thumbnail
                     };
 
                     productimgDTOs.Add(productDTO);
@@ -155,6 +162,25 @@ namespace Grimsby_and_Clee_Sells.Controllers
             {
                 formFile.CopyTo(imgbyte);
                 return imgbyte.ToArray();
+            }
+        }
+
+
+        private byte[] CreateThumbnail(int width , int height, Stream image)
+        {
+            try
+            {
+                var origin = Image.FromStream(image);
+                var reduced = origin.GetThumbnailImage(width, height, () => false, IntPtr.Zero);
+                using (var create = new MemoryStream())
+                {
+                    reduced.Save(create, ImageFormat.Jpeg);
+                    return create.ToArray();
+                }
+            }
+            catch (Exception ex)
+            {
+                return null;
             }
         }
 
