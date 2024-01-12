@@ -4,14 +4,18 @@ function checkLoginStatus(){
     var url = window.location.pathname;
     var file = url.substring(url.lastIndexOf("/")+1);
     if (exptime){
+        console.log("if")
         if(file === "index.html"){
             window.location.href = "home.html";
         }
     }else{
+        console.log("else")
         if (file === "index.html"){
+            console.log("else if")
             return;
         }else{
-            window.location.href="index.html";
+            window.location.href = "index.html";
+            
         }
     }
 

@@ -37,7 +37,7 @@ namespace Grimsby_and_Clee_Sells.Controllers
 
         [HttpPost]
         [Route("/CreateProduct")]
-        public IActionResult CreateProduct([FromBody] CreateProductDTO createProductDTO)
+        public IActionResult CreateProduct([FromForm] CreateProductDTO createProductDTO)
         {
             int status = 1;
 
@@ -84,6 +84,7 @@ namespace Grimsby_and_Clee_Sells.Controllers
                 _ProductRepository.CreateProduct(ProductDM);
                 var CreateProductDTO = new ProductDTO
                 {
+                    product_id = ProductDM.product_id,
                     product_name = ProductDM.product_name,
                     product_description = ProductDM.product_description,
                     product_category = ProductDM.product_category,

@@ -43,8 +43,14 @@ function displayUser(){
             sessionStorage.setItem("lastname",data.lastname);
         })
         .catch(error => {
-            return customPopup(error);
+            sessionStorage.removeItem("username");
+            sessionStorage.removeItem("userid");
+            sessionStorage.removeItem("firstname");
+            sessionStorage.removeItem("lastname");
+            return window.location.href = "index.html";
         })
+    }else{
+        window.location.href= "index.html";
     }
 }
 

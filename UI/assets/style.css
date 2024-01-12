@@ -109,7 +109,7 @@ text black
     resize: vertical;
     }
 
-.index form .error{
+.error{
     color: red;
     font-family: mainfnt;
 }
@@ -194,11 +194,13 @@ text black
 body{
     background-color: #F4F7F5;
     overflow-x: hidden;
-    min-height: 90vh;
+    /* min-height: 100vh; */
 }
 
 #content{
-    height: 85vh;
+    min-height: 95vh;
+    padding-bottom: 10%;
+    padding-top: 15rem;
 }
 
 /* footer */
@@ -232,4 +234,22 @@ footer{
 
 textarea{
     resize:none !important;
+}
+
+/* success msg */
+
+
+#successmessagediv{
+    text-align: center;
+    font-size: 3rem;
+}
+
+#successmessagediv a, #successmessagediv h2{
+    font-size: 2rem !important;
+    color: #292F36;
+}
+
+#successmessagediv h1{
+    font-size: 2rem !important;
+    color: #0471A6 !important;
 }

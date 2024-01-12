@@ -4,42 +4,46 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <!-- end of bootstrap -->
 </head>
-<header id="header">
-</header>
+
 
 <body>
+    <header id="header">
+    </header>
 
-<div class="centercontents" id="content">
-    <form action="" id="sellproduct">
-        <h1>create an product!</h1>
+    <div class="centercontents" id="content">
+        <form action="" id="sellproduct" enctype="multipart/form-data">
+            <h1>create an product!</h1>
 
-        <label for="name">product name</label>
-        <input type="text" name="name" id="name">
-        <p class="error" id="nameerror"></p>
+            <label for="product_name">product name</label>
+            <input type="text" name="product_name" id="name">
+            <p class="error" id="nameerror"></p>
 
-        <label for="description">product description </label>
-        <textarea name="description" id="description" cols="30" rows="10" maxlength="200" onkeyup="countupdate(this.value)" ></textarea>
-        <span id="counter"></span>
-        <p class="error" id="descriptionerror"></p>
-        <div class="flexcoloum">
-            <label for="images">Select up to two images:</label>
-            <input type="file" id="images" name="images[]" accept="image/*" multiple>
-        </div>
-        
+            <label for="product_description">product description </label>
+            <textarea name="product_description" id="description" cols="30" rows="10" maxlength="200" onkeyup="countupdate(this.value)" ></textarea>
+            <span id="counter"></span>
+            <p class="error" id="descriptionerror"></p>
+            <div class="flexcoloum">
+                <label for="images">Select up to two images:</label>
+                <input type="file" id="images1" name="productimg_img1" accept="image/*" multiple onchange="previewImage(1);">
+            </div>
+            <div id="gallery">
 
-        <label for="category">Product category</label>
-        <select name="category" id="category">
+            </div>
+            
 
-        </select>
-        <p id="categoryerror" class="error"></p>
+            <label for="product_category">Product category</label>
+            <select name="product_category" id="category">
 
-        <label for="price">Product price</label>
-        <input type="text" id="price" name="price" placeholder="&pound;0.00" oninput="validatePrice(this)" autocomplete="off" resize="off">
-        <p id="priceerror" class="error"></p>
-        <input type="submit">
+            </select>
+            <p id="categoryerror" class="error"></p>
 
-    </form>
-</div>
+            <label for="product_price">Product price</label>
+            <input type="text" id="price" name="product_price" placeholder="&pound;0.00" oninput="validatePrice(this)" autocomplete="off" resize="off">
+            <p id="priceerror" class="error"></p>
+            <input type="submit">
+
+        </form>
+    </div>
    
 </body>
 
@@ -62,6 +66,10 @@
       })
       
       document.getElementById('dob').max = new Date().toISOString().split('T')[0];
+
+
+
+      
     
 </script>
 
@@ -72,3 +80,4 @@
 <script src="assets/js/sellproduct.js"></script>
 <script src="assets/js/counter.js"></script>
 <script src="assets/js/priceformat.js"></script>
+<script src="assets/js/imagereview.js"></script>
