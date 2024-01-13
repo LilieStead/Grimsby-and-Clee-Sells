@@ -107,12 +107,15 @@ namespace Grimsby_and_Clee_Sells.Controllers
         [Route("/getallusers")]
         public IActionResult Get() { 
             var UserDM = _userRepository.GetAllUsers();
-            if (UserDM == null)
+            if (UserDM.Count == 0)
             {
                 return NotFound();
             }
             return Ok(UserDM);
         }
+
+
+
 
         [HttpGet]
         [Route("/getuserbyid/{id:int}")]

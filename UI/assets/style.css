@@ -141,49 +141,10 @@ text black
     min-width: 100%;
 }
 
-.indexcard div{
-    text-align: center;
-    background-color: #0471A6;
-    border-radius: 3px;
-    min-height: 27vh;
-    max-height: 27vh;
-    margin-top: 2rem;
-    padding-bottom: 1rem;
-    box-shadow: 9px -10px 7px 2px rgba(0, 0, 0, 0.1);
-}
 
-@media screen and (max-width:770px) {
-    .indexcard div{
-        min-height: 10vh;
-    }
-}
-.indexcard div h1{
-    text-align: center;
-    color: #F3F5F7;
-    font-size: 2rem;
-    font-family: titlefnt;
-    padding-top: 10px;
-}
-
-
-.indexcard div p{
-    text-align: center;
-    color: #F3F5F7;
-    font-size: 1rem;
-    font-family: mainfnt;
-    line-height: 1.5rem;
-}
-
-#indexcardcontainer{
-    min-width: 100%;
-    max-width: 100%;
-    margin-top: 5rem;
-    margin-bottom: 1.5rem;
-
-}
 
 #indexoptions {
-    min-height: 60vh;
+    min-height: 92vh;
 }
 
 
@@ -211,6 +172,7 @@ footer{
     text-align: center;
     color: #F3F5F7;
     padding: 0.2rem;
+    margin-top: 2rem;
 }
 
 /* sell product */

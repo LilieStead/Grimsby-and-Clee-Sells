@@ -60,6 +60,7 @@ builder.Services.AddScoped<DecodeJWT>();
 builder.Services.AddScoped<IUserRepository,SQLUserRepository>();
 builder.Services.AddScoped<ICategoryRepository, SQLCategoryRepository>();
 builder.Services.AddScoped<IProductRepository, SQLProductRepository>();
+builder.Services.AddScoped<IAdminRepository, SQLAdminRepository>();
 
 var app = builder.Build();
 
