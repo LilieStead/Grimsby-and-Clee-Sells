@@ -10,5 +10,6 @@ namespace Grimsby_and_Clee_Sells.Repositories
         Admin GetAdminByID(int id);
 
         Admin GetAdminByUsername(string username);
+
     }
 }
