@@ -206,13 +206,38 @@ namespace Grimsby_and_Clee_Sells.Controllers
             var productimgDM = await _ProductRepository.GetProductImgsById(id, index);
             if (productimgDM == null)
             {
-                return NotFound();
+                return NoContent();
             }
             byte[] format = productimgDM.productimg_img;
 
             return File(format, "image/jpeg");
         }
 
+        [HttpGet]
+        [Route("GetProductByUserId/{userid}")]
+        public IActionResult GetProductByUserId([FromRoute] int userid) 
+        {
+            var ProductDM = _ProductRepository.GetProductByUserId(userid);
+            if (ProductDM.Count == 0)
+            {
+                return NotFound();
+            }
+            return Ok(ProductDM);
+        }
+
+        [HttpGet]
+        [Route("/GetImgThumbnailByProductId/{id:int}/{index:int}")]
+        public async Task<IActionResult> GetImgThumbnailByProductId([FromRoute] int id, int index)
+        {
+            var productimgDM = await _ProductRepository.GetProductImgsThumbnailById(id, index);
+            if (productimgDM == null)
+            {
+                return NoContent();
+            }
+            byte[] format = productimgDM.productimg_thumbnail;
+
+            return File(format, "image/jpeg");
+        }
     }
 
 }

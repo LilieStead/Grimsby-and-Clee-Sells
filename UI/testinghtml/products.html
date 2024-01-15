@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>Document</title>
+</head>
+<body>
+    <div class="centercontents" style="height: 100vh;">
+        <div class="usersproduct flexcontainer">
+            <div class="imgdiv">
+                <img src="Screenshot 2023-12-07 170845.png" alt="">
+            </div>
+            <div class="usersproductinfo">
+                <h1>Product title </h1>
+                <h2><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i></h2>
+                <h1 class="info">Status</h1>
+                <h1 class="info">Category name || $10.32</h1>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi praesentium saepe asperiores maxime 
+                    quasi. Porro officia voluptatum omnis vitae labore quis? Non enim eum culpa totam deserunt ratione corrupti. Asperiores.</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+<style>
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+.flexcontainer{
+    display: flex; 
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+/* centers items held within a div  */
+.centercontents{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.flexcoloum{
+    display: flex;
+    flex-direction: column;
+}
+.usersproduct{
+    background-color: #E3E3E4;
+    width: 80vw;
+    display: flex; 
+    flex-wrap: wrap;
+    justify-content:flex-start;
+    padding: 1rem;
+    border-radius: 2.5px;
+    box-shadow: 5px 6px 7px 2px rgb(0 0 0 / 42%);
+
+}
+.usersproductinfo .username{
+    font-size: 1.3rem;
+}
+
+.imgdiv img{
+    max-width: 8rem;
+    border-radius: 2.5px;
+    box-shadow: 1px 1px 7px 2px rgb(0 0 0 / 42%);
+}
+
+.usersproductinfo{
+    margin-left: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    flex-wrap: wrap;
+}
+
+.usersproductinfo h1{
+    font-family: mainfnt;
+    color: #292F36;
+    letter-spacing: -1px;
+}
+
+
+.usersproductinfo h2{
+    color: #c99810;
+}
+
+
+.usersproductinfo p{
+    font-family: mainfnt;
+    color: #292F36;
+}
+
+.usersproductinfo .info{
+    font-size: 1.3rem;
+}
+
+@media screen and (max-width: 1000px){
+    .usersproductinfo{
+        padding-bottom: 1rem;
+        width: 95%;
+        margin: 0;
+    }
+    .imgdiv{
+        display: grid;
+        justify-content: space-around;
+    }
+
+    .imgdiv img{
+        max-width: 20rem;
+        max-height: 20rem;
+    }
+    .usersproduct{
+        flex-direction: column-reverse;
+        align-content: center;
+    }
+}
+
+@font-face {
+    font-family: titlefnt;
+    src: url(HappyUniversary.otf)
+    }
+
+    @font-face {
+        font-family: mainfnt;
+        src: url(Vera.ttf);
+    }
+
+    @font-face {
+        font-family: mainfnti;
+        src: url(Vera.ttf);
+    }
+
+
+</style>

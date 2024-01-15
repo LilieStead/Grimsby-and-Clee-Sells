@@ -1,4 +1,5 @@
-﻿using Grimsby_and_Clee_Sells.Data;
+﻿using Grimsby_and_Clee_Sells.Controllers;
+using Grimsby_and_Clee_Sells.Data;
 using Grimsby_and_Clee_Sells.Models.Domain;
 using Microsoft.EntityFrameworkCore;
 
@@ -60,6 +61,24 @@ namespace Grimsby_and_Clee_Sells.Repositories
             await _context.SaveChangesAsync();
             return productimg;
         }
-            
+
+        public List<Product> GetProductByUserId(int userid)
+        {
+            return _context.Tbl_Product.Include(p => p.Status).Include(p => p.Category).Include(p => p.User).Where(p => p.product_userid == userid).ToList();
+        }
+
+        public async Task<Productimg> GetProductImgsThumbnailById(int id, int index)
+        {
+            return await _context.Tbl_Productimg.Include(p => p.Product)
+                .Where(p => p.productimg_productid == id)
+                .OrderBy(p => p.productimg_id)
+                .Skip(index)
+                .Select(p => new Productimg
+                {
+                    productimg_id = p.productimg_id,
+                    productimg_thumbnail = p.productimg_thumbnail,
+                    productimg_productid = p.productimg_productid
+                }).FirstOrDefaultAsync();
+        }
     }
 }

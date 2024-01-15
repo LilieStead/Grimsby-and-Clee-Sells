@@ -16,5 +16,9 @@ namespace Grimsby_and_Clee_Sells.Repositories
         Task<Productimg> CreateProductImg(Productimg productimg);
 
         Task<Productimg> GetProductImgsById(int id, int index);
+
+        List <Product> GetProductByUserId(int userId);
+
+        Task<Productimg> GetProductImgsThumbnailById(int id, int index);
     }
 }
