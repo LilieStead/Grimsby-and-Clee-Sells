@@ -28,6 +28,79 @@ namespace Grimsby_and_Clee_Sells.Controllers
             this.decodeJWT = decodeJWT;
         }
 
+        [HttpGet("decodeadmin")]
+        public IActionResult DecodeAdmin()
+        {
+            try
+            {
+                if (HttpContext.Session.TryGetValue("sessionid", out byte[] userbytes))
+                {
+                    string sessionid = Encoding.UTF8.GetString(userbytes);
+
+                    if (Request.Cookies.TryGetValue("admincookie", out string usertoken))
+                    {
+                        var token = decodeJWT.DecodeToken(usertoken);
+                        if (token.userid != null && token.username != null && token.firstname != null && token.lastname != null)
+                        {
+                            return Ok(new
+                            {
+                                Userid = token.userid,
+                                Username = token.username,
+                                Firstname = token.firstname,
+                                Lastname = token.lastname
+                            });
+                        }
+                        else
+                        {
+                            return BadRequest(new
+                            {
+                                Message = "Failed to decode token"
+                            });
+                        }
+                    }
+                    else
+                    {
+                        return BadRequest(new
+                        {
+                            Message = "Cookie not found"
+                        });
+                    }
+
+
+                }
+                else
+                {
+                    Response.Cookies.Delete("usercookie", new CookieOptions
+                    {
+                        HttpOnly = true,
+                        SameSite = SameSiteMode.None,
+                        Secure = true
+                    });
+                    Response.Cookies.Delete("usercookieexpiry", new CookieOptions
+                    {
+                        HttpOnly = false,
+                        SameSite = SameSiteMode.None,
+                        Secure = true
+                    });
+                    HttpContext.Session.Clear();
+
+                    return Unauthorized(new
+                    {
+                        Message = "API has restarted token can not be decoded"
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new
+                {
+                    Message = "error deocding token",
+                    Error = ex.Message
+                });
+            }
+
+        }
+
         [HttpGet]
         [Route("/getalladmins")]
         public IActionResult Get()

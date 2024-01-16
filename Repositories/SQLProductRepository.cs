@@ -80,5 +80,10 @@ namespace Grimsby_and_Clee_Sells.Repositories
                     productimg_productid = p.productimg_productid
                 }).FirstOrDefaultAsync();
         }
+
+        public List<Product> GetProductByStatus(int status)
+        {
+            return _context.Tbl_Product.Include(p => p.Status).Include(p => p.Category).Include(p => p.User).Where(p => p.product_status == status).ToList();
+        }
     }
 }

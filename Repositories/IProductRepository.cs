@@ -20,5 +20,7 @@ namespace Grimsby_and_Clee_Sells.Repositories
         List <Product> GetProductByUserId(int userId);
 
         Task<Productimg> GetProductImgsThumbnailById(int id, int index);
+
+        List<Product> GetProductByStatus (int status);
     }
 }

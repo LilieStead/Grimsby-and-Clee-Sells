@@ -238,6 +238,18 @@ namespace Grimsby_and_Clee_Sells.Controllers
 
             return File(format, "image/jpeg");
         }
+
+        [HttpGet]
+        [Route("/GetProductsByStatus/{status:int}")]
+        public IActionResult GetProductsByStatus([FromRoute] int status)
+        {
+            var ProductDM = _ProductRepository.GetProductByStatus(status);
+            if (ProductDM.Count == 0)
+            {
+                return NotFound();
+            }
+            return Ok(ProductDM);
+        }
     }
 
 }

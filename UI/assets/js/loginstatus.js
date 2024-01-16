@@ -1,10 +1,9 @@
-
 function checkLoginStatus(){
     const exptime = getCookie("usercookieexpiry");
     var url = window.location.pathname;
     var file = url.substring(url.lastIndexOf("/")+1);
+    console.log(file);
     if (exptime){
-        console.log("if")
         if(file === "index.html"){
             window.location.href = "home.html";
         }
@@ -22,11 +21,6 @@ function checkLoginStatus(){
 }
 
 checkLoginStatus();
-
-
-
-
-
 
 function getCookie(cookieName) {
     var name = cookieName + "=";

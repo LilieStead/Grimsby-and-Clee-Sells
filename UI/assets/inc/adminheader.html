@@ -1,0 +1,187 @@
+<div id="mySidenav" class="sidenav">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()"><i class="fa fa-times-circle" aria-hidden="true"></i></a>
+    <a href="home.html">Home</a>
+    <a href="#">search users</a>
+    <a href="#">Search Products</a>
+    <a href="#">Accessability settings</a>
+    <a href="#">Change account details</a>
+    <a id="logout" >Logout</a>
+  </div>
+
+
+<h1 id="title">Grimsby & Clee Sells</h1>
+<div class="flexcontainer" id="headercontent">
+    <div class="flexcontainer" onclick="openNav()">
+      <h1><i class="fa fa-bars" aria-hidden="true"></i> <i class="fa fa-user" aria-hidden="true"></i><span id="username" ></span></h1>
+    </div>
+</div>
+<form action="" class="centercontents">
+    <input type="search" name="search" id="search" placeholder="Search Product">
+</form>
+
+
+
+
+
+
+<style>
+
+    header{
+        background-color: #0471A6;
+        padding-bottom: 1.2rem;
+        position: absolute;
+        z-index: 5;
+    }
+
+    header #title{
+        color: #FAF9F6;
+        font-family: titlefnt;
+        font-size: 3rem;
+        text-align: center;
+        flex-wrap: wrap;
+    }
+
+    header #headercontent{
+        justify-content: flex-start;
+
+        
+    }
+
+    header #headercontent div h1 span{
+      font-family: mainfnt;
+      font-size: 1.8rem;
+
+    }
+
+    header #headercontent div h1 {
+      font-size: 1.8rem;
+
+    }
+
+    header #headercontent div h1 i{
+      padding-right: 0.5rem; 
+    }
+
+    header #headercontent div h1 .fa-bars{
+      padding-left: 0.5rem;
+    }
+
+    header form{
+        min-width: 100vw;
+        max-width: 100vw;
+        
+    }
+
+    header form input[type=search]{
+    min-width: 70%;
+    width: 90%;
+    padding: 10px;
+    border: 1px solid #E8E9F3;
+    border-radius: 4px;
+    resize: vertical;
+    }
+
+    header nav a {
+      font-family: mainfnt;
+      font-size: 1.5rem;
+      color: #f1f1f1;
+    }
+
+    header nav  {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem 2rem;
+    }
+
+    header div{
+      padding-right: 5rem;
+      font-family: mainfnt;
+      color: #f1f1f1;
+    }
+
+
+    @media screen and (max-width: 380px) {
+      header nav{
+        flex-direction: column;
+      }
+      header div{
+        padding: 0 0 0 0;
+      }
+    }
+
+
+
+
+    /* Side menu */
+  .sidenav {
+    height: 100%;
+    max-width: 40vw;
+    min-width: 40vw;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #a5a5a5;
+    opacity: 1;
+    background-color: #0471A6;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 200 200'%3E%3Cdefs%3E%3ClinearGradient id='a' gradientUnits='userSpaceOnUse' x1='100' y1='33' x2='100' y2='-3'%3E%3Cstop offset='0' stop-color='%23000' stop-opacity='0'/%3E%3Cstop offset='1' stop-color='%23000' stop-opacity='1'/%3E%3C/linearGradient%3E%3ClinearGradient id='b' gradientUnits='userSpaceOnUse' x1='100' y1='135' x2='100' y2='97'%3E%3Cstop offset='0' stop-color='%23000' stop-opacity='0'/%3E%3Cstop offset='1' stop-color='%23000' stop-opacity='1'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cg fill='%23006094' fill-opacity='0.6'%3E%3Crect x='100' width='100' height='100'/%3E%3Crect y='100' width='100' height='100'/%3E%3C/g%3E%3Cg fill-opacity='0.5'%3E%3Cpolygon fill='url(%23a)' points='100 30 0 0 200 0'/%3E%3Cpolygon fill='url(%23b)' points='100 100 0 130 0 100 200 100 200 130'/%3E%3C/g%3E%3C/svg%3E");
+    opacity: 1;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
+    display: none;
+
+  }
+  
+  .sidenav a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    display: block;
+    transition: 0.3s;
+    font-family: titlefnt;
+    font-size: 2.2rem;
+    
+  }
+  
+  .sidenav a:hover {
+    color: #f1f1f1;
+    transition: 0.3s;
+  }
+
+  .fa-times-circle:hover{
+    color: rgb(156, 8, 8);
+    transition: 0.3s;
+  }
+  
+  .sidenav .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+  }
+  
+
+
+  /* side menu */
+
+
+</style>
+
+<script>
+
+function openNav() {
+  document.getElementById("mySidenav").style.display = "block";
+}
+
+function closeNav() {
+  document.getElementById("mySidenav").style.display = "none";
+}
+
+
+</script>
+
+
+<script src="assets/js/adminnavbar.js"></script>
