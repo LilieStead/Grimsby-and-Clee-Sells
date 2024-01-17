@@ -8,6 +8,7 @@ using System.Text.RegularExpressions;
 using System.Text;
 using System.Drawing.Imaging;
 using System.Drawing;
+using System.Linq;
 
 namespace Grimsby_and_Clee_Sells.Controllers
 {
@@ -249,6 +250,24 @@ namespace Grimsby_and_Clee_Sells.Controllers
                 return NotFound();
             }
             return Ok(ProductDM);
+        }
+
+        [HttpPut]
+        [Route("/ChangeProductStatus/{id:int}")]
+        public IActionResult UpdateProductStatus([FromRoute] int id, [FromForm] UpdateProductStatusDTO updateProductStatusDTO) 
+        {
+            var validproduct = _ProductRepository.GetProductById(id);
+            if (validproduct == null)
+            {
+                return NotFound(new { Message = "Product does not exist" });
+            }
+            var validstatus = _ProductRepository.ValidateStatus(updateProductStatusDTO.product_status);
+            if (validstatus == null)
+            {
+                return NotFound(new { Message = "Status does not exist" });
+            }
+            var productDM = _ProductRepository.UpdateStatus(id, updateProductStatusDTO);
+            return Ok(productDM);
         }
     }
 

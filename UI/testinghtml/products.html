@@ -15,7 +15,9 @@
             <div class="usersproductinfo">
                 <h1>Product title </h1>
                 <h2><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i></h2>
-                <h1 class="info">Status</h1>
+                <div class="statusoptions">
+                    <h1><a href="#">Approve</a></h1> <h1><a href="#">Rejected</a></h1>
+                </div>
                 <h1 class="info">Category name || $10.32</h1>
                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi praesentium saepe asperiores maxime 
                     quasi. Porro officia voluptatum omnis vitae labore quis? Non enim eum culpa totam deserunt ratione corrupti. Asperiores.</p>
@@ -119,8 +121,31 @@
         flex-direction: column-reverse;
         align-content: center;
     }
+    .usersproductinfo .statusoptions h1{
+        margin: 1rem 0;
+    }
+}
+/* NEW */ 
+.statusoptions{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    flex-shrink: 1;
 }
 
+.usersproductinfo .statusoptions h1{
+    margin-right: 1rem;
+    background-color: #292F36;
+    padding: 5px;
+    border-radius: 2.5px;
+    font-size: 1.5rem;
+}
+
+.usersproductinfo .statusoptions a{
+    color: #fff;
+    text-decoration: none;
+}
+/* NEW */
 @font-face {
     font-family: titlefnt;
     src: url(HappyUniversary.otf)

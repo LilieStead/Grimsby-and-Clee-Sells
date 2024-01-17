@@ -157,6 +157,11 @@ body{
     overflow-x: hidden;
     /* min-height: 100vh; */
 }
+.title{
+    text-align: center;
+    font-family: mainfnt;
+    padding-bottom: 2rem;
+}
 
 #content{
     min-height: 95vh;
@@ -217,6 +222,11 @@ textarea{
 }
 
 /* PRODUCTS */
+#usersproducts{
+    display: flex;
+    justify-content: space-around;
+    flex-direction: column;
+}
 
 .usersproduct{
     background-color: #E3E3E4;
@@ -230,6 +240,7 @@ textarea{
     margin-bottom: 3rem;
 
 }
+
 .usersproductinfo .username{
     font-size: 1.3rem;
 }
@@ -254,7 +265,6 @@ textarea{
     letter-spacing: -1px;
     word-break: break-word;
 }
-
 
 .usersproductinfo h2{
     color: #c99810;

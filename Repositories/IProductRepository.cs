@@ -22,5 +22,9 @@ namespace Grimsby_and_Clee_Sells.Repositories
         Task<Productimg> GetProductImgsThumbnailById(int id, int index);
 
         List<Product> GetProductByStatus (int status);
+
+        Product UpdateStatus (int id, UpdateProductStatusDTO updateProductStatusDTO);
+
+        Status ValidateStatus (int id);
     }
 }

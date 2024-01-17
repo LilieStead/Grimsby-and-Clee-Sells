@@ -1,6 +1,7 @@
 ﻿using Grimsby_and_Clee_Sells.Controllers;
 using Grimsby_and_Clee_Sells.Data;
 using Grimsby_and_Clee_Sells.Models.Domain;
+using Grimsby_and_Clee_Sells.Models.DTOs;
 using Microsoft.EntityFrameworkCore;
 
 namespace Grimsby_and_Clee_Sells.Repositories
@@ -84,6 +85,20 @@ namespace Grimsby_and_Clee_Sells.Repositories
         public List<Product> GetProductByStatus(int status)
         {
             return _context.Tbl_Product.Include(p => p.Status).Include(p => p.Category).Include(p => p.User).Where(p => p.product_status == status).ToList();
+        }
+
+
+        public Product UpdateStatus(int id, UpdateProductStatusDTO updateProductStatusDTO)
+        {
+            var product = _context.Tbl_Product.FirstOrDefault(p => p.product_id == id);
+            product.product_status = updateProductStatusDTO.product_status;
+            _context.SaveChanges();
+            return product;
+        }
+
+        public Status ValidateStatus(int id)
+        {
+            return _context.Tbl_Status.FirstOrDefault(p => p.status_id == id);
         }
     }
 }

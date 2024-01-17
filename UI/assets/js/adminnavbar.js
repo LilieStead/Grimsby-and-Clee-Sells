@@ -56,9 +56,9 @@ function displayAdmin(){
 
 
 function logout(){
-    const cookie = getCookie("usercookieexpiry");
+    const cookie = getCookie("admincookieexpiry");
     if(cookie){
-        fetch(`https://localhost:44394/logout`,{
+        fetch(`https://localhost:44394/AdminLogout`,{
             method:"GET",
             credentials:"include"
         })

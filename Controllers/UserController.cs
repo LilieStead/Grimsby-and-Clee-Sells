@@ -60,6 +60,7 @@ namespace Grimsby_and_Clee_Sells.Controllers
                     }
                     else
                     {
+                        Logout ();
                         return BadRequest(new
                         {
                             Message = "Cookie not found"

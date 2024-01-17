@@ -60,11 +60,13 @@ namespace Grimsby_and_Clee_Sells.Controllers
                     }
                     else
                     {
+                        Logout();
                         return BadRequest(new
                         {
                             Message = "Cookie not found"
                         });
                     }
+
 
 
                 }
@@ -181,7 +183,35 @@ namespace Grimsby_and_Clee_Sells.Controllers
                 Sessionid = sessionid
             });
 
+        }
 
+        [HttpGet]
+        [Route("/AdminLogout")]
+        public IActionResult Logout()
+        {
+            if (HttpContext.Session.TryGetValue("sessionid", out byte[] userbytes))
+            {
+                string sessionid = Encoding.UTF8.GetString(userbytes);
+                Response.Cookies.Delete("admincookie", new CookieOptions
+                {
+                    HttpOnly = true,
+                    SameSite = SameSiteMode.None,
+                    Secure = true
+                });
+                Response.Cookies.Delete("admincookieexpiry", new CookieOptions
+                {
+                    HttpOnly = false,
+                    SameSite = SameSiteMode.None,
+                    Secure = true
+                });
+                HttpContext.Session.Clear();
+                return Ok(new { Message = "user logged out" });
+            }
+
+            else
+            {
+                return BadRequest("user is not signed in");
+            }
 
         }
     }
