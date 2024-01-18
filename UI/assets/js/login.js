@@ -60,5 +60,49 @@ function login(event){
     }
 }
 
+function checkAdminLogin(){
+    const adminCookie = getCookie('admincookieexpiry');
+    console.log("Checking Admin...");
+    if (adminCookie){
+        document.removeEventListener('DOMContentLoaded', preventLoginLoop);
+        window.location.href = "adminhome.html";
+        
+    } else{
+        return;
+    }
+}
+
+function preventLoginLoop(){
+    const adminCookie = getCookie('admincookieexpiry');
+
+    if(adminCookie){
+        fetch(`https://localhost:44394/api/Admin/decodeadmin`, {
+            method: "GET",
+            credentials: "include"
+        })
+        .then(response => {
+            if (response.status === 200){
+                return response.json();
+            }
+            else{
+                console.error(response.status);
+            }
+        })
+        .then(data => {
+            checkAdminLogin();
+            document.addEventListener('DOMContentLoaded', checkAdminLogin);
+        })
+        .catch(error => {
+            return console.error(error);
+        })
+    } else{
+        console.log("Admin Not Logged In");
+    }
+    
+}
+document.addEventListener('DOMContentLoaded', preventLoginLoop);
+// preventLoginLoop();
+
+
 document.getElementById('loginform').addEventListener("submit", login);
 

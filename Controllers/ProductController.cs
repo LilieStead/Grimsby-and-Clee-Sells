@@ -244,12 +244,12 @@ namespace Grimsby_and_Clee_Sells.Controllers
         [Route("/GetProductsByStatus/{status:int}")]
         public IActionResult GetProductsByStatus([FromRoute] int status)
         {
-            var ProductDM = _ProductRepository.GetProductByStatus(status);
-            if (ProductDM.Count == 0)
+            var productDM = _ProductRepository.GetProductByStatus(status);
+            if (productDM.Count == 0)
             {
                 return NotFound();
             }
-            return Ok(ProductDM);
+            return Ok(productDM);
         }
 
         [HttpPut]
@@ -267,6 +267,7 @@ namespace Grimsby_and_Clee_Sells.Controllers
                 return NotFound(new { Message = "Status does not exist" });
             }
             var productDM = _ProductRepository.UpdateStatus(id, updateProductStatusDTO);
+            
             return Ok(productDM);
         }
     }

@@ -11,5 +11,7 @@ namespace Grimsby_and_Clee_Sells.Repositories
 
         Admin GetAdminByUsername(string username);
 
+        Task<List<User>> GetUsersBySearch(string user);
+
     }
 }

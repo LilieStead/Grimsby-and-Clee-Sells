@@ -72,13 +72,13 @@ namespace Grimsby_and_Clee_Sells.Controllers
                 }
                 else
                 {
-                    Response.Cookies.Delete("usercookie", new CookieOptions
+                    Response.Cookies.Delete("admincookie", new CookieOptions
                     {
                         HttpOnly = true,
                         SameSite = SameSiteMode.None,
                         Secure = true
                     });
-                    Response.Cookies.Delete("usercookieexpiry", new CookieOptions
+                    Response.Cookies.Delete("admincookieexpiry", new CookieOptions
                     {
                         HttpOnly = false,
                         SameSite = SameSiteMode.None,
@@ -121,6 +121,32 @@ namespace Grimsby_and_Clee_Sells.Controllers
 
         public IActionResult AdminLogin([FromRoute] string username, string password)
         {
+            Response.Cookies.Delete("usercookie", new CookieOptions
+            {
+                HttpOnly = true,
+                SameSite = SameSiteMode.None,
+                Secure = true
+            });
+            Response.Cookies.Delete("usercookieexpiry", new CookieOptions
+            {
+                HttpOnly = false,
+                SameSite = SameSiteMode.None,
+                Secure = true
+            });
+            Response.Cookies.Delete("admincookie", new CookieOptions
+            {
+                HttpOnly = true,
+                SameSite = SameSiteMode.None,
+                Secure = true
+            });
+            Response.Cookies.Delete("admincookieexpiry", new CookieOptions
+            {
+                HttpOnly = false,
+                SameSite = SameSiteMode.None,
+                Secure = true
+            });
+            
+            HttpContext.Session.Clear();
             var adminDM = _adminRepository.GetAdminByUsername(username);
             if (adminDM == null)
             {
@@ -183,6 +209,26 @@ namespace Grimsby_and_Clee_Sells.Controllers
                 Sessionid = sessionid
             });
 
+        }
+
+
+        [HttpGet]
+        [Route("/adminsearch/users")]
+        public async Task<IActionResult> GetUsersBySearch([FromQuery] string users)
+        {
+            try
+            {
+                var adminDM = await _adminRepository.GetUsersBySearch(users);
+                if (adminDM.Count == 0)
+                {
+                    return NotFound(new { Message = "No users were found with this name" });
+                }
+                return Ok(adminDM);
+            }
+            catch(Exception ex)
+            {
+                return StatusCode(500, new { Message = "An error has occurred", Error = ex.Message });
+            }
         }
 
         [HttpGet]

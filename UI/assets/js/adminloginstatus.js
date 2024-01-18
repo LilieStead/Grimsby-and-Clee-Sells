@@ -1,23 +1,20 @@
 function checkLoginStatusAdmin(){
     console.log("START")
     const exptime = getCookie("admincookieexpiry");
-    console.log(exptime)
+    const usertime = getCookie("usercookieexpiry");
     var url = window.location.pathname;
     var file = url.substring(url.lastIndexOf("/")+1);
     if (exptime){
-        console.log("if")
+        console.log("Admin exists");
         if(file === "adminlogin.html"){
             console.log("adminlogin")
             window.location.href = "adminhome.html";
-        }else{
-            if (file === "adminhome.html"){
-                console.log("inadminhome");
-            }else{
-                console.log("adminnotlogin")
-            }
-            
         }
-    }else{
+    } else if (usertime){
+        console.log("I detect a user cookie");
+        window.location.href = "home.html";
+    }
+    else{
         console.log("else");
         if (file === "adminlogin.html"){
             console.log("else if")

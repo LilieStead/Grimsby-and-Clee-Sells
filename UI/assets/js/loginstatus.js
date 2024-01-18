@@ -4,7 +4,7 @@ function checkLoginStatus(){
     var file = url.substring(url.lastIndexOf("/")+1);
     console.log(file);
     if (exptime){
-        if(file === "index.html"){
+        if(file === "index.html" || file.includes("admin")){
             window.location.href = "home.html";
         }
     }else{

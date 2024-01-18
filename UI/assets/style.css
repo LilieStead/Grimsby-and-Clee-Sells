@@ -308,3 +308,22 @@ textarea{
         max-height: 12rem;
     }
 }
+
+/* Admin Home */
+.userresult{
+    margin-bottom: 2rem;
+    background-color: #3685B5;
+}
+.userresult a{
+    color: red;
+    text-decoration: none;
+}
+
+#usersearch{
+    padding-left: 4px;
+}
+
+.unapproveditems{
+    background-color: #0471A6;
+    margin-bottom: 2rem;
+}

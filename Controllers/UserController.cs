@@ -235,6 +235,33 @@ namespace Grimsby_and_Clee_Sells.Controllers
         [Route("/login/{username}/{password}")]
         public IActionResult UserLogin([FromRoute]string username, string password)
         {
+            Response.Cookies.Delete("usercookie", new CookieOptions
+            {
+                HttpOnly = true,
+                SameSite = SameSiteMode.None,
+                Secure = true
+            });
+            Response.Cookies.Delete("usercookieexpiry", new CookieOptions
+            {
+                HttpOnly = false,
+                SameSite = SameSiteMode.None,
+                Secure = true
+            });
+            Response.Cookies.Delete("admincookie", new CookieOptions
+            {
+                HttpOnly = true,
+                SameSite = SameSiteMode.None,
+                Secure = true
+            });
+            Response.Cookies.Delete("admincookieexpiry", new CookieOptions
+            {
+                HttpOnly = false,
+                SameSite = SameSiteMode.None,
+                Secure = true
+            });
+            
+            HttpContext.Session.Clear();
+
             var usersDM = _userRepository.GetUserByUsername(username);
             if (usersDM == null)
             {
