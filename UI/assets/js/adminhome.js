@@ -2,9 +2,23 @@ const urlFile = window.location.pathname;
 var file = urlFile.substring(urlFile.lastIndexOf("/") + 1);
 if (file === "adminhome.html"){
 
-        // function getThumbnail(){
-            // Logic here 
-        //}
+    async function imageFetch(product){
+        console.log(product);
+        const images = [];
+        const response = await fetch(`https://localhost:44394/GetImgThumbnailByProductId/${product.product_id}/0`);
+        if (response.status === 204){
+            console.log("One or more images were not found");
+        }
+        const imgArray = await response.arrayBuffer();
+        let img = new Blob([imgArray], {type: "image/jpeg"});
+        let imgUrl = URL.createObjectURL(img);
+        images.push({imgUrl, product});
+
+        console.log(images)
+        return images;
+    
+    }
+    
         
         function displayUnapprovedProducts(){
             fetch(`https://localhost:44394/GetProductsByStatus/1`)
@@ -24,28 +38,50 @@ if (file === "adminhome.html"){
                 const prodDiv = document.getElementById('unapprovedlist');
                 prodDiv.innerHTML = '';
                 data.forEach(item => {
-                    // functionName(data).then(image => {
-                        console.log(item);
+                    imageFetch(item).then(image => {
+                        console.log(image);
                         prodDiv.innerHTML += `
-                        
-                        
-                        <div class="usersproduct flexcontainer">
-                            <div class="imgdiv">
-                                <img src="Screenshot 2023-12-07 170845.png" alt="">
-                            </div>
-                            <div class="usersproductinfo">
-                                <h1> ${item.product_name} </h1>
-                                <h2><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i></h2>
-                                <div class="statusoptions">
-                                    <h1><a href="#">Approve</a></h1> <h1><a href="#">Rejected</a></h1>
-                                </div>
-                                <h1 class="info">${item.category.category_name} || &pound;${item.product_price}</h1>
-                                <p>${item.product_description}</p>
-                            </div>
-                        </div>`
-                    // })
                     
+                    
+                    <div class="usersproduct flexcontainer">
+                        <div class="imgdiv">
+                            <img src="${image[0].imgUrl}" alt="">
+                        </div>
+                        <div class="usersproductinfo">
+                            <h1> ${item.product_name} </h1>
+                            <h2><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i></h2>
+                            <div class="statusoptions">
+                                <h1><a onclick ="updateStatus(${item.product_id});">Approve</a></h1> <h1><a onclick ="rejectStatus(${item.product_id});">Rejected</a></h1>
+                            </div>
+                            <h1 class="info">${item.category.category_name} || &pound;${item.product_price}</h1>
+                            <p>${item.product_description}</p>
+                        </div>
+                    </div>`
+                    })
                 })
+                // imageFetch(data).then(image => {
+                //     console.log(image);
+                //     image.forEach(item => {
+                //         console.log("for each");
+                //     })
+                    // prodDiv.innerHTML += `
+                    
+                    
+                    // <div class="usersproduct flexcontainer">
+                    //     <div class="imgdiv">
+                    //         <img src="${image}" alt="">
+                    //     </div>
+                    //     <div class="usersproductinfo">
+                    //         <h1> ${item.product_name} </h1>
+                    //         <h2><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i></h2>
+                    //         <div class="statusoptions">
+                    //             <h1><a onclick ="updateStatus(${item.product_id});">Approve</a></h1> <h1><a onclick ="rejectStatus(${item.product_id});">Rejected</a></h1>
+                    //         </div>
+                    //         <h1 class="info">${item.category.category_name} || &pound;${item.product_price}</h1>
+                    //         <p>${item.product_description}</p>
+                    //     </div>
+                    // </div>`
+                // })
             })
             .catch(error => {
                 console.error(error);
@@ -105,7 +141,6 @@ function displayUsersOnSearch(){
 
 
 
-
 document.getElementById('usersearch').addEventListener('keydown', function(event){
     if (event.key === "Enter"){
         displayUsersOnSearch();
@@ -113,12 +148,55 @@ document.getElementById('usersearch').addEventListener('keydown', function(event
 });
 }
 
+function updateStatus (item){
+    const statusId = 2;
+    const statusData = new FormData();
+    statusData.append("product_status", statusId);
+    console.log(item);
+    fetch(`https://localhost:44394/ChangeProductStatus/${item}`,{
+        method: "PUT",
+        body: statusData
+    })
+    .then(response => {
+        if (response.status === 200 || response.status === 201){
+            return response.json();
+        }else{
+            console.error(response.status);
+            customPopup("An unexpected error has occurred");
+        }
+    })
+    .then(data => {
+        console.log(statusId);
+        window.location.reload();
+    })
+    .catch(error => {
+        console.error(error);
+    })
+}
 
+function rejectStatus(item){
+    const statusId = 3;
+    const statusData = new FormData();
+    statusData.append("product_status", statusId);
+    console.log(item);
+    fetch(`https://localhost:44394/ChangeProductStatus/${item}`,{
+        method: "PUT",
+        body: statusData
+    })
+    .then(response => {
+        if (response.status === 200 || response.status === 201){
+            return response.json();
+        }else{
+            console.error(response.status)
+            customPopup("An unexpected error has occurred");
+        }
+    })
+    .then(data => {
+        console.log(statusId);
+        window.location.reload();
+    })
+    .catch(error => {
+        console.error(error);
+    })
+}
 
-// <div class="unapproveditems"><h3>Name: ${item.product_name}</h3>
-//                     <h3>Description: ${item.product_description}</h3>
-//                     <h3>Price: $${item.product_price}</h3>
-//                     <h3>Status: ${item.status.status_name}</h3>
-//                     <h3>Category: ${item.category.category_name}</h3>
-//                     <h3>User: ${item.user.users_username}</h3>
-//                     </div>

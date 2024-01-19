@@ -26,7 +26,8 @@ namespace Grimsby_and_Clee_Sells.Repositories
             return _context.Tbl_Product.Include(p => p.Status).Include(p => p.Category).Include(p => p.User).FirstOrDefault(p => p.product_id == id);
         }
 
-        public Product CreateProduct(Product product) {
+        public Product CreateProduct(Product product)
+        {
             _context.Tbl_Product.Add(product);
             _context.SaveChanges();
             return product;
@@ -49,11 +50,11 @@ namespace Grimsby_and_Clee_Sells.Repositories
                 .OrderBy(p => p.productimg_id)
                 .Skip(index)
                 .Select(p => new Productimg
-            {
-                productimg_id = p.productimg_id,
-                productimg_img = p.productimg_img,
-                productimg_productid = p.productimg_productid
-            }).FirstOrDefaultAsync();
+                {
+                    productimg_id = p.productimg_id,
+                    productimg_img = p.productimg_img,
+                    productimg_productid = p.productimg_productid
+                }).FirstOrDefaultAsync();
         }
 
         public async Task<Productimg> CreateProductImg(Productimg productimg)
@@ -100,5 +101,6 @@ namespace Grimsby_and_Clee_Sells.Repositories
         {
             return _context.Tbl_Status.FirstOrDefault(p => p.status_id == id);
         }
+
     }
 }
