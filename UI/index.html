@@ -14,15 +14,16 @@
         <div class="col-lg-5 col-md-12 col-sm-12 index">
             <h1>Login</h1>
             <form action="" id="loginform">
-                <label for="username">username</label>
+                <label for="username">username <span id="loginusernameerror" class="error"></span></label>
                 <input type="text" name="username" id="loginusername">
-                <p id="loginusernameerror" class="error"></p>
+                
 
-                <label for="password">password</label>
+                <label for="password">password <span id="loginpassworderror" class="error"></span></label>
                 <input type="password" name="password" id="loginpassword">
-                <p id="loginpassworderror" class="error"></p>
-
-                <input type="submit">
+                
+                <div class="flexcontainer">
+                    <input type="submit">
+                </div>
                 <div id="indexadminlink">
                     <a  href="adminlogin.html">Are you an admin? Click here!</a>
                 </div>
@@ -35,35 +36,33 @@
         <div class="col-lg-5 col-md-12 col-sm-12 index">
             <h1>Sign-up</h1>
             <form action="" id="signup">
-                <label for="username">username</label>
+                <label for="username">username <span id="signupusernameerror" class="error"></span></label>
                 <input type="text" name="username" id="signupusername">
-                <p id="signupusernameerror" class="error"></p>
 
-                <label for="firstname">first name</label>
+                <label for="firstname">first name <span id="firstnameerror" class="error"></span></label>
                 <input type="text" name="firstname" id="firstname">
-                <p id="firstnameerror" class="error"></p>
 
-                <label for="lastname">last name</label>
+                <label for="lastname">last name <span id="lastnameerror" class="error"></span></label>
                 <input type="text" name="lastname" id="lastname">
-                <p id="lastnameerror" class="error"></p>
 
-                <label for="dob">date of birth</label>
+                <label for="dob">date of birth <span id="doberror" class="error"></span></label>
                 <input type="date" name="dob" id="dob">
-                <p id="doberror" class="error"></p>
+                
 
-                <label for="email">email</label>
+                <label for="email">email <span id="emailerror" class="error"></span></label>
                 <input type="text" name="email" id="email">
-                <p id="emailerror" class="error"></p>
+                
 
-                <label for="phone">phone number</label>
+                <label for="phone">phone number <span id="phoneerror" class="error"></span></label>
                 <input type="number" name="phone" id="phone">
-                <p id="phoneerror" class="error"></p>
+                
 
-                <label for="password">password</label>
+                <label for="password">password <span id="passworderror" class="error"></span></label>
                 <input type="password" name="password" id="signuppassword">
-                <p id="passworderror" class="error"></p>
-
-                <input type="submit">
+                <div class="flexcontainer">
+                    <input type="submit">
+                </div>
+                
             </form>
         </div>
     </div>

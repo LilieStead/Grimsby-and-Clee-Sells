@@ -66,11 +66,11 @@ function hasspecialcharacter(password) {
         nopass = true;
         event.preventDefault();
     }else if (firstname.length < 3){
-        firstnameerror.innerHTML = ("your first name can not be smaller than three characters");
+        firstnameerror.innerHTML = ("First name must be at least three characters long");
         nopass = true;
         event.preventDefault();
     }else if (firstname.length > 20){
-        firstnameerror.innerHTML = ("you first name can not be larger than 20 characters");
+        firstnameerror.innerHTML = ("First name must not exceed 20 characters.");
         nopass = true;
         event.preventDefault();
     }else{

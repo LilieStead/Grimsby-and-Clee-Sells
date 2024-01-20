@@ -25,18 +25,20 @@ text black
 
 @font-face {
     font-family: titlefnt;
-    src: url(fnt/HappyUniversary.otf)
+    src: url(fnt/title.otf)
 }
 
 @font-face {
     font-family: mainfnt;
-    src: url(fnt/Vera.ttf);
+    src: url(fnt/main.ttf);
 }
 
 @font-face {
-    font-family: mainfnti;
-    src: url(fnt/VeraIt.ttf);
+    font-family: titlelight;
+    src: url(fnt/titlelight.otf);
 }
+
+
 
 /* all elements */
 * {
@@ -61,6 +63,29 @@ text black
     display: flex;
     flex-direction: column;
 }
+/* scroll wheel */
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    background-color: #F5F5F5;
+}
+
+::-webkit-scrollbar {
+    width: 13px;
+    background-color: #F5F5F5;
+    border: #c99810;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #D5A021;	
+    background-image: -webkit-linear-gradient(45deg,
+                                            rgba(255, 255, 255, .2) 25%,
+                                            transparent 25%,
+                                            transparent 50%,
+                                            rgba(255, 255, 255, .2) 50%,
+                                            rgba(255, 255, 255, .2) 75%,
+                                            transparent 75%,
+                                            transparent);
+}
 
 
 /* sign-up and login (index.html) */
@@ -69,12 +94,13 @@ text black
     padding-bottom: 0.1rem;
     text-align: center;
     font-family: titlefnt;
-    box-shadow: 5px 5px 7px 2px rgba(0, 0, 0, 0.1);
+    box-shadow: 13px 11px 7px 2px rgb(0 0 0 / 23%);
 }
 
 #indexheader h1{
     font-size: 3rem;
     color: #FAF9F6;
+    text-shadow: 7px 4px #00000040;
 }
 
 
@@ -98,6 +124,8 @@ text black
     border-radius: 3px;
     margin-top: 5rem;
     padding-top: 0.5rem;
+    box-shadow: 13px 11px 7px 2px rgb(0 0 0 / 37%);
+    height: min-content;
 }
 
 .index form input[type=text],.index form input[type=date],.index form input[type=password],.index form input[type=number]{
