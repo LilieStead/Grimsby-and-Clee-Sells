@@ -8,16 +8,19 @@
 </head>
 <body>
     <div class="centercontents" style="height: 100vh;">
-        <div class="usersproduct flexcontainer">
+        <div class="usersproduct">
             <div class="imgdiv">
                 <img src="Screenshot 2023-12-07 170845.png" alt="">
             </div>
             <div class="usersproductinfo">
-                <h1>Product title </h1>
-                <h2><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i></h2>
-                <div class="statusoptions">
-                    <h1><a href="#">Approve</a></h1> <h1><a href="#">Rejected</a></h1>
+                <div class="productflex">
+                    <h1>Product title</h1>
+                    <a href="#"><i class="fa fa-cart-plus" aria-hidden="true"></i></a>
                 </div>
+                
+
+                <h2><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i></h2>
+                <h3><i class="fa fa-user-o" aria-hidden="true"> </i>username</h3>
                 <h1 class="info">Category name || $10.32</h1>
                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi praesentium saepe asperiores maxime 
                     quasi. Porro officia voluptatum omnis vitae labore quis? Non enim eum culpa totam deserunt ratione corrupti. Asperiores.</p>
@@ -128,7 +131,6 @@
         margin: 1rem 0;
     }
 }
-/* NEW */ 
 .statusoptions{
     display: flex;
     flex-direction: row;
@@ -148,6 +150,28 @@
     color: #fff;
     text-decoration: none;
 }
+/* NEW */
+.usersproductinfo h3{
+    font-family: mainfnti;
+}
+
+.productflex{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
+
+.fa-cart-plus{
+    color: #292F36;
+    transition: 0.5s;
+    font-size: 2rem;
+}
+
+.fa-cart-plus:hover{
+    color: #c99810;
+    transition: 0.5s;
+}
+
 /* NEW */
 @font-face {
     font-family: titlefnt;
