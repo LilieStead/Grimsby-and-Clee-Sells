@@ -102,5 +102,12 @@ namespace Grimsby_and_Clee_Sells.Repositories
             return _context.Tbl_Status.FirstOrDefault(p => p.status_id == id);
         }
 
+        public List<Product> SearchProducts(string product_name)
+        {
+            return _context.Tbl_Product
+                .Where(p => p.product_status == 2 && p.product_name.Contains(product_name))
+                .ToList();
+        }
+
     }
 }

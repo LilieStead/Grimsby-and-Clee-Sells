@@ -1,14 +1,14 @@
 <div id="mySidenav" class="sidenav">
-    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()"><i class="fa fa-times-circle" aria-hidden="true"></i></a>
-    <a href="home.html"><i class="fa fa-home" aria-hidden="true"></i>Home</a>
-    <a href="#"><i class="fa fa-search" aria-hidden="true"></i>Search Products</a>
-    <a href="#"><i class="fa fa-shopping-basket" aria-hidden="true"></i>My Cart</a>
-    <a href="#"><i class="fa fa-truck" aria-hidden="true"></i>My Orders</a>
-    <a href="sellproduct.html"><i class="fa fa-money" aria-hidden="true"></i>Sell Product</a>
-    <a href="usersproducts.html"><i class="fa fa-archive" aria-hidden="true"></i>My Products</a>
-    <a href="#"><i class="fa fa-universal-access" aria-hidden="true"></i>Accessability settings</a>
-    <a href="#"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>Change account details</a>
-    <a id="logout" ><i class="fa fa-sign-out" aria-hidden="true"></i>Logout</a>
+    <a class="sidelink" href="javascript:void(0)" class="closebtn" onclick="closeNav()"><i class="fa fa-times-circle" aria-hidden="true"></i></a>
+    <a class="sidelink" href="home.html"><i class="fa fa-home" aria-hidden="true"></i>Home</a>
+    <a class="sidelink" href="#"><i class="fa fa-search" aria-hidden="true"></i>Search Products</a>
+    <a class="sidelink" href="#"><i class="fa fa-shopping-basket" aria-hidden="true"></i>My Cart</a>
+    <a class="sidelink" href="#"><i class="fa fa-truck" aria-hidden="true"></i>My Orders</a>
+    <a class="sidelink" href="sellproduct.html"><i class="fa fa-money" aria-hidden="true"></i>Sell Product</a>
+    <a class="sidelink" href="usersproducts.html"><i class="fa fa-archive" aria-hidden="true"></i>My Products</a>
+    <a class="sidelink" href="#"><i class="fa fa-universal-access" aria-hidden="true"></i>Accessability settings</a>
+    <a class="sidelink" href="#"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>Change account details</a>
+    <a class="sidelink" id="logout" ><i class="fa fa-sign-out" aria-hidden="true"></i>Logout</a>
   </div>
 
 
@@ -82,11 +82,19 @@
     header form input[type=search]{
     min-width: 70%;
     width: 90%;
-    padding: 10px;
-    border: 1px solid #E8E9F3;
     border-radius: 4px;
     resize: vertical;
+    padding: 12px;
+    border: 1px solid #E8E9F3;
+    border-radius: 4px;
     }
+
+    
+    header form input[type=search]:focus{
+    border: solid #D5A021;
+    outline: none;
+}
+
 
     header nav a {
       font-family: mainfnt;
@@ -121,8 +129,8 @@
     /* Side menu */
   .sidenav {
     height: 100%;
-    max-width: 40vw;
-    min-width: 40vw;
+    max-width: 60vw;
+    min-width: 45vw;
     position: fixed;
     z-index: 1;
     top: 0;
@@ -139,7 +147,7 @@
 
   }
   
-  .sidenav a {
+  .sidenav .sidelink {
     padding: 8px 8px 8px 32px;
     text-decoration: none;
     font-size: 25px;
@@ -149,25 +157,22 @@
     font-family: mainfnt;
     font-size: 1.8rem;
     transition: 0.3s;
+    cursor: pointer;
     
   }
   
-  .sidenav a:hover {
+  .sidenav .sidelink:hover {
     color: #0471A6;
     transition: 0.3s;
   }
 
-  .fa-times-circle:hover{
-    color: rgb(156, 8, 8);
-    transition: 0.3s;
-  }
-  
   .sidenav .closebtn {
     position: absolute;
-    top: 0;
-    right: 25px;
-    font-size: 36px;
-    margin-left: 50px;
+  top: 0;
+  right: 25px;
+  font-size: 36px;
+  margin-left: 50px;
+  color: rgb(156, 8, 8);
   }
   
 

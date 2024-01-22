@@ -1,9 +1,8 @@
-const loader = document.getElementById("loading");
 const userId = sessionStorage.getItem('userid');
 fetch(`https://localhost:44394/api/Product/GetProductByUserId/${userId}`)
 .then(response => {
+    
     if (!response.ok) {
-        document.getElementById('loadingcontainer').style.display
         throw new Error(`HTTP error! Status: ${response.status}`);
     }
     return response.json();
@@ -13,7 +12,6 @@ fetch(`https://localhost:44394/api/Product/GetProductByUserId/${userId}`)
 
 })
 .catch(error => {
-    loader.style.display = "none";
     console.log(error);
     return customPopup(error);
 })

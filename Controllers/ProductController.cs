@@ -270,6 +270,18 @@ namespace Grimsby_and_Clee_Sells.Controllers
             
             return Ok(productDM);
         }
+
+        [HttpGet]
+        [Route("/SearchByProductName/{product_name}")]
+        public IActionResult SearchProducts([FromRoute] string product_name)
+        {
+            var productDM = _ProductRepository.SearchProducts(product_name);
+            if (productDM.Count == 0)
+            {
+                return NotFound(new { Message = "No Products found" });
+            }
+            return Ok(productDM);
+        }
     }
 
 }
