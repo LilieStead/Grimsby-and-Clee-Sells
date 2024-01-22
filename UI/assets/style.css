@@ -211,7 +211,11 @@ footer{
 /* sell product */
 #sellproduct{
     min-width: 50vw;
-    max-width: 80vw;
+    max-width: 90vw;
+    background-color: #E3E3E4;
+    padding: 12px;
+    border-radius: 2.5px;
+    box-shadow: 13px 11px 7px 2px rgb(0 0 0 / 37%);
 }
 
 #sellproduct  input[type=text],#sellproduct  input[type=date],#sellproduct  input[type=password],#sellproduct  input[type=number], #sellproduct textarea, #sellproduct select {
@@ -224,11 +228,58 @@ footer{
     display: flex;
     justify-content: center;
 }
+#sellproduct .name{
+    min-width: 100%;
+    width: 100%;
+}
+
+#sellproduct textarea{
+    max-height: 15vh;
+}
+
+@media screen and (max-width: 1120px) {
+    #sellproduct textarea{
+        max-height: 25vh !important;
+    }
+}
+
+#sellproduct div #category, #sellproduct div #price{
+    width: 80% !important;
+    min-width: 80% !important;
+}
+
+.sellproductsection{
+    min-width: 50%;
+    max-width: 50%;
+}
 
 /* text area  */
 
 textarea{
     resize:none !important;
+
+}
+
+#sellproduct #gallery{
+    padding: 2rem 0;
+    min-height: 20vh;
+    max-width: 50%t;
+}
+
+#sellproduct #gallery img{
+    width: 13rem;
+    margin: 1rem;
+}
+
+#sellproduct input[type=submit] {
+    background-color: #D5A021;
+    border: none;
+    font-size: 1.5rem;
+    padding: 0.5rem;
+    color: #FAF9F6;
+    font-family: titlefnt;
+    border-radius: 3px;
+    min-width: 10vw;
 }
 
 /* success msg */
