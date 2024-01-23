@@ -92,3 +92,24 @@ document.getElementById("logout").addEventListener("click",logout);
 
 
 displayUser();
+
+document.getElementById('search').addEventListener('keydown', (event) => {
+    // Check if the pressed key is 'Enter'
+    if (event.key === "Enter") {
+        // Prevent the default form submission behavior
+        event.preventDefault();
+
+        // Get the value from the input field
+        var productname = event.target.value.trim();
+
+        // Check if the input is not empty before redirecting
+        if (productname) {
+            // Construct the URL for the search page with the product name as a query parameter
+            const searchpage = "searchproduct.html";
+            window.location.href = `${searchpage}?productname=${encodeURIComponent(productname)}`;
+        } else {
+            // Handle the case where the input is empty (optional)
+            console.log("Please enter a product name.");
+        }
+    }
+});

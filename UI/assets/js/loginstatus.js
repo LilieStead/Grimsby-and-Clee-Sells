@@ -5,6 +5,7 @@ function checkLoginStatus(){
     console.log(file);
     if (exptime){
         if(file === "index.html" || file.includes("admin")){
+            console.log("gone home");
             window.location.href = "home.html";
         }
     }else{
