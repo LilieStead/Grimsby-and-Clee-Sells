@@ -1,0 +1,17 @@
+BASE USERS
+
+JaneDoe
+Apassword@1
+
+JohnDooe
+Apassword@1
+
+
+EthanSmith
+Apassword@1
+-Some products have been made by this user (some waiting to be aproved, rejected and approved)
+
+ADMIN
+
+testing1
+Apassword@1
