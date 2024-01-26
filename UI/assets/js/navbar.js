@@ -12,28 +12,32 @@ function displayUser(){
             if (response.status === 200){
                 return response.json();
             }
+            // error handling 
             else if(response.status === 500){
                 return response.json().then(error => {
                     return Promise.reject(error.message);
                 })
             }
+            // error handling 
             else if(response.status === 400){
                 return response.json().then(error => {
                     return Promise.reject(error.message);
                 })
             }
+            // error handling 
             else if(response.status === 401){
                 return response.json().then(error => {
                     return Promise.reject(error.message);
                 })
             }
-            
+            // unplanned error 
             else{
                 console.error(response.status);
 
             }
 
         })
+        // creates session storage with user details
         .then(data => {
             username.innerHTML = "";
             username.innerHTML = data.username;
@@ -54,7 +58,7 @@ function displayUser(){
     }
 }
 
-
+// deletes any instance of the user in session storage 
 function logout(){
     const cookie = getCookie("usercookieexpiry");
     if(cookie){

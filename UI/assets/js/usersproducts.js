@@ -1,7 +1,7 @@
 const userId = sessionStorage.getItem('userid');
 fetch(`https://localhost:44394/api/Product/GetProductByUserId/${userId}`)
 .then(response => {
-    
+    // if response inst ok it means there is an error 
     if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
     }
@@ -9,20 +9,22 @@ fetch(`https://localhost:44394/api/Product/GetProductByUserId/${userId}`)
 })
 .then (product => imageFetch(product))
 .then(data => {
-
+    // nothing is needed in here
 })
 .catch(error => {
-    console.log(error);
+    // any errors go here
     return customPopup(error);
 })
 
 async function imageFetch(product){
+    // sets format of image stored in array
     const images = [];
     for ( let imgNumber = 0; imgNumber < 4; imgNumber++){
         product.forEach(async item => {
             const response = await fetch(`https://localhost:44394/GetImgThumbnailByProductId/${item.product_id}/${imgNumber}`);
         if (response.status === 204){
             console.log("One or more images were not found");
+            return;
         }
         const imgArray = await response.arrayBuffer();
         let img = new Blob([imgArray], {type: "image/jpeg"});
@@ -41,6 +43,7 @@ async function imageFetch(product){
 function createProduct(imgUrl, item){
     const productBody = document.querySelector('#usersproducts');
     console.log(imgUrl, item);
+    // Adds data to the page in HTML
     productBody.innerHTML+=
     `<div class="usersproduct flexcontainer">
     <div class="imgdiv">

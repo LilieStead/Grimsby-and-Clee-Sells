@@ -23,5 +23,9 @@ namespace Grimsby_and_Clee_Sells.Repositories
             _context.SaveChanges();
             return cartitem;
         }
+
+        public Cartitem SearchUserAndProduct(int userid, int  productId) {
+            return _context.Tbl_Cart.Where(p => p.cart_userid == userid && p.cart_productid == productId).FirstOrDefault();
+        }
     }
 }

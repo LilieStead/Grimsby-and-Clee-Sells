@@ -59,29 +59,6 @@ if (file === "adminhome.html"){
                     </div>`
                     })
                 })
-                // imageFetch(data).then(image => {
-                //     console.log(image);
-                //     image.forEach(item => {
-                //         console.log("for each");
-                //     })
-                    // prodDiv.innerHTML += `
-                    
-                    
-                    // <div class="usersproduct flexcontainer">
-                    //     <div class="imgdiv">
-                    //         <img src="${image}" alt="">
-                    //     </div>
-                    //     <div class="usersproductinfo">
-                    //         <h1> ${item.product_name} </h1>
-                    //         <h2><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i></h2>
-                    //         <div class="statusoptions">
-                    //             <h1><a onclick ="updateStatus(${item.product_id});">Approve</a></h1> <h1><a onclick ="rejectStatus(${item.product_id});">Rejected</a></h1>
-                    //         </div>
-                    //         <h1 class="info">${item.category.category_name} || &pound;${item.product_price}</h1>
-                    //         <p>${item.product_description}</p>
-                    //     </div>
-                    // </div>`
-                // })
             })
             .catch(error => {
                 console.error(error);

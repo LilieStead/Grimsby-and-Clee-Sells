@@ -7,5 +7,7 @@ namespace Grimsby_and_Clee_Sells.Repositories
         List<Cartitem> GetAllCartitem();
 
         Cartitem AddToCart(Cartitem cartitem);
+
+        Cartitem SearchUserAndProduct(int userid, int productId);
     }
 }

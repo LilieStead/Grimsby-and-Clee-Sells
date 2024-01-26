@@ -1,4 +1,4 @@
-
+// used to get all the categories on the create product form
 function getCategories(){
     fetch('https://localhost:44394/getallcategory')
     .then(response => response.json())

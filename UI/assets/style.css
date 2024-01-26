@@ -426,6 +426,13 @@ textarea{
 .usersproductinfo .statusoptions a{
     color: #fff;
     text-decoration: none;
+    transition: 0.5s;
+    cursor: pointer;
+}
+
+.usersproductinfo .statusoptions a:hover{
+    color: #fff;
+    transition: 0.5s;
 }
 
 .usersproductinfo h3{
@@ -449,3 +456,49 @@ textarea{
     transition: 0.5s;
 }
 
+
+.productflex input{
+    width: 4.5rem;
+    font-size: 1.5rem;
+    font-family: mainfnt;
+    margin-left: 1.2rem;
+    padding: 12px;
+    border: 1px solid #E8E9F3;
+    border-radius: 4px;
+    resize: vertical;
+    display: flex;
+    justify-content: center;
+}
+
+.addtocart{
+    display: flex;
+}
+
+.addtocart button{
+    background-color: inherit;
+    border: none;
+    margin-left: 1rem;
+}
+
+#searchuserformdiv{
+    width: 80vw;
+    display: flex;
+    margin-left: 3REM;
+    margin-bottom: 3rem;
+    display: block;
+}
+
+#searchuserformdiv input{
+    min-width: 100%;
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #E8E9F3;
+    border-radius: 4px;
+    resize: vertical;
+    display: flex;
+    justify-content: center;
+}
+
+#searchuserformdiv label{
+    align-self: center;
+}

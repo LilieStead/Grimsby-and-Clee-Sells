@@ -1,4 +1,5 @@
 function sellproduct(event) {
+    console.log(event);
     event.preventDefault();
 
     const loader = document.getElementById("preloader");
@@ -10,16 +11,28 @@ function sellproduct(event) {
     const category = sellproductform.get("product_category");
     const price = sellproductform.get("product_price");
     const image1 = sellproductform.get("productimg_img1");
+    const image2 = sellproductform.get("productimg_img2");
 
     const nameerrorr = document.getElementById("nameerror");
     const descriptionerror = document.getElementById("descriptionerror");
     const categoryerror = document.getElementById("categoryerror");
     const priceerror = document.getElementById("priceerror");
+    const imageerror = document.getElementById("imgerror");
 
 
     let nopass = false;
-    
 
+    // gets the id of the first image
+    const newimg = document.getElementById("images1");
+    const check = newimg.files[0];
+// looks to see if the first image has been updated
+    if (!check){
+        imageerror.innerHTML = ("You need to enter an image for your product");
+        nopass = true;
+        event.preventDefault();
+    }else{
+        imageerror.innerHTML =(null);
+    }
     // name validation
     if (name == "" || name == null){
         nameerrorr.innerHTML = ("You need to enter in a name for your product");
@@ -84,8 +97,12 @@ function sellproduct(event) {
 
         const imagedata = new FormData();
         imagedata.append("productimg_img", image1);
+        imagedata.append("productimg_img", image2);
 
-        sellproductform.delete("productimg_img1")
+        sellproductform.delete("productimg_img1");
+        sellproductform.delete("productimg_img2");
+
+        // goes to the api to make the product 
 
         fetch('https://localhost:44394/CreateProduct',{
             method:"POST",
@@ -100,8 +117,10 @@ function sellproduct(event) {
                 loader.style.display = "none";
                 return response.json().then(error => {
                     return Promise.reject(error.message);''
+                    // if 404 send user a pop up with error message from the api
                 })
             }else {
+                // unexpected error  
                 loader.style.display = "none";
                 return response.json().then(error => {
                     return Promise.reject("You have run into an error. please try again later.");
@@ -117,6 +136,7 @@ function sellproduct(event) {
                 credentials: "include",
                 body: imagedata
             })
+            // if the data was send successfully 
             .then(response => {
                 if (response.status === 201 || response.status === 200 ){
                     return response.json();
@@ -126,23 +146,27 @@ function sellproduct(event) {
                     })
                     
                 }else{
+                    // if not show an error
                 return response.json().then(error => {
                     return Promise.reject("You have run into an error. please try again later.");
                 })
                 }
             })
             .then(data => {
+                // once product is made send the to page to validate 
                 window.location.href= "success.html";
             })
+            // how error
             .catch(error => {
                 console.error(error);
             })
             .finally(() => {
+                // stop loading animation 
                 loader.style.display = "none";
             })
         })
         .catch(error => {
-            
+            // 
             console.error(error);
             return customPopup(error);
         })
@@ -154,3 +178,23 @@ function sellproduct(event) {
 
 }
  document.getElementById('sellproduct').addEventListener("submit", sellproduct);
+let currentImgIndex = 1;
+// allows user to upload images
+ function handleMultipleImages(event){
+    event.preventDefault();
+    var image = document.getElementById(`images${currentImgIndex}`);
+    
+    if (currentImgIndex > 2){
+        console.error("You cannot add more than 2 images");
+        return;
+    }
+    console.log(currentImgIndex);
+
+    currentImgIndex++;
+    
+    image.click();
+    if (image.files == null){
+        currentImgIndex--;
+    }
+    
+ }

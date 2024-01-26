@@ -1,4 +1,5 @@
 function login(event){
+    // basic validation 
     event.preventDefault();
     const loader = document.getElementById("preloader");
     const loginform = new FormData(document.getElementById("loginform"));
@@ -31,6 +32,7 @@ function login(event){
     }else{
         loader.style.display = "block";
         console.log("after");
+        // API logs the admin in 
         fetch(`https://localhost:44394/adminlogin/${username}/${password}`)
         .then(response => {
             if (response.status === 200){
@@ -53,6 +55,7 @@ function login(event){
             }
         })
         .catch(error => {
+            // shows pop if error 
             loader.style.display = "none";
             return customPopup(error);
             

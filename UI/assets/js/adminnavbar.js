@@ -1,5 +1,5 @@
 
-
+// used to display all the admins details
 function displayAdmin(){
     const cookie = getCookie("admincookieexpiry");
     const username = document.getElementById("username");
@@ -12,28 +12,32 @@ function displayAdmin(){
             if (response.status === 200){
                 return response.json();
             }
+            // error handing to custom pop up 
             else if(response.status === 500){
                 return response.json().then(error => {
                     return Promise.reject(error.message);
                 })
             }
+            // error handing to custom pop up 
             else if(response.status === 400){
                 return response.json().then(error => {
                     return Promise.reject(error.message);
                 })
             }
+            // error handing to custom pop up 
             else if(response.status === 401){
                 return response.json().then(error => {
                     return Promise.reject(error.message);
                 })
             }
-            
+            // error handing to custom pop up 
             else{
                 console.error(response.status);
 
             }
 
         })
+        // sets session storage with admins details 
         .then(data => {
             username.innerHTML = "";
             username.innerHTML = data.username;
@@ -42,6 +46,7 @@ function displayAdmin(){
             sessionStorage.setItem("firstname",data.firstname);
             sessionStorage.setItem("lastname",data.lastname);
         })
+        // details admin session storage if an error is present 
         .catch(error => {
             sessionStorage.removeItem("username");
             sessionStorage.removeItem("userid");
@@ -54,7 +59,7 @@ function displayAdmin(){
     }
 }
 
-
+// gets the admins expiry cookie so the UI knows they should be logged in 
 function logout(){
     const cookie = getCookie("admincookieexpiry");
     if(cookie){

@@ -49,20 +49,22 @@ fetch(`https://localhost:44394/SearchByProductName/${productnamesearch}`)
                     <div class="usersproductinfo">
                         <div class="productflex">
                             <h1>${item.product_name}</h1>
-                            <a href="#"><i class="fa fa-cart-plus" aria-hidden="true"></i></a>
-                            <input type="number" id="" name="cart_quantity" value="1" maxlength="2">
+                            <form action="" class="addtocart">
+                                <button  onclick="addToCart(event, ${item.product_id})"><a href="#"><i class="fa fa-cart-plus" aria-hidden="true" ></i></a></button>
+                                <input type="number" name="cart_quantity" value="1" maxlength="2" minvalue="0">
+                            </form>
                         </div>
                         <h2><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i></h2>
                         <h3><i class="fa fa-user-o" aria-hidden="true"> </i>${item.user.users_username}</h3>
                         <h1 class="info">${item.category.category_name} ||  &pound;${item.product_price}</h1>
                         <p>${item.product_description}</p>
                     </div>
-                </div>
-                
+                </div>     
                 `
                 
             
         })
+        
     })
 
 })
@@ -71,5 +73,46 @@ fetch(`https://localhost:44394/SearchByProductName/${productnamesearch}`)
     return customPopup(error);
 })
 
+function addToCart(event, id) {
+    event.preventDefault();
 
-document.getElementsByName('').addEventListener
+    var formElement = event.target.closest('form');
+    var quantityInput = formElement.querySelector('input[name="cart_quantity"]');
+    var quantity = quantityInput.value;
+    
+    const userid = sessionStorage.getItem("userid");
+
+    console.log(quantity);
+
+    if (quantity <= 0){
+        customPopup("Your product must have a quantity");
+        return;
+    }
+    const formData = new FormData();
+    formData.append("cart_userid", userid);
+    formData.append("cart_productid", id);
+    formData.append("cart_quantity", quantity);
+
+    fetch(`https://localhost:44394/AddToCart/`, {
+        method: "POST",
+        body: formData,
+    })
+
+    .then(response => {
+        if (response.ok) {
+            return response.json();
+        } else {
+            customPopup("Unable to add item to cart");
+            console.error(response.status);
+            throw new Error("Error adding item to cart");
+        }
+    })
+    .then(data => {
+        customPopup("The item has been added to your cart");
+        // Additional logic after adding to cart (if needed)
+    })
+    .catch(error => {
+        console.error(error);
+        customPopup("An error occurred while adding the item to your cart");
+    });
+}

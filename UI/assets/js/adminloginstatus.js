@@ -1,3 +1,6 @@
+
+
+// looks to see if the admin should be logged in
 function checkLoginStatusAdmin(){
     console.log("START")
     const exptime = getCookie("admincookieexpiry");
@@ -27,7 +30,7 @@ function checkLoginStatusAdmin(){
 }
 
 checkLoginStatusAdmin();
-
+// validates the users cookie
 function getCookie(cookieName) {
     var name = cookieName + "=";
     var ca = document.cookie.split(';');

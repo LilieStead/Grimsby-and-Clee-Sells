@@ -60,6 +60,13 @@ namespace Grimsby_and_Clee_Sells.Controllers
                 return Conflict(new { Message = "you can not have a quantity of less than 1" });
             }
 
+            var exsits = _cartitemRepository.SearchUserAndProduct( addCartitemDTO.cart_userid ,addCartitemDTO.cart_productid);
+            if (exsits != null)
+            {
+                return Conflict(new { Message = "The product is already in your cart" });
+            }
+
+
             var cartitemDM = new Cartitem
             {
                 cart_userid = addCartitemDTO.cart_userid,

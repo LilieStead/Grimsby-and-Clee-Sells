@@ -31,16 +31,19 @@ function login(event){
     }else{
         loader.style.display = "block";
         console.log("after");
+        // send the login request to the api
         fetch(`https://localhost:44394/login/${username}/${password}`)
         .then(response => {
             if (response.status === 200){
                 return response.json();
+                // if error found then use reject to send custom pop 
             }else if(response.status === 404 || response.status === 401){
 
                 return response.json().then(error => {
                     return Promise.reject(error.message);
                 })
             }else{
+                // if error found then use reject to send custom pop 
                 return console.error(response.status);
             }
         })
@@ -59,7 +62,7 @@ function login(event){
         })
     }
 }
-
+// see if the admin has an expiry cookie
 function checkAdminLogin(){
     const adminCookie = getCookie('admincookieexpiry');
     console.log("Checking Admin...");
@@ -71,7 +74,7 @@ function checkAdminLogin(){
         return;
     }
 }
-
+// used so the users doest get stuck going from index to adminlogin 
 function preventLoginLoop(){
     const adminCookie = getCookie('admincookieexpiry');
 

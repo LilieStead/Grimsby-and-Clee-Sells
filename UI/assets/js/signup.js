@@ -196,6 +196,7 @@ function hasspecialcharacter(password) {
     }else{
         loader.style.display = "block";
         const user_dob = new Date(dob).toISOString();
+        // store all users data together into an object 
         const userData = {
 
             users_username: username,
@@ -206,7 +207,6 @@ function hasspecialcharacter(password) {
             users_dob:user_dob,
             users_password:password
         };
-
 
         fetch(`https://localhost:44394/signup`, {
         method: "POST",
@@ -231,8 +231,9 @@ function hasspecialcharacter(password) {
                 })
             }
         })
+        // once the user signs up sign them in using the same username and password
         .then(data => {
-            // const usertoken = data.token;
+            console.log(password);
             fetch(`https://localhost:44394/login/${username}/${password}`)
             .then(response => {
                 if (response.status === 200){
@@ -243,9 +244,11 @@ function hasspecialcharacter(password) {
             })
             .then (data => {
                 console.log(data);
+                // make expiry cookie for the user
                 var cookies = document.cookie.split(";");
                 var cookieexp = cookies.find(cookie=>cookie.trim().startsWith("usercookieexpiry="));
                 if (cookieexp){
+                    // send them to the home page after
                     window.location.href = "home.html";
                 }
             })

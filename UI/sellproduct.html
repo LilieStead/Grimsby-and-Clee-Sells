@@ -39,10 +39,14 @@
                 
             </div>
             <div class="flexcoloum">
+                <!-- button is used so both image inputs can be filled -->
                 <label for="images">Select up to two images:</label>
-                <input type="file" id="images1" name="productimg_img1" accept="image/*" multiple onchange="previewImage(1);">
+                <button onclick="handleMultipleImages(event);">Add Image(s)</button>
+                <input type="file" id="images1" style="display: none;" name="productimg_img1" accept="image/*" onchange="previewImage(1);">
+                <input type="file" id="images2" style="display: none;" name="productimg_img2" accept="image/*" onchange="previewImage(2);">
             </div>
             <div id="gallery" class="flexcontainer">
+                <p id="imgerror" class="error"></p>
 
             </div>
             

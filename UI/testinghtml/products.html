@@ -15,8 +15,11 @@
             <div class="usersproductinfo">
                 <div class="productflex">
                     <h1>Product title</h1>
-                    <a href="#"><i class="fa fa-cart-plus" aria-hidden="true"></i></a>
-                    <input type="number" name="cart_quantity" value="1" maxlength="2">
+                    <form action="" class="addtocart">
+                        
+                        <button><a href="#"><i class="fa fa-cart-plus" aria-hidden="true" ></i></a></button>
+                        <input type="number" name="cart_quantity" value="1" maxlength="2">
+                    </form>
                 </div>
                 
 
@@ -187,8 +190,6 @@
         src: url(Vera.ttf);
     }
 
-
-    /* new */
     .productflex input{
         width: 4.5rem;
         font-size: 1.5rem;
@@ -202,5 +203,14 @@
         justify-content: center;
     }
 
+    .addtocart{
+        display: flex;
+    }
+
+    .addtocart button{
+        background-color: inherit;
+        border: none;
+        margin-left: 1rem;
+    }
     
 </style>

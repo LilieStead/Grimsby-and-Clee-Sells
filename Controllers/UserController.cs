@@ -7,8 +7,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Net.Mail;
 using System.Text;
-
 using BCryptNet = BCrypt.Net.BCrypt;
+using System.Text.RegularExpressions;
 
 namespace Grimsby_and_Clee_Sells.Controllers
 {
@@ -162,7 +162,7 @@ namespace Grimsby_and_Clee_Sells.Controllers
                     return BadRequest();
                 }
                 // validate passowrd
-                if (!System.Text.RegularExpressions.Regex.IsMatch(UserDM.users_password, @"[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]"))
+                if (!Regex.IsMatch(UserDM.users_password, @"[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]"))
                 {
                     return BadRequest();
                 }
