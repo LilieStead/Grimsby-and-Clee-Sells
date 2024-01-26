@@ -104,7 +104,7 @@ namespace Grimsby_and_Clee_Sells.Repositories
 
         public List<Product> SearchProducts(string product_name)
         {
-            return _context.Tbl_Product
+            return _context.Tbl_Product.Include(p => p.User).Include(p => p.Category)
                 .Where(p => p.product_status == 2 && p.product_name.Contains(product_name))
                 .ToList();
         }

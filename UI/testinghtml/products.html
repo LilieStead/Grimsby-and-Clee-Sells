@@ -16,6 +16,7 @@
                 <div class="productflex">
                     <h1>Product title</h1>
                     <a href="#"><i class="fa fa-cart-plus" aria-hidden="true"></i></a>
+                    <input type="number" name="cart_quantity" value="1" maxlength="2">
                 </div>
                 
 
@@ -150,7 +151,6 @@
     color: #fff;
     text-decoration: none;
 }
-/* NEW */
 .usersproductinfo h3{
     font-family: mainfnti;
 }
@@ -172,7 +172,6 @@
     transition: 0.5s;
 }
 
-/* NEW */
 @font-face {
     font-family: titlefnt;
     src: url(HappyUniversary.otf)
@@ -189,79 +188,19 @@
     }
 
 
+    /* new */
+    .productflex input{
+        width: 4.5rem;
+        font-size: 1.5rem;
+        font-family: mainfnt;
+        margin-left: 1.2rem;
+        padding: 12px;
+        border: 1px solid #E8E9F3;
+        border-radius: 4px;
+        resize: vertical;
+        display: flex;
+        justify-content: center;
+    }
 
-
-
-#onpageloader {
-    position: fixed;
-    display:  none;
-    top: 0;
-    left: 0;
-    width: 80%;
-}
-#loader {
-    display: block;
-    position: relative;
-    left: 50%;
-    top: 50%;
-    width: 150px;
-    height: 150px;
-    margin: -75px 0 0 -75px;
-    border-radius: 50%;
-    border: 10px solid transparent;
-    border-top-color: #0471A6;
-    -webkit-animation: spin 2s linear infinite;
-    animation: spin 2s linear infinite;
-}
-#onpageloaderdiv:before {
-    content: "";
-    position: absolute;
-    top: 5px;
-    left: 5px;
-    right: 5px;
-    bottom: 5px;
-    border-radius: 50%;
-    border: 10px solid transparent;
-    border-top-color: #D5A021;
-    -webkit-animation: spin 3s linear infinite;
-    animation: spin 3s linear infinite;
-}
-#onpageloaderdiv:after {
-    content: "";
-    position: absolute;
-    top: 15px;
-    left: 15px;
-    right: 15px;
-    bottom: 15px;
-    border-radius: 50%;
-    border: 10px solid transparent;
-    border-top-color: #3685B5;
-    -webkit-animation: spin 1.5s linear infinite;
-    animation: spin 1.5s linear infinite;
-}
-@-webkit-keyframes spin {
-    0%   {
-        -webkit-transform: rotate(0deg);
-        -ms-transform: rotate(0deg);
-        transform: rotate(0deg);
-    }
-    100% {
-        -webkit-transform: rotate(360deg);
-        -ms-transform: rotate(360deg);
-        transform: rotate(360deg);
-    }
-}
-@keyframes spin {
-    0%   {
-        -webkit-transform: rotate(0deg);
-        -ms-transform: rotate(0deg);
-        transform: rotate(0deg);
-    }
-    100% {
-        -webkit-transform: rotate(360deg);
-        -ms-transform: rotate(360deg);
-        transform: rotate(360deg);
-    }
-}
     
 </style>

@@ -1,0 +1,27 @@
+﻿using Grimsby_and_Clee_Sells.Data;
+using Grimsby_and_Clee_Sells.Models.Domain;
+using Microsoft.EntityFrameworkCore;
+
+namespace Grimsby_and_Clee_Sells.Repositories
+{
+    public class SQLCartitemRepository : ICartitemRepository
+    {
+        private readonly GacsDbContext _context;
+
+        public SQLCartitemRepository(GacsDbContext context)
+        {
+            this._context = context;
+        }
+        public List<Cartitem> GetAllCartitem()
+        {
+            return _context.Tbl_Cart.Include(p => p.User).Include(p => p.product).ToList();
+        }
+
+        public Cartitem AddToCart(Cartitem cartitem)
+        {
+            _context.Tbl_Cart.Add(cartitem);
+            _context.SaveChanges();
+            return cartitem;
+        }
+    }
+}

@@ -61,6 +61,7 @@ builder.Services.AddScoped<IUserRepository,SQLUserRepository>();
 builder.Services.AddScoped<ICategoryRepository, SQLCategoryRepository>();
 builder.Services.AddScoped<IProductRepository, SQLProductRepository>();
 builder.Services.AddScoped<IAdminRepository, SQLAdminRepository>();
+builder.Services.AddScoped<ICartitemRepository, SQLCartitemRepository>();
 
 var app = builder.Build();
 

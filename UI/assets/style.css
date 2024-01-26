@@ -427,3 +427,25 @@ textarea{
     color: #fff;
     text-decoration: none;
 }
+
+.usersproductinfo h3{
+    font-family: mainfnt;
+}
+
+.productflex{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
+
+.fa-cart-plus{
+    color: #292F36;
+    transition: 0.5s;
+    font-size: 2rem;
+}
+
+.fa-cart-plus:hover{
+    color: #c99810;
+    transition: 0.5s;
+}
+
