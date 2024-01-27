@@ -30,6 +30,7 @@ namespace Grimsby_and_Clee_Sells.Controllers
         [HttpGet("/GetAllCartItems")]
         public IActionResult GetAllCartItems() 
         {
+            //doesnt need try and catch validation as it wont be used and is only for testing
             var cartitemDM = _cartitemRepository.GetAllCartitem();
             if (cartitemDM.Count == 0) 
             {
@@ -42,48 +43,65 @@ namespace Grimsby_and_Clee_Sells.Controllers
         [Route("/AddToCart")]
         public IActionResult CreateCartItem([FromForm] AddCartitemDTO addCartitemDTO)
         {
-            var userexits = _userRepository.GetUserByID(addCartitemDTO.cart_userid);
-
-            if (userexits == null)
+            try
             {
-                return Conflict(new { Message = "User not registered" });
+                //Validates that the user exits 
+                var userexits = _userRepository.GetUserByID(addCartitemDTO.cart_userid);
+
+                if (userexits == null)
+                {
+                    return Conflict(new { Message = "User not registered" });
+                }
+                //vlaidates that the product exits
+                var productexsits = _productRepository.GetProductById(addCartitemDTO.cart_productid);
+
+                if (productexsits == null)
+                {
+                    return Conflict(new { Message = "product is not a registered product" });
+                }
+                if (addCartitemDTO.cart_quantity <= 0)
+                {
+                    return Conflict(new { Message = "you can not have a quantity of less than 1" });
+                }
+
+                //validates that the product isnt already in the users cart 
+                var exsits = _cartitemRepository.SearchUserAndProduct(addCartitemDTO.cart_userid, addCartitemDTO.cart_productid);
+                if (exsits != null)
+                {
+                    return Conflict(new { Message = "The product is already in your cart" });
+                }
+
+
+                var cartitemDM = new Cartitem
+                {
+                    cart_userid = addCartitemDTO.cart_userid,
+                    cart_productid = addCartitemDTO.cart_productid,
+                    cart_quantity = addCartitemDTO.cart_quantity,
+                };
+                //validate that it isnt the users product already
+                if (productexsits.product_userid == cartitemDM.cart_userid)
+                {
+                    return Conflict(new { Message = "You can not buy your own product" });
+                }
+
+                _cartitemRepository.AddToCart(cartitemDM);
+                var cartitemDTO = new CartitemDTO
+                {
+                    cart_userid = addCartitemDTO.cart_userid,
+                    cart_productid = addCartitemDTO.cart_productid,
+                    cart_quantity = addCartitemDTO.cart_quantity,
+                    User = cartitemDM.User,
+                    product = cartitemDM.product
+                };
+                return Ok(cartitemDTO);
             }
 
-            var productexsits = _productRepository.GetProductById(addCartitemDTO.cart_productid);
-
-            if (productexsits == null)
+            catch
             {
-                return Conflict(new { Message = "product is not a registered product" });
+                //if cant connect to the database 
+                return BadRequest(new { Message = "could not connect to the server, please try again later" });
             }
-            if (addCartitemDTO.cart_quantity <= 0)
-            {
-                return Conflict(new { Message = "you can not have a quantity of less than 1" });
-            }
-
-            var exsits = _cartitemRepository.SearchUserAndProduct( addCartitemDTO.cart_userid ,addCartitemDTO.cart_productid);
-            if (exsits != null)
-            {
-                return Conflict(new { Message = "The product is already in your cart" });
-            }
-
-
-            var cartitemDM = new Cartitem
-            {
-                cart_userid = addCartitemDTO.cart_userid,
-                cart_productid = addCartitemDTO.cart_productid,
-                cart_quantity = addCartitemDTO.cart_quantity,
-            };
-
-            _cartitemRepository.AddToCart(cartitemDM);
-            var cartitemDTO = new CartitemDTO
-            {
-                cart_userid = addCartitemDTO.cart_userid,
-                cart_productid = addCartitemDTO.cart_productid,
-                cart_quantity = addCartitemDTO.cart_quantity,
-                User = cartitemDM.User,
-                product = cartitemDM.product
-            };
-            return Ok(cartitemDTO);
+            
         }
     }
     

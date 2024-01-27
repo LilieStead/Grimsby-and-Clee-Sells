@@ -483,22 +483,32 @@ textarea{
 #searchuserformdiv{
     width: 80vw;
     display: flex;
-    margin-left: 3REM;
     margin-bottom: 3rem;
-    display: block;
+    display: grid;
+    justify-content: center;
 }
 
 #searchuserformdiv input{
-    min-width: 100%;
-    width: 100%;
+    min-width: 70vw;
+    width: 70vw;
     padding: 12px;
     border: 1px solid #E8E9F3;
     border-radius: 4px;
     resize: vertical;
     display: flex;
     justify-content: center;
+
 }
 
 #searchuserformdiv label{
     align-self: center;
+}
+
+.details{
+    text-decoration: underline;
+}
+
+#userresultdiv{
+    display: flex;
+    justify-content: center;
 }

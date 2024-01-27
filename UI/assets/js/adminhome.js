@@ -99,12 +99,18 @@ function displayUsersOnSearch(){
     
                 console.log(user);
                 // Add to <a> tag's href: ${user.users_id} after creating the page
-                resultDiv.innerHTML += `<div class="userresult"><h3>Name: ${user.users_firstname} ${user.users_lastname}</h3>
-                <h3><a href='#'>Username: ${user.users_username}</a></h3>
-                <h3>Email: ${user.users_email}</h3>
-                <h3>DOB: ${formattedDate}</h3>
-                <h3>Phone Number: ${user.users_phone}</h3>
-                </div>`
+                resultDiv.innerHTML += `
+                <div class="usersproduct">
+            <div class="usersproductinfo">
+                <h1> <i class="fa fa-user" aria-hidden="true"> </i>${user.users_username}</h1>
+                    <h5>first name: <span class="details">${user.users_firstname}</span></h5>
+                    <h5>last name: <span class="details">${user.users_lastname}</span></h5>
+                    <h5>email: <span class="details">${user.users_email}</span></h5>
+                    <h5>phone number: <span class="details"> ${user.users_phone}</span></h5>
+                    <h5>Date of birth: <span class="details"> ${formattedDate}</span></h5>
+                </div>
+            </div>
+        </div>`
             })
         }
     })
