@@ -106,13 +106,22 @@ namespace Grimsby_and_Clee_Sells.Controllers
         // to get all users
         [HttpGet]
         [Route("/getallusers")]
-        public IActionResult Get() { 
-            var UserDM = _userRepository.GetAllUsers();
-            if (UserDM.Count == 0)
+        public IActionResult Get()
+        {
+            try
             {
-                return NotFound();
+                var UserDM = _userRepository.GetAllUsers();
+                if (UserDM.Count == 0)
+                {
+                    return NotFound();
+                }
+                return Ok(UserDM);
             }
-            return Ok(UserDM);
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = "Could not connect to database", error = ex.Message });
+            }
+
         }
 
 
@@ -122,12 +131,20 @@ namespace Grimsby_and_Clee_Sells.Controllers
         [Route("/getuserbyid/{id:int}")]
         public IActionResult GetUserByID([FromRoute]int id)
         {
-            var UserDM = _userRepository.GetUserByID(id);
-            if (UserDM == null)
+            try
             {
-                return NotFound();
+                var UserDM = _userRepository.GetUserByID(id);
+                if (UserDM == null)
+                {
+                    return NotFound();
+                }
+                return Ok(UserDM);
             }
-            return Ok(UserDM);
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = "Could not connect to database", error = ex.Message });
+            }
+
         }
 
 
@@ -136,98 +153,106 @@ namespace Grimsby_and_Clee_Sells.Controllers
         [Route("/signup")]
         public IActionResult UserSignUp([FromBody] CreateUserDTO createUserDTO) 
         {
-            if (ModelState.IsValid)
+            try
             {
-                var UserDM = new User
+                if (ModelState.IsValid)
                 {
-                    users_username = createUserDTO.users_username,
-                    users_firstname = createUserDTO.users_firstname,
-                    users_lastname = createUserDTO.users_lastname,
-                    users_email = createUserDTO.users_email,
-                    users_phone = createUserDTO.users_phone,
-                    users_dob = createUserDTO.users_dob,
-                    users_password = createUserDTO.users_password,
-
-                };
-
-                // validate format of phone number 
-                if (!System.Text.RegularExpressions.Regex.IsMatch(UserDM.users_phone, @"^07\d{9}$"))
-                {
-                    return BadRequest();
-                }
-
-                // validate format of email
-                if (!System.Text.RegularExpressions.Regex.IsMatch(UserDM.users_email, @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"))
-                {
-                    return BadRequest();
-                }
-                // validate passowrd
-                if (!Regex.IsMatch(UserDM.users_password, @"[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]"))
-                {
-                    return BadRequest();
-                }
-
-                // validate age
-                var minimumage = DateTime.Now.AddYears(-18);
-                if (UserDM.users_dob > minimumage)
-                {
-                    return BadRequest();
-                }
-
-                // hash password
-                string passwordhash = BCryptNet.EnhancedHashPassword(UserDM.users_password);
-                UserDM.users_password = passwordhash;
-
-
-                //validation for information that already exists
-
-                var usernameexists = _userRepository.GetAllUsers().Where(x => x.users_username == UserDM.users_username);
-                var useremailexists = _userRepository.GetAllUsers().Where(x => x.users_email == UserDM.users_email);
-                var userphoneexists = _userRepository.GetAllUsers().Where(x => x.users_phone == UserDM.users_phone);
-
-                foreach ( var Users in usernameexists )
-                {
-                    if (Users != null )
+                    var UserDM = new User
                     {
-                        return Conflict(new { Message = "Username has been taken."});
-                    }
-                }
+                        users_username = createUserDTO.users_username,
+                        users_firstname = createUserDTO.users_firstname,
+                        users_lastname = createUserDTO.users_lastname,
+                        users_email = createUserDTO.users_email,
+                        users_phone = createUserDTO.users_phone,
+                        users_dob = createUserDTO.users_dob,
+                        users_password = createUserDTO.users_password,
 
-                foreach ( var Phone in userphoneexists)
-                {
-                    if (Phone != null)
+                    };
+
+                    // validate format of phone number 
+                    if (!System.Text.RegularExpressions.Regex.IsMatch(UserDM.users_phone, @"^07\d{9}$"))
                     {
-                        return Conflict(new { Message = "Phone number is already in use." });
+                        return BadRequest();
                     }
-                }
 
-                foreach (var Email in useremailexists)
-                {
-                    if (Email != null)
+                    // validate format of email
+                    if (!System.Text.RegularExpressions.Regex.IsMatch(UserDM.users_email, @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"))
                     {
-                        return Conflict(new { Message = "Email Adress is already in use." });
+                        return BadRequest();
                     }
+                    // validate passowrd
+                    if (!Regex.IsMatch(UserDM.users_password, @"[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]"))
+                    {
+                        return BadRequest();
+                    }
+
+                    // validate age
+                    var minimumage = DateTime.Now.AddYears(-18);
+                    if (UserDM.users_dob > minimumage)
+                    {
+                        return BadRequest();
+                    }
+
+                    // hash password
+                    string passwordhash = BCryptNet.EnhancedHashPassword(UserDM.users_password);
+                    UserDM.users_password = passwordhash;
+
+
+                    //validation for information that already exists
+
+                    var usernameexists = _userRepository.GetAllUsers().Where(x => x.users_username == UserDM.users_username);
+                    var useremailexists = _userRepository.GetAllUsers().Where(x => x.users_email == UserDM.users_email);
+                    var userphoneexists = _userRepository.GetAllUsers().Where(x => x.users_phone == UserDM.users_phone);
+
+                    foreach (var Users in usernameexists)
+                    {
+                        if (Users != null)
+                        {
+                            return Conflict(new { Message = "Username has been taken." });
+                        }
+                    }
+
+                    foreach (var Phone in userphoneexists)
+                    {
+                        if (Phone != null)
+                        {
+                            return Conflict(new { Message = "Phone number is already in use." });
+                        }
+                    }
+
+                    foreach (var Email in useremailexists)
+                    {
+                        if (Email != null)
+                        {
+                            return Conflict(new { Message = "Email Adress is already in use." });
+                        }
+                    }
+                    _userRepository.UserSignUp(UserDM);
+                    var CreateUsersDTO = new UserDTO
+                    {
+                        users_username = UserDM.users_username,
+                        users_firstname = UserDM.users_firstname,
+                        users_lastname = UserDM.users_lastname,
+                        users_email = UserDM.users_email,
+                        users_phone = UserDM.users_phone,
+                        users_dob = UserDM.users_dob,
+                        users_password = UserDM.users_password,
+                    };
+
+
+                    return CreatedAtAction("GetUserByID", new { id = CreateUsersDTO.users_id }, CreateUsersDTO);
+
                 }
-                _userRepository.UserSignUp(UserDM);
-                var CreateUsersDTO = new UserDTO
+                else
                 {
-                    users_username = UserDM.users_username,
-                    users_firstname = UserDM.users_firstname,
-                    users_lastname = UserDM.users_lastname,
-                    users_email = UserDM.users_email,
-                    users_phone = UserDM.users_phone,
-                    users_dob = UserDM.users_dob,
-                    users_password = UserDM.users_password,
-                };
-
-
-                return CreatedAtAction("GetUserByID", new {id = CreateUsersDTO.users_id}, CreateUsersDTO);
-
+                    return BadRequest();
+                }
             }
-            else
+            catch (Exception ex)
             {
-                return BadRequest();
+                return BadRequest(new { Message = "Could not connect to database", error = ex.Message });
             }
+
         }
 
 
@@ -235,105 +260,8 @@ namespace Grimsby_and_Clee_Sells.Controllers
         [Route("/login/{username}/{password}")]
         public IActionResult UserLogin([FromRoute]string username, string password)
         {
-            Response.Cookies.Delete("usercookie", new CookieOptions
+            try
             {
-                HttpOnly = true,
-                SameSite = SameSiteMode.None,
-                Secure = true
-            });
-            Response.Cookies.Delete("usercookieexpiry", new CookieOptions
-            {
-                HttpOnly = false,
-                SameSite = SameSiteMode.None,
-                Secure = true
-            });
-            Response.Cookies.Delete("admincookie", new CookieOptions
-            {
-                HttpOnly = true,
-                SameSite = SameSiteMode.None,
-                Secure = true
-            });
-            Response.Cookies.Delete("admincookieexpiry", new CookieOptions
-            {
-                HttpOnly = false,
-                SameSite = SameSiteMode.None,
-                Secure = true
-            });
-            
-            HttpContext.Session.Clear();
-
-            var usersDM = _userRepository.GetUserByUsername(username);
-            if (usersDM == null)
-            {
-                return NotFound(new { Message = "user does not exist" });
-            }
-
-            bool verifyPass = BCryptNet.EnhancedVerify(password, usersDM.users_password);
-            if (!verifyPass)
-            {
-                return Unauthorized(new { Message = "password is incorrect" });
-            }
-
-            var secret = new SecretKeyGen();
-            var jwtgen = new JWTGen(secret);
-
-            string jwttoken = jwtgen.Generate(usersDM.users_id.ToString(), usersDM.users_username.ToString(), usersDM.users_firstname.ToString(), usersDM.users_lastname.ToString());
-
-            var exptime = DateTime.Now.AddDays(5);
-
-            Response.Cookies.Append("usercookie", jwttoken, new CookieOptions
-            {
-                HttpOnly = true,
-                SameSite = SameSiteMode.None,
-                Secure = true,
-                Expires = exptime
-            });
-
-            Response.Cookies.Append("usercookieexpiry", exptime.ToString("R"), new CookieOptions
-            {
-                HttpOnly= false,
-                SameSite= SameSiteMode.None,
-                Secure = true,
-                Expires = exptime
-            });
-
-            byte[] sessionidbytes = new byte[16];
-            using (var rng = new System.Security.Cryptography.RNGCryptoServiceProvider())
-            {
-                rng.GetBytes(sessionidbytes);
-            };
-
-            string sessionid = BitConverter.ToString(sessionidbytes).Replace("-", "");
-
-            HttpContext.Session.SetString("sessionid", sessionid);
-
-            var usersDTO = new UserDTO
-            {
-                users_id = usersDM.users_id,
-                users_username = usersDM.users_username,
-                users_firstname = usersDM.users_firstname,
-                users_lastname = usersDM.users_lastname,
-                users_email = usersDM.users_email,
-                users_phone = usersDM.users_phone,
-                users_dob = usersDM.users_dob,
-                users_password = usersDM.users_password,
-            };
-
-            return Ok(new
-            {
-                Token = jwttoken,
-                user = usersDTO,
-                Sessionid = sessionid
-            });
-        }
-
-        [HttpGet]
-        [Route("/Logout")]
-        public IActionResult Logout() 
-        {
-            if (HttpContext.Session.TryGetValue("sessionid", out byte[] userbytes))
-            {
-                string sessionid = Encoding.UTF8.GetString(userbytes);
                 Response.Cookies.Delete("usercookie", new CookieOptions
                 {
                     HttpOnly = true,
@@ -346,14 +274,127 @@ namespace Grimsby_and_Clee_Sells.Controllers
                     SameSite = SameSiteMode.None,
                     Secure = true
                 });
+                Response.Cookies.Delete("admincookie", new CookieOptions
+                {
+                    HttpOnly = true,
+                    SameSite = SameSiteMode.None,
+                    Secure = true
+                });
+                Response.Cookies.Delete("admincookieexpiry", new CookieOptions
+                {
+                    HttpOnly = false,
+                    SameSite = SameSiteMode.None,
+                    Secure = true
+                });
+
                 HttpContext.Session.Clear();
-                return Ok(new { Message = "user logged out" });
+
+                var usersDM = _userRepository.GetUserByUsername(username);
+                if (usersDM == null)
+                {
+                    return NotFound(new { Message = "user does not exist" });
+                }
+
+                bool verifyPass = BCryptNet.EnhancedVerify(password, usersDM.users_password);
+                if (!verifyPass)
+                {
+                    return Unauthorized(new { Message = "password is incorrect" });
+                }
+
+                var secret = new SecretKeyGen();
+                var jwtgen = new JWTGen(secret);
+
+                string jwttoken = jwtgen.Generate(usersDM.users_id.ToString(), usersDM.users_username.ToString(), usersDM.users_firstname.ToString(), usersDM.users_lastname.ToString());
+
+                var exptime = DateTime.Now.AddDays(5);
+
+                Response.Cookies.Append("usercookie", jwttoken, new CookieOptions
+                {
+                    HttpOnly = true,
+                    SameSite = SameSiteMode.None,
+                    Secure = true,
+                    Expires = exptime
+                });
+
+                Response.Cookies.Append("usercookieexpiry", exptime.ToString("R"), new CookieOptions
+                {
+                    HttpOnly = false,
+                    SameSite = SameSiteMode.None,
+                    Secure = true,
+                    Expires = exptime
+                });
+
+                byte[] sessionidbytes = new byte[16];
+                using (var rng = new System.Security.Cryptography.RNGCryptoServiceProvider())
+                {
+                    rng.GetBytes(sessionidbytes);
+                };
+
+                string sessionid = BitConverter.ToString(sessionidbytes).Replace("-", "");
+
+                HttpContext.Session.SetString("sessionid", sessionid);
+
+                var usersDTO = new UserDTO
+                {
+                    users_id = usersDM.users_id,
+                    users_username = usersDM.users_username,
+                    users_firstname = usersDM.users_firstname,
+                    users_lastname = usersDM.users_lastname,
+                    users_email = usersDM.users_email,
+                    users_phone = usersDM.users_phone,
+                    users_dob = usersDM.users_dob,
+                    users_password = usersDM.users_password,
+                };
+
+                return Ok(new
+                {
+                    Token = jwttoken,
+                    user = usersDTO,
+                    Sessionid = sessionid
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = "Could not connect to database", error = ex.Message });
             }
 
-            else
+        }
+
+        [HttpGet]
+        [Route("/Logout")]
+        public IActionResult Logout() 
+        {
+            try
             {
-                return BadRequest("user is not signed in");
+                if (HttpContext.Session.TryGetValue("sessionid", out byte[] userbytes))
+                {
+                    string sessionid = Encoding.UTF8.GetString(userbytes);
+                    Response.Cookies.Delete("usercookie", new CookieOptions
+                    {
+                        HttpOnly = true,
+                        SameSite = SameSiteMode.None,
+                        Secure = true
+                    });
+                    Response.Cookies.Delete("usercookieexpiry", new CookieOptions
+                    {
+                        HttpOnly = false,
+                        SameSite = SameSiteMode.None,
+                        Secure = true
+                    });
+                    HttpContext.Session.Clear();
+                    return Ok(new { Message = "user logged out" });
+                }
+
+                else
+                {
+                    return BadRequest("user is not signed in");
+                }
             }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = "Could not connect to database", error = ex.Message });
+            }
+
 
         }
     }

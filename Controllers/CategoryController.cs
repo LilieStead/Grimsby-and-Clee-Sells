@@ -24,12 +24,20 @@ namespace Grimsby_and_Clee_Sells.Controllers
         [HttpGet ("getallcategory")]
         public IActionResult GetCategories() 
         {
-            var CategoryDM = _categoryRepository.GetAllCategory();
-            if (CategoryDM  == null)
+            try
             {
-                return NotFound();
+                var CategoryDM = _categoryRepository.GetAllCategory();
+                if (CategoryDM == null)
+                {
+                    return NotFound();
+                }
+                return Ok(CategoryDM);
             }
-            return Ok(CategoryDM);
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = "Could not connect to database", error = ex.Message });
+            }
+
         }
     }
 }

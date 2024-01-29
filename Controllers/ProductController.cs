@@ -43,81 +43,97 @@ namespace Grimsby_and_Clee_Sells.Controllers
         [Route("/CreateProduct")]
         public IActionResult CreateProduct([FromForm] CreateProductDTO createProductDTO)
         {
-            int status = 1;
-
-
-            if (ModelState.IsValid)
+            try
             {
-                var ProductDM = new Product
-                {
-                    product_name = createProductDTO.product_name,
-                    product_description = createProductDTO.product_description,
-                    product_category = createProductDTO.product_category,
-                    product_userid = createProductDTO.product_userid,
-                    product_status = status,
-                    product_price = createProductDTO.product_price,
-                };
+                int status = 1;
 
-                var userexits = _UserRepository.GetAllUsers().Where(x => x.users_id == ProductDM.product_userid);
 
-                if (!userexits.Any())
+                if (ModelState.IsValid)
                 {
-                    return Conflict(new { Message = "User not registered" });
+                    var ProductDM = new Product
+                    {
+                        product_name = createProductDTO.product_name,
+                        product_description = createProductDTO.product_description,
+                        product_category = createProductDTO.product_category,
+                        product_userid = createProductDTO.product_userid,
+                        product_status = status,
+                        product_price = createProductDTO.product_price,
+                    };
+
+                    var userexits = _UserRepository.GetAllUsers().Where(x => x.users_id == ProductDM.product_userid);
+
+                    if (!userexits.Any())
+                    {
+                        return Conflict(new { Message = "User not registered" });
+                    }
+
+                    var catgoryexsits = _CategoryRepository.GetAllCategory().Where(x => x.category_id == ProductDM.product_category);
+
+                    if (!catgoryexsits.Any())
+                    {
+                        return Conflict(new { Message = "category does not exisit" });
+                    }
+
+
+
+
+                    const string priceformate = @"^\d+(\.\d{1,2})?$";
+
+                    string test = ProductDM.product_price.ToString();
+
+                    if (!System.Text.RegularExpressions.Regex.IsMatch(test, priceformate))
+                    {
+                        return BadRequest();
+                    }
+
+
+                    _ProductRepository.CreateProduct(ProductDM);
+                    var CreateProductDTO = new ProductDTO
+                    {
+                        product_id = ProductDM.product_id,
+                        product_name = ProductDM.product_name,
+                        product_description = ProductDM.product_description,
+                        product_category = ProductDM.product_category,
+                        product_userid = ProductDM.product_userid,
+                        product_status = ProductDM.product_status,
+                        product_price = ProductDM.product_price,
+                    };
+
+                    return CreatedAtAction("GetProductById", new { id = CreateProductDTO.product_id }, CreateProductDTO);
+
                 }
-
-                var catgoryexsits = _CategoryRepository.GetAllCategory().Where(x => x.category_id == ProductDM.product_category);
-
-                if (!catgoryexsits.Any())
-                {
-                    return Conflict(new { Message = "category does not exisit" });
-                }
-
-
-
-
-                const string priceformate = @"^\d+(\.\d{1,2})?$";
-
-                string test = ProductDM.product_price.ToString();
-
-                if (!System.Text.RegularExpressions.Regex.IsMatch(test, priceformate))
+                else
                 {
                     return BadRequest();
                 }
-
-
-                _ProductRepository.CreateProduct(ProductDM);
-                var CreateProductDTO = new ProductDTO
-                {
-                    product_id = ProductDM.product_id,
-                    product_name = ProductDM.product_name,
-                    product_description = ProductDM.product_description,
-                    product_category = ProductDM.product_category,
-                    product_userid = ProductDM.product_userid,
-                    product_status = ProductDM.product_status,
-                    product_price = ProductDM.product_price,
-                };
-
-                return CreatedAtAction("GetProductById", new { id = CreateProductDTO.product_id }, CreateProductDTO);
-
             }
-            else
+            catch (Exception ex)
             {
-                return BadRequest();
+                return BadRequest(new { Message = "Could not connect to database", error = ex.Message });
             }
+
         }
 
         [HttpGet]
         [Route("/getproductbyid/{id:int}")]
         public IActionResult GetProductById([FromRoute] int id)
         {
-            var ProductDM = _ProductRepository.GetProductById(id);
-
-            if (ProductDM == null)
+            try
             {
-                return NotFound();
+                var ProductDM = _ProductRepository.GetProductById(id);
+
+                if (ProductDM == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(ProductDM);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = "Could not connect to database", error = ex.Message });
             }
 
-            return Ok(ProductDM);
         }
 
 
@@ -125,36 +141,44 @@ namespace Grimsby_and_Clee_Sells.Controllers
         [Route("/createproductimg")]
         public async Task<IActionResult> CreateProductImg([FromForm]CreateProductimgDTO createProductimgDTO)
         {
-            List<productimgDTO> productimgDTOs = new List<productimgDTO>();
-            foreach(var img in createProductimgDTO.productimg_img)
+            try
             {
-                var ProductDM = new Productimg
+                List<productimgDTO> productimgDTOs = new List<productimgDTO>();
+                foreach (var img in createProductimgDTO.productimg_img)
                 {
-                    productimg_img = await ConvetImgToByte(img),
-                    productimg_productid = createProductimgDTO.productimg_productid
-                };
-                if (ProductDM == null)
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    var stream = img.OpenReadStream();
-                    var thumbnail = CreateThumbnail(660, 500, stream);
-                    ProductDM.productimg_thumbnail = thumbnail;
-                    await _ProductRepository.CreateProductImg(ProductDM);
-                    var productDTO = new productimgDTO
+                    var ProductDM = new Productimg
                     {
-                        productimg_id = ProductDM.productimg_id,
-                        productimg_img = ProductDM.productimg_img,
-                        productimg_productid = ProductDM.productimg_productid,
-                        productimg_thumbnail = ProductDM.productimg_thumbnail
+                        productimg_img = await ConvetImgToByte(img),
+                        productimg_productid = createProductimgDTO.productimg_productid
                     };
+                    if (ProductDM == null)
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        var stream = img.OpenReadStream();
+                        var thumbnail = CreateThumbnail(660, 500, stream);
+                        ProductDM.productimg_thumbnail = thumbnail;
+                        await _ProductRepository.CreateProductImg(ProductDM);
+                        var productDTO = new productimgDTO
+                        {
+                            productimg_id = ProductDM.productimg_id,
+                            productimg_img = ProductDM.productimg_img,
+                            productimg_productid = ProductDM.productimg_productid,
+                            productimg_thumbnail = ProductDM.productimg_thumbnail
+                        };
 
-                    productimgDTOs.Add(productDTO);
+                        productimgDTOs.Add(productDTO);
+                    }
                 }
+                return Ok(productimgDTOs);
             }
-            return Ok(productimgDTOs);
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = "Could not connect to database", error = ex.Message });
+            }
+
         }
 
         private async Task<byte[]> ConvetImgToByte(IFormFile formFile)
@@ -218,12 +242,20 @@ namespace Grimsby_and_Clee_Sells.Controllers
         [Route("GetProductByUserId/{userid}")]
         public IActionResult GetProductByUserId([FromRoute] int userid) 
         {
-            var ProductDM = _ProductRepository.GetProductByUserId(userid);
-            if (ProductDM.Count == 0)
+            try
             {
-                return NotFound();
+                var ProductDM = _ProductRepository.GetProductByUserId(userid);
+                if (ProductDM.Count == 0)
+                {
+                    return NotFound();
+                }
+                return Ok(ProductDM);
             }
-            return Ok(ProductDM);
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = "Could not connect to database", error = ex.Message });
+            }
+
         }
 
         [HttpGet]

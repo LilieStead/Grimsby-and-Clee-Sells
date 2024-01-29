@@ -96,12 +96,71 @@ namespace Grimsby_and_Clee_Sells.Controllers
                 return Ok(cartitemDTO);
             }
 
-            catch
+            catch (Exception ex)
             {
-                //if cant connect to the database 
-                return BadRequest(new { Message = "could not connect to the server, please try again later" });
+                return BadRequest(new { Message = "Could not connect to database", error = ex.Message });
             }
-            
+
+        }
+
+        [HttpGet]
+        [Route("/SearchByUserId")]
+        public IActionResult SeachCartItemByUserId ([FromForm] int userid)
+        {
+            try
+            {
+                var validateusers = _userRepository.GetUserByID(userid);
+                if (validateusers == null)
+                {
+                    return Conflict(new { Message = "User not registered" });
+                }
+
+                var CartDM = _cartitemRepository.GetCartitemByUserId(userid);
+                if (CartDM.Count == 0)
+                {
+
+                    return NotFound(new { Message = "You have no products in your cart" });
+                }
+
+                return Ok(CartDM);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = "Could not connect to database", error = ex.Message });
+            }
+
+
+        }
+
+        [HttpDelete]
+        [Route("DeleteUsersCart")]
+        public IActionResult DeleteUsersCart([FromForm] int userid, int productid)
+        {
+            try
+            {
+                var vlaidateCart = _cartitemRepository.SearchUserAndProduct(userid, productid);
+                if (vlaidateCart == null)
+                {
+                    return NotFound(new { Message = "This product does not exist in your cart" });
+                }
+                try
+                {
+                    var removeProduct = _cartitemRepository.DeleteCartitem(userid, productid);
+                    return Ok(removeProduct);
+
+                }
+                catch
+                {
+                    return BadRequest(new { Message = "Could not connect to database" });
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = "Could not connect to database", error = ex.Message });
+            }
+
+
+
         }
     }
     
