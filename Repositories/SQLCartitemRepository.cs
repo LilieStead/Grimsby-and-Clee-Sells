@@ -1,5 +1,6 @@
 ﻿using Grimsby_and_Clee_Sells.Data;
 using Grimsby_and_Clee_Sells.Models.Domain;
+using Grimsby_and_Clee_Sells.Models.DTOs;
 using Microsoft.EntityFrameworkCore;
 
 namespace Grimsby_and_Clee_Sells.Repositories
@@ -40,5 +41,13 @@ namespace Grimsby_and_Clee_Sells.Repositories
 
             return deleteproduct;
         }
+        public Cartitem UpdateCartItem(int quantity, int userid, int productid)
+        {
+            var item = _context.Tbl_Cart.Where(p => p.cart_productid == productid).FirstOrDefault(p => p.cart_userid == userid);
+            item.cart_quantity = quantity;
+            _context.SaveChanges();
+            return item;
+        }
     }
+
 }

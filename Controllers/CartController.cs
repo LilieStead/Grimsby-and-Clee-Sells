@@ -104,8 +104,8 @@ namespace Grimsby_and_Clee_Sells.Controllers
         }
 
         [HttpGet]
-        [Route("/SearchByUserId")]
-        public IActionResult SeachCartItemByUserId ([FromForm] int userid)
+        [Route("/SearchByUserId/{userid:int}")]
+        public IActionResult SeachCartItemByUserId ([FromRoute] int userid)
         {
             try
             {
@@ -161,6 +161,27 @@ namespace Grimsby_and_Clee_Sells.Controllers
 
 
 
+        }
+
+        [HttpPut]
+        [Route("EditCartItemQuantity")]
+        public IActionResult EditCartItemQuantity([FromForm] UpdateCartItemDTO updateCartItemDTO)
+        {
+            try
+            {
+                var validateCart = _cartitemRepository.SearchUserAndProduct(updateCartItemDTO.cart_userid, updateCartItemDTO.cart_productid);
+                if (validateCart == null)
+                {
+                    return NotFound(new { Message = "This product does not exist in your cart" });
+                }
+                var update = _cartitemRepository.UpdateCartItem( updateCartItemDTO.cart_quantity, validateCart.cart_userid, validateCart.cart_productid);
+                return Ok(update);
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = "Could not connect to database", error = ex.Message });
+            }
         }
     }
     
