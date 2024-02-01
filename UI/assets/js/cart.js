@@ -1,3 +1,5 @@
+var user;
+var totalPrice = 0;
 async function getImages(data){
 
     const images = [];
@@ -15,8 +17,10 @@ async function getImages(data){
     return images;
 }
 
+
 function getCartItems(){
     const cartDiv = document.getElementById("cartproduct");
+    const totalPriceDiv = document.getElementById("total");
     fetch(`https://localhost:44394/api/User/decodetoken`, {
             method: "GET", 
             credentials: "include"
@@ -52,6 +56,7 @@ function getCartItems(){
         })
         // creates session storage with user details
         .then(data => {
+            user = data.userid;
             fetch(`https://localhost:44394/SearchByUserId/${data.userid}`,{
                 method: "GET",
                 credentials: "include"
@@ -65,9 +70,12 @@ function getCartItems(){
                 console.log(data);
                 data.forEach(element => {
                     console.log(element);
+                    var productTotal = element.product.product_price * element.cart_quantity;
+                    totalPrice += productTotal;
                     getImages(element.cart_productid).then(Image => {
                         console.log(Image[0].imgUrl);
-                        var productTotal = element.product.product_price * element.cart_quantity;
+                        
+                        console.log(totalPrice);
                         cartDiv.innerHTML += `
                     <div class="cartitem">
                             <div class="cartimgdiv">
@@ -76,9 +84,9 @@ function getCartItems(){
                             <div class="cartinfo">
                                 <h1>${element.product.product_name} <span>&pound;${element.product.product_price}</span></h1>
                                 <form action="">
-                                    <input type="number" value="${element.cart_quantity}">
-                                    <button onclick="updateRequest(${element.cart_productid})" >update</button>
-                                    <button onclick="removeRequest(${element.cart_productid})" >remove</button>
+                                    <input name="cart_quantity" type="number" value="${element.cart_quantity}">
+                                    <button onclick="updateRequest(event,${element.cart_productid})" >update</button>
+                                    <button onclick="removeRequest(event,${element.cart_productid})" >remove</button>
                                 </form>
                                 <h1>Total &pound;${productTotal}</h1>
                             </div>
@@ -87,6 +95,7 @@ function getCartItems(){
                         `
                     })
                 });
+                totalPriceDiv.innerHTML = "&pound;" + totalPrice;
             })
         })
         .catch(error => {
@@ -94,6 +103,73 @@ function getCartItems(){
         })
 }
 
+
+function updateRequest(event, productid){
+    event.preventDefault();
+    var formElement = event.target.closest(`form`);
+    var quantityInput = formElement.querySelector(`input[name="cart_quantity"]`)
+    var quantity = quantityInput.value;
+    const formData = new FormData();
+    formData.append("cart_userid", user);
+    formData.append("cart_productid", productid);
+    formData.append("cart_quantity", quantity);
+    fetch(`https://localhost:44394/api/Cart/EditCartItemQuantity`,{
+        method: "PUT",
+        body: formData,
+    })
+    .then(response => {
+        if (response.ok){
+            window.location.reload();
+        }else if(response.status === 409){
+            return response.json().then(error => {
+                return Promise.reject(error.message);
+            })
+        }
+        else{
+            customPopup("Unable to update item to cart")
+            console.error(response.status);
+            throw new Error("Error adding item to cart");
+        }
+    })
+    .catch(error => {
+        console.error(error);
+        customPopup(error);
+    })
+    
+}
+
+function removeRequest(event, productid){
+    event.preventDefault();
+    const formData = new FormData();
+    formData.append("cart_userid", user);
+    formData.append("cart_productid", productid);
+    fetch(`https://localhost:44394/api/Cart/DeleteUsersCart`,{
+        method: "DELETE",
+        body: formData,
+    })
+    .then(response => {
+        if (response.ok){
+            window.location.reload();
+        }else{
+            customPopup("Unable to delete item from cart")
+            console.error(response.status);
+            throw new Error("Error deleting item to cart");
+        }
+    })
+    .catch(error => {
+        console.error(error);
+        customPopup("An error occurred while deleting the item from your cart");
+    })
+}
+
+
+function order (){
+    
+}
+
 getCartItems();
+
+
+document.getElementById(`orderForm`).addEventListener("submit", order)
 
 

@@ -36,8 +36,8 @@ namespace Grimsby_and_Clee_Sells.Data
             modelBuilder.Entity<Product>().HasKey(p=>p.product_id);
             modelBuilder.Entity<Productimg>().HasKey(p => p.productimg_id);
             modelBuilder.Entity<Admin>().HasKey(p => p.admin_id);
-            modelBuilder.Entity<Cartitem>().HasKey(p => p.cart_userid);
-            modelBuilder.Entity<Cartitem>().HasKey(p => p.cart_productid);
+            // use this example for composite keys
+            modelBuilder.Entity<Cartitem>().HasKey(p => new { p.cart_userid, p.cart_productid});
 
 
 
@@ -48,7 +48,6 @@ namespace Grimsby_and_Clee_Sells.Data
             modelBuilder.Entity<Productimg>().HasOne(p => p.Product).WithMany().HasForeignKey(p => p.productimg_productid);
             modelBuilder.Entity<Cartitem>().HasOne(p => p.User).WithMany().HasForeignKey(p => p.cart_userid);
             modelBuilder.Entity<Cartitem>().HasOne(p => p.product).WithMany().HasForeignKey(p => p.cart_productid);
-
 
 
         }

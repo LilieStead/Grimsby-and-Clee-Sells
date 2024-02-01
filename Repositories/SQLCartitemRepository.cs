@@ -43,7 +43,7 @@ namespace Grimsby_and_Clee_Sells.Repositories
         }
         public Cartitem UpdateCartItem(int quantity, int userid, int productid)
         {
-            var item = _context.Tbl_Cart.Where(p => p.cart_productid == productid).FirstOrDefault(p => p.cart_userid == userid);
+            var item = _context.Tbl_Cart.SingleOrDefault(p => p.cart_userid == userid && p.cart_productid == productid);
             item.cart_quantity = quantity;
             _context.SaveChanges();
             return item;

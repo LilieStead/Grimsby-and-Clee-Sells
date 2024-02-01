@@ -116,7 +116,7 @@ function sellproduct(event) {
             }else if( response.status === 409){
                 loader.style.display = "none";
                 return response.json().then(error => {
-                    return Promise.reject(error.message);''
+                    return Promise.reject(error.message);
                     // if 404 send user a pop up with error message from the api
                 })
             }else {

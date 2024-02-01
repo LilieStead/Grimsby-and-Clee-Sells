@@ -134,18 +134,18 @@ namespace Grimsby_and_Clee_Sells.Controllers
 
         [HttpDelete]
         [Route("DeleteUsersCart")]
-        public IActionResult DeleteUsersCart([FromForm] int userid, int productid)
+        public IActionResult DeleteUsersCart([FromForm] DeleteCartItemDTO deleteCartItemDTO)
         {
             try
             {
-                var vlaidateCart = _cartitemRepository.SearchUserAndProduct(userid, productid);
+                var vlaidateCart = _cartitemRepository.SearchUserAndProduct(deleteCartItemDTO.cart_userid, deleteCartItemDTO.cart_productid);
                 if (vlaidateCart == null)
                 {
                     return NotFound(new { Message = "This product does not exist in your cart" });
                 }
                 try
                 {
-                    var removeProduct = _cartitemRepository.DeleteCartitem(userid, productid);
+                    var removeProduct = _cartitemRepository.DeleteCartitem(deleteCartItemDTO.cart_userid, deleteCartItemDTO.cart_productid);
                     return Ok(removeProduct);
 
                 }
@@ -170,6 +170,10 @@ namespace Grimsby_and_Clee_Sells.Controllers
             try
             {
                 var validateCart = _cartitemRepository.SearchUserAndProduct(updateCartItemDTO.cart_userid, updateCartItemDTO.cart_productid);
+                if (updateCartItemDTO.cart_quantity <= 0)
+                {
+                    return Conflict(new { Message = "you can not have a quantity of less than 1" });
+                }
                 if (validateCart == null)
                 {
                     return NotFound(new { Message = "This product does not exist in your cart" });
