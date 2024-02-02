@@ -216,10 +216,26 @@ function order (event){
         nameerror.innerHTML = (`you need to enter the name on the card`);
     }else if ( name.length >= 71 ||  name.length <= 10){
         nopass = true;
-        nameerror.innerHTML = ("Name needs to be inbtween 10 & 70")
+        nameerror.innerHTML = ("Name needs to be between 10 & 70")
     }
 
-
+    if (!/^\d{16}$/.test(cardnumber)) {
+        nopass = true;
+        cardnumbererror.innerHTML = 'Your card number needs to be 16 digits and contain only numbers';
+    } else {
+        cardnumbererror.innerHTML = null;
+    }
+    
+    if (!/^\d{3}$/.test(cvv)) {
+        nopass = true;
+        cvverror.innerHTML = 'CVV should be a 3-digit number';
+    }else{
+        cvverror.innerHTML = (null);
+    }
+    if (!/^\d{2}\/\d{2}$/.test(exp)) {
+        nopass = true;
+        experror.innerHTML = 'Expiration date should be in the format MM/YY';
+    }
     if(nopass){
         return;
     }
