@@ -247,7 +247,7 @@ namespace Grimsby_and_Clee_Sells.Controllers
                 var ProductDM = _ProductRepository.GetProductByUserId(userid);
                 if (ProductDM.Count == 0)
                 {
-                    return NotFound();
+                    return NotFound(new { Message = "No items found"});
                 }
                 return Ok(ProductDM);
             }

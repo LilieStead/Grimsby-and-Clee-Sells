@@ -1,8 +1,19 @@
 const userId = sessionStorage.getItem('userid');
 fetch(`https://localhost:44394/api/Product/GetProductByUserId/${userId}`)
 .then(response => {
+    const productBody = document.querySelector('#usersproducts');
     // if response inst ok it means there is an error 
-    if (!response.ok) {
+    if (response.status === 404 || response.status === 400) {
+        console.log("hdjahsdjsah")
+        productBody.innerHTML = `
+        <div id="noproducts">
+                <h3>You have made no products</h3>
+            </div>
+        `;
+        return response.json().then(error => {
+            return Promise.reject(error.message);
+        });
+    }else if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
     }
     return response.json();
@@ -13,13 +24,21 @@ fetch(`https://localhost:44394/api/Product/GetProductByUserId/${userId}`)
 })
 .catch(error => {
     // any errors go here
-    return customPopup(error);
+    if (error === "No items found"){
+        return;
+    }else{
+        return customPopup(error);
+    }
+    
 })
 
 async function imageFetch(product){
     // sets format of image stored in array
+    
     const images = [];
     for ( let imgNumber = 0; imgNumber < 4; imgNumber++){
+
+        console.log(product)
         product.forEach(async item => {
             const response = await fetch(`https://localhost:44394/GetImgThumbnailByProductId/${item.product_id}/${imgNumber}`);
         if (response.status === 204){
@@ -33,8 +52,10 @@ async function imageFetch(product){
         createProduct(imgUrl, item);
 
         })
+        
     }
     console.log(images)
+    
 
 }
 

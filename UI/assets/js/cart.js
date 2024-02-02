@@ -62,8 +62,15 @@ function getCartItems(){
                 credentials: "include"
             })
             .then (response => {
+                console.log(response.status);
                 if (response.status === 200){
                     return response.json();
+                }else if (response.status === 400 || response.status === 404){
+                    cartDiv.innerHTML = `
+                    <div id="nocart">
+                        <h3>You have no products in your cart</h3>
+                    <hr>
+                </div>`
                 }
             })
             .then( data => {
@@ -82,19 +89,20 @@ function getCartItems(){
                                 <img src="${Image[0].imgUrl}" alt="">
                             </div>
                             <div class="cartinfo">
-                                <h1>${element.product.product_name} <span>&pound;${element.product.product_price}</span></h1>
+                                <h1>${element.product.product_name} <span>&pound;${element.product.product_price.toFixed(2)}</span></h1>
                                 <form action="">
                                     <input name="cart_quantity" type="number" value="${element.cart_quantity}">
                                     <button onclick="updateRequest(event,${element.cart_productid})" >update</button>
                                     <button onclick="removeRequest(event,${element.cart_productid})" >remove</button>
                                 </form>
-                                <h1>Total &pound;${productTotal}</h1>
+                                <h1>Total &pound;${productTotal.toFixed(2)}</h1>
                             </div>
                         </div>
                         <hr>
                         `
                     })
                 });
+                totalPrice = totalPrice.toFixed(2);
                 totalPriceDiv.innerHTML = "&pound;" + totalPrice;
             })
         })
@@ -163,13 +171,62 @@ function removeRequest(event, productid){
 }
 
 
-function order (){
+function order (event){
+    event.preventDefault();
+    const form = new  FormData(document.getElementById("orderForm"));
+    const address = form.get(`address`);
+    const postcode = form.get(`postcode`);
+    const name = form.get(`name`);
+    const cardnumber = form.get(`cardnumber`);
+    const exp = form.get(`experror`);
+    const cvv = form.get(`CVV`);
+
+
+    const addresserror = document.getElementById("addresserror");
+    const postcodeerror = document.getElementById("postcodeerror");
+    const nameerror = document.getElementById("nameerror");
+    const cardnumbererror = document.getElementById("cardnumbererror")
+    const experror = document.getElementById("experror");
+    const cvverror = document.getElementById("cvverror")
+
+    let nopass = false;
     
+    if (address == null || address == ``){
+        nopass = true;
+        addresserror.innerHTML = (`You need to enter your address`)
+    }else if (address.length >= 101 || address.length <= 20){
+        nopass = true;
+        addresserror.innerHTML = (`you address neeeds to be inbetween 20 & 100`)
+    }else{
+        addresserror.innerHTML = null;
+    }
+
+    if (postcode == null || postcode == ''){
+        nopass = true;
+        postcodeerror.innerHTML = (`You need to enter your postcode`)
+    }else if (!/^[A-Z]{1,2}[0-9R][0-9A-Z]? [0-9][ABD-HJLNP-UW-Z]{2}$/.test(postcode)) {
+        nopass = true;
+        postcodeerror.innerHTML = (`You need to enter a valid post code`)
+    }else{
+        postcodeerror.innerHTML = null
+    }
+
+    if (name == null || name == ``){
+        nopass = true;
+        nameerror.innerHTML = (`you need to enter the name on the card`);
+    }else if ( name.length >= 71 ||  name.length <= 10){
+        nopass = true;
+        nameerror.innerHTML = ("Name needs to be inbtween 10 & 70")
+    }
+
+
+    if(nopass){
+        return;
+    }
 }
 
 getCartItems();
 
 
 document.getElementById(`orderForm`).addEventListener("submit", order)
-
 

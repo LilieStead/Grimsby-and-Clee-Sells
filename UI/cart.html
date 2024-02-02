@@ -16,28 +16,28 @@
                     <div id="cartproduct">
                         <!-- CONTENT GOES  -->
                     </div>
-                    <h4>Total:<span id="total">Price</span></h4>
+                    <h4>Total:<span id="total">N/A</span></h4>
                 </div>
                 <div class="col-lg-1"></div>
                 <div class="col-lg-5 col-md-12 col-sm-12 index">
                     <h1>Order Now</h1>
                     <form id="orderForm" >
-                        <label for="address">Address</label>
+                        <label for="address">Address<span id ="addresserror" class="error"></span></label>
                         <input type="text" name="address">
 
-                        <label for="postcode">Post code</label>
-                        <input type="text" name="postcode">
+                        <label for="postcode" >Post code<span id ="postcodeerror" class="error"></span></label>
+                        <input type="text" placeholder="eg. DN32 6LE" name="postcode">
 
-                        <label for="name">Name</label>
+                        <label for="name">Name<span id ="nameerror" class="error"></span></label>
                         <input type="text" name="name">
 
-                        <label for="cardnumber">Cart number</label>
+                        <label for="cardnumber">Card number<span id ="cardnumbererror" class="error"></span></label>
                         <input type="number" name="cardnumber">
 
-                        <label for="expirydate">expiry date</label>
+                        <label for="expirydate">expiry date <span id ="experror" class="error"></span></label>
                         <input type="text" name="expirydate">
 
-                        <label for="CVV">CVV</label>
+                        <label for="CVV">CVV <span id ="cvverror" class="error"></span></label>
                         <input type="number" name="CVV" maxlength="3">
 
                         <input type="submit" value="Order">

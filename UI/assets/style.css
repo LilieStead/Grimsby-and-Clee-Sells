@@ -1,15 +1,11 @@
 /* 
-
-
 blues 
 3685B5 - lighter
 0471A6 - darker
 
-
 background white
 F4F7F5 - lighter
 E8E9F3 - darker
-
 
 yellow
 D5A021
@@ -18,9 +14,6 @@ text black
 292F36
 
 */
-
-
-
 /* fonts */
 
 @font-face {
@@ -37,9 +30,6 @@ text black
     font-family: titlelight;
     src: url(fnt/titlelight.otf);
 }
-
-
-
 /* all elements */
 * {
     margin: 0;
@@ -174,9 +164,6 @@ text black
 #indexoptions {
     min-height: 92vh;
 }
-
-
-
 
 /* body */
 
@@ -319,6 +306,12 @@ textarea{
     margin-bottom: 3rem;
 
 }
+
+#noproducts h3{
+    font-family: mainfnt;
+    font-size: 1.3rem;
+} 
+
 
 .usersproductinfo .username{
     font-size: 1.3rem;
@@ -568,38 +561,9 @@ hr{
     border-top: 3px solid rgba(0,0,0,.1);
 }
 
-/* .updatecart{
-    width: 80%;
-    display: flex;
 
-}
-.updatecart button{
-    background-color: #c99810;
-    color: #fff;
-    padding: 0.3rem;
-    height: 3rem;
-    border: none;
+#nocart h3{
     font-family: mainfnt;
-    text-decoration: none;
-    margin: 0 0.5rem;
-    border-radius: 2.5px;
+    text-align: center;
+    font-size: 1.2rem;
 }
-
-.updatecart input{
-    height: 3rem;
-    width: 4.5rem;
-    font-size: 1.5rem;
-    font-family: mainfnt;
-    padding: 12px;
-    border: 1px solid #E8E9F3;
-    border-radius: 4px;
-    resize: vertical;
-    display: flex;
-    justify-content: center;
-}
-
-.cartitemflex{
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-} */
