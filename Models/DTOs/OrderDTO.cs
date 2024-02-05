@@ -14,7 +14,7 @@ namespace Grimsby_and_Clee_Sells.Models.DTOs
 
         public DateTime order_date { get; set; }
 
-        public int order_recipientname { get; set; }
+        public string? order_recipientname { get; set; }
 
         public string order_detail1 { get; set; }
 

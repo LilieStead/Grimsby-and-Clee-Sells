@@ -166,7 +166,7 @@ namespace Grimsby_and_Clee_Sells.Controllers
                         users_phone = createUserDTO.users_phone,
                         users_dob = createUserDTO.users_dob,
                         users_password = createUserDTO.users_password,
-
+                        users_balance = 10000
                     };
 
                     // validate format of phone number 
@@ -237,6 +237,7 @@ namespace Grimsby_and_Clee_Sells.Controllers
                         users_phone = UserDM.users_phone,
                         users_dob = UserDM.users_dob,
                         users_password = UserDM.users_password,
+                        users_balance = 10000
                     };
 
 
@@ -359,6 +360,92 @@ namespace Grimsby_and_Clee_Sells.Controllers
             }
 
         }
+
+
+
+        [HttpPut]
+        [Route("/updateuser/details")]
+        public IActionResult UpdateUserDetails([FromBody] UpdateUserDTO updateUserDTO)
+        {
+            try
+            {
+
+                if (HttpContext.Session.TryGetValue("sessionid", out byte[] userbytes))
+                {
+                    string sessionid = Encoding.UTF8.GetString(userbytes);
+
+                    if (Request.Cookies.TryGetValue("usercookie", out string usertoken))
+                    {
+                        if (updateUserDTO.users_id == null || updateUserDTO.users_username == null)
+                        {
+                            return Unauthorized(new { Message = "Please log in to update your details"});
+                        }
+
+                        var userDM = new User
+                        {
+                            users_id = updateUserDTO.users_id,
+                            users_firstname = updateUserDTO.users_firstname,
+                            users_lastname = updateUserDTO.users_lastname,
+                            users_username = updateUserDTO.users_username,
+                            users_dob = updateUserDTO.users_dob,
+                            users_email = updateUserDTO.users_email,
+                            users_phone = updateUserDTO.users_phone,
+                            users_balance = updateUserDTO.users_balance,
+                        };
+                        if (userDM == null)
+                        {
+                            return NotFound(new { Message = "User contains no details" });
+                        }
+
+
+                        var updateUser = _userRepository.UpdateUserDetails(userDM.users_id, userDM);
+                        if (updateUser == null)
+                        {
+                            return BadRequest(new { Message = "Something went wrong when updating your details, please try again" });
+                        }
+
+                        return Ok(userDM);
+
+                    }
+                    else
+                    {
+                        Logout();
+                        return BadRequest(new
+                        {
+                            Message = "Cookie not found"
+                        });
+                    }
+
+
+                }
+                else
+                {
+                    Response.Cookies.Delete("usercookie", new CookieOptions
+                    {
+                        HttpOnly = true,
+                        SameSite = SameSiteMode.None,
+                        Secure = true
+                    });
+                    Response.Cookies.Delete("usercookieexpiry", new CookieOptions
+                    {
+                        HttpOnly = false,
+                        SameSite = SameSiteMode.None,
+                        Secure = true
+                    });
+                    HttpContext.Session.Clear();
+
+                    return Unauthorized(new
+                    {
+                        Message = "API has restarted token can not be decoded"
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = "Could not connect to database", error = ex.Message });
+            }
+        }
+
 
         [HttpGet]
         [Route("/Logout")]

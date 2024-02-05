@@ -25,6 +25,8 @@ namespace Grimsby_and_Clee_Sells.Data
         public DbSet<Admin> Tbl_Admin { get; set; }
 
         public DbSet<Cartitem> Tbl_Cart { get; set; }
+        public DbSet<Order> Tbl_Order { get; set; }
+        public DbSet<OrderProduct> Tbl_OrderProduct { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -40,7 +42,7 @@ namespace Grimsby_and_Clee_Sells.Data
             modelBuilder.Entity<OrderStatus>().HasKey(p => p.orderstatus_id);
             // use this example for composite keys
             modelBuilder.Entity<Cartitem>().HasKey(p => new { p.cart_userid, p.cart_productid});
-            modelBuilder.Entity<ProductItem>().HasKey(p => new { p.orderproducts_productid, p.orderproducts_orderid });
+            modelBuilder.Entity<OrderProduct>().HasKey(p => new { p.orderproducts_productid, p.orderproducts_orderid });
 
 
             //F key 
@@ -51,7 +53,8 @@ namespace Grimsby_and_Clee_Sells.Data
             modelBuilder.Entity<Cartitem>().HasOne(p => p.User).WithMany().HasForeignKey(p => p.cart_userid);
             modelBuilder.Entity<Cartitem>().HasOne(p => p.product).WithMany().HasForeignKey(p => p.cart_productid);
             modelBuilder.Entity<Order>().HasOne(p => p.User).WithMany().HasForeignKey(p => p.order_userid);
-
+            modelBuilder.Entity<OrderProduct>().HasOne(p => p.Product).WithMany().HasForeignKey(p => p.orderproducts_productid);
+            modelBuilder.Entity<OrderProduct>().HasOne(p => p.Order).WithMany().HasForeignKey(p => p.orderproducts_orderid);
         }
     }
 }

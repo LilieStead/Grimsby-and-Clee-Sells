@@ -24,7 +24,7 @@ namespace Grimsby_and_Clee_Sells.Repositories
         List<Product> GetProductByStatus (int status);
 
         Product UpdateStatus (int id, UpdateProductStatusDTO updateProductStatusDTO);
-
+        Product UpdateProduct(int productID, Product product);
         Status ValidateStatus (int id);
 
         List<Product> SearchProducts(string product_name);

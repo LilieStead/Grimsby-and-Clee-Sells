@@ -17,5 +17,6 @@
         public DateTime users_dob { get; set; }
 
         public string users_password { get; set; }
+        public double users_balance { get; set; }
     }
 }

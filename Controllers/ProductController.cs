@@ -9,6 +9,7 @@ using System.Text;
 using System.Drawing.Imaging;
 using System.Drawing;
 using System.Linq;
+using System.Net.WebSockets;
 
 namespace Grimsby_and_Clee_Sells.Controllers
 {
@@ -58,6 +59,7 @@ namespace Grimsby_and_Clee_Sells.Controllers
                         product_userid = createProductDTO.product_userid,
                         product_status = status,
                         product_price = createProductDTO.product_price,
+                        product_sold = 0
                     };
 
                     var userexits = _UserRepository.GetAllUsers().Where(x => x.users_id == ProductDM.product_userid);
@@ -97,6 +99,7 @@ namespace Grimsby_and_Clee_Sells.Controllers
                         product_userid = ProductDM.product_userid,
                         product_status = ProductDM.product_status,
                         product_price = ProductDM.product_price,
+                        product_sold = 0
                     };
 
                     return CreatedAtAction("GetProductById", new { id = CreateProductDTO.product_id }, CreateProductDTO);
@@ -112,6 +115,103 @@ namespace Grimsby_and_Clee_Sells.Controllers
                 return BadRequest(new { Message = "Could not connect to database", error = ex.Message });
             }
 
+        }
+
+        [HttpPut]
+        [Route("/updateproduct")]
+        public IActionResult UpdateProduct([FromForm] UpdateProductDTO updateProductDTO)
+        {
+
+            if (HttpContext.Session.TryGetValue("sessionid", out byte[] userbytes))
+            {
+                string sessionid = Encoding.UTF8.GetString(userbytes);
+
+                if (Request.Cookies.TryGetValue("usercookie", out string usertoken))
+                {
+                    if (updateProductDTO.product_id == null)
+                    {
+                        return Conflict(new { Message = "This is not a valid item, please try again" });
+                    
+                    }
+                    var productDM = new Product
+                    {
+                        product_id = updateProductDTO.product_id,
+                        product_name = updateProductDTO.product_name,
+                        product_description = updateProductDTO.product_description,
+                        product_category = updateProductDTO.product_category,
+                        product_price = updateProductDTO.product_price,
+                        product_status = 1,
+                        product_userid = updateProductDTO.product_userid,
+                        
+                    };
+                    if (productDM == null)
+                    {
+                        return NotFound(new { Message = "No item found, please try again" });
+                    }
+                    var userExists = _UserRepository.GetUserByID(productDM.product_userid);
+                    var productExists = _ProductRepository.GetProductById(productDM.product_id);
+                    if (userExists == null)
+                    {
+                        return NotFound(new { Message = "No user found" });
+                    }
+                    if (userExists.users_id != productExists.product_userid)
+                    {
+                        return Unauthorized(new { Message = "You are attempting to modify an item that is not yours"});
+                    }
+
+                    var updateProduct = _ProductRepository.UpdateProduct(productDM.product_id, productDM);
+                    if (updateProduct == null)
+                    {
+                        return BadRequest(new { Message = "Something went wrong when updating your product, please try again" });
+                    }
+
+                    return Ok(productDM);
+
+                }
+                else
+                {
+                    Response.Cookies.Delete("usercookie", new CookieOptions
+                    {
+                        HttpOnly = true,
+                        SameSite = SameSiteMode.None,
+                        Secure = true
+                    });
+                    Response.Cookies.Delete("usercookieexpiry", new CookieOptions
+                    {
+                        HttpOnly = false,
+                        SameSite = SameSiteMode.None,
+                        Secure = true
+                    });
+                    HttpContext.Session.Clear();
+                    return BadRequest(new
+                    {
+                        Message = "Cookie not found"
+                    });
+                }
+
+
+            }
+            else
+            {
+                Response.Cookies.Delete("usercookie", new CookieOptions
+                {
+                    HttpOnly = true,
+                    SameSite = SameSiteMode.None,
+                    Secure = true
+                });
+                Response.Cookies.Delete("usercookieexpiry", new CookieOptions
+                {
+                    HttpOnly = false,
+                    SameSite = SameSiteMode.None,
+                    Secure = true
+                });
+                HttpContext.Session.Clear();
+
+                return Unauthorized(new
+                {
+                    Message = "API has restarted token can not be decoded"
+                });
+            }
         }
 
         [HttpGet]

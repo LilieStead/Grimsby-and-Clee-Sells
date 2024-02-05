@@ -12,7 +12,7 @@
 
         public DateTime order_date { get; set; }
 
-        public int order_recipientname { get; set; }
+        public string? order_recipientname { get; set; }
 
         public string order_detail1 { get; set; }
 
@@ -21,6 +21,6 @@
         public string order_detail3 { get; set; }
 
         public int order_orderstatusid { get; set; }
-        public OrderStatus Orderstatus { get; set; }
+        //public OrderStatus Orderstatus { get; set; }
     }
 }

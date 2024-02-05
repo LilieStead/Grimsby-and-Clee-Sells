@@ -33,6 +33,30 @@ namespace Grimsby_and_Clee_Sells.Repositories
             return product;
         }
 
+        public Product UpdateProduct(int productID, Product product)
+        {
+            try
+            {
+                var existingProduct = _context.Tbl_Product.FirstOrDefault(p => p.product_id == productID);
+                if (existingProduct == null)
+                {
+                    return null;
+                }
+                existingProduct.product_price = product.product_price;
+                existingProduct.product_description = product.product_description;
+                existingProduct.product_status = 1;
+                existingProduct.product_name = product.product_name;
+                existingProduct.product_category = product.product_category;
+                _context.SaveChanges();
+                return existingProduct;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+            
+        }
+
         public async Task<Productimg> GetProductImgById(int id)
         {
             return await _context.Tbl_Productimg.Include(p => p.Product).Select(p => new Productimg

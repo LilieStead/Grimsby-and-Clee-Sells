@@ -17,6 +17,7 @@ namespace Grimsby_and_Clee_Sells.Models.Domain
         public int product_status { get; set;}
 
         public double product_price { get; set;}
+        public int product_sold { get; set; }
 
         public Category Category { get; set; }
 

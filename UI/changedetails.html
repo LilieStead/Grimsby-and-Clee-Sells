@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head id="head">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+</head>
+<header id="header">
+
+</header>
+
+<body>
+    <div class="centercontents" id="content">
+        <div class="container">
+            <div class="row">
+                <div class="col-2"></div>
+                <div class="col-8 index">
+                    <h2>Change your details</h2>
+                    <form id="changedetailsform">
+                        <label for="username">username <span id="usernameerror" class="error"></span></label>
+                        <input type="text" name="username" id="usernameinput">
+
+                        <label for="firstname">first name <span id="firstnameerror" class="error"></span></label>
+                        <input type="text" name="firstname" id="firstname">
+
+                        <label for="lastname">last name <span id="lastnameerror" class="error"></span></label>
+                        <input type="text" name="lastname" id="lastname">
+
+                        <label for="dob">date of birth <span id="doberror" class="error"></span></label>
+                        <input type="date" name="dob" id="dob">
+                        
+
+                        <label for="email">email <span id="emailerror" class="error"></span></label>
+                        <input type="text" name="email" id="email">
+                        
+
+                        <label for="phone">phone number <span id="phoneerror" class="error"></span></label>
+                        <input type="number" name="phone" id="phone">
+
+                        <label for="balance">balance<span id="balanceerror" class="error"></span></label>
+                        <input  oninput="validatePrice(this)" type="text" name="balance" id="balance" placeholder="&pound;13.34">
+
+
+                        <div class="flexcontainer">
+                            <input type="submit">
+                        </div>
+                    </form>
+                </div>
+                <div class="col-2"></div>
+            </div>
+        </div>
+    </div>
+    
+
+
+    <div id="popupcontainer"></div>
+    <div id ="loading"></div>
+</body>
+
+
+
+
+
+
+
+<script>
+    $(document).ready(function(){
+      $("#head").load("assets/inc/head.html");
+      $("#footer").load("assets/inc/footer.html");
+      $("#popupcontainer").load("assets/inc/popup.html");
+      $("#loading").load("assets/inc/loading.html");
+      $("#header").load("assets/inc/header.html");
+
+    })
+  
+</script>
+
+<script src="assets/js/loginstatus.js"></script>
+<script src="assets/js/edituser.js"></script>
+<script src="assets/js/priceformat.js"></script>

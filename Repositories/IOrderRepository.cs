@@ -1,0 +1,11 @@
+﻿using Grimsby_and_Clee_Sells.Models.Domain;
+
+namespace Grimsby_and_Clee_Sells.Repositories
+{
+    public interface IOrderRepository
+    {
+        Order CreateOrder(Order order);
+        OrderProduct OrderProduct(OrderProduct product);
+        Product ProductIsSold(int productID, int quantity);
+    }
+}
