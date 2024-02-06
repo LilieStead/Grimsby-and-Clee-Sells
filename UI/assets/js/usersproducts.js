@@ -71,7 +71,7 @@ function createProduct(imgUrl, item){
         <img src="${imgUrl}" alt="">
     </div>
     <div class="usersproductinfo">
-        <h1> ${item.product_name} </h1>
+        <h1> ${item.product_name}<a href="editproduct.html?id=${item.product_id}"> Edit Product</a></h1>
         <h2><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i></h2>
         <h1 class="info">${item.status.status_name}</h1>
         <h1 class="info">${item.category.category_name} || $${item.product_price}</h1>

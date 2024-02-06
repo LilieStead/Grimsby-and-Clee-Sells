@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head id="head">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+</head>
+<header id="header">
+
+</header>
+
+<body>
+    <div class="centercontents" id="content">
+        <form action="" id="sellproduct" enctype="multipart/form-data">
+            <h1>Edit your product</h1>
+
+            <label for="product_name">product name</label>
+            <input type="text" name="product_name" id="name">
+            <p class="error" id="nameerror"></p>
+
+            <label for="product_description">product description </label>
+            <textarea name="product_description" id="description" cols="30" rows="10" maxlength="200" onkeyup="countupdate(this.value)" ></textarea>
+            <span id="counter"></span>
+            <p class="error" id="descriptionerror"></p>
+            
+            <div class="flexcontainer">
+                <div class="sellproductsection">
+                    <label for="product_category">Product category</label>
+                    <select name="product_category" id="category">
+
+                    </select>
+                    <p id="categoryerror" class="error"></p>
+                </div>
+                <div class="sellproductsection">
+                    <label for="product_price">Product price</label>
+                    <input type="text" id="price" name="product_price" placeholder="&pound;0.00" oninput="validatePrice(this)" autocomplete="off" resize="off">
+                    <p id="priceerror" class="error"></p>
+                </div>
+                
+            </div>
+            <div class="flexcoloum">
+                <!-- button is used so both image inputs can be filled -->
+                <label for="images">Select up to two images:</label>
+                <button onclick="handleMultipleImages(event);">Add Image(s)</button>
+                <input type="file" id="images1" style="display: none;" name="productimg_img1" accept="image/*" onchange="previewImage(1);">
+                <input type="file" id="images2" style="display: none;" name="productimg_img2" accept="image/*" onchange="previewImage(2);">
+            </div>
+            <div id="gallery" class="flexcontainer">
+                <p id="imgerror" class="error"></p>
+
+            </div>
+            
+            <input type="submit">
+
+        </form>
+    </div>
+    
+
+
+    <div id="popupcontainer"></div>
+    <div id ="loading"></div>
+</body>
+
+
+
+
+
+
+
+<script>
+    $(document).ready(function(){
+      $("#head").load("assets/inc/head.html");
+      $("#footer").load("assets/inc/footer.html");
+      $("#popupcontainer").load("assets/inc/popup.html");
+      $("#loading").load("assets/inc/loading.html");
+      $("#header").load("assets/inc/header.html");
+
+    })
+  
+</script>
+
+<script src="assets/js/loginstatus.js"></script>
+<script src="assets/js/editproduct.js"></script>
+<script src="assets/js/productcategories.js"></script>

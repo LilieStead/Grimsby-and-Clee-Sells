@@ -39,5 +39,26 @@ namespace Grimsby_and_Clee_Sells.Repositories
             _context.SaveChanges();
             return product;
         }
+
+        public Order GetOrderByID(int id)
+        {
+            return _context.Tbl_Order.FirstOrDefault(p => p.order_id == id);
+        }
+
+        public Order DeleteOrder(int id)
+        {
+            var order = _context.Tbl_Order.FirstOrDefault(p => p.order_id == id);
+            _context.Remove(order);
+            _context.SaveChanges();
+            return order;
+        }
+
+        public OrderProduct RemoveOrderedProducts(int orderID, int productID)
+        {
+            var product = _context.Tbl_OrderProduct.Where(p => p.orderproducts_productid == productID).FirstOrDefault(p => p.orderproducts_orderid == orderID);
+            _context.Tbl_OrderProduct.Remove(product);
+            _context.SaveChanges();
+            return product;
+        }
     }
 }

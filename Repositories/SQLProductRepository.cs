@@ -107,6 +107,15 @@ namespace Grimsby_and_Clee_Sells.Repositories
                 }).FirstOrDefaultAsync();
         }
 
+        public async Task<Productimg> UpdateImage(int productID, Productimg productimages, int index)
+        {
+            var productImg = await _context.Tbl_Productimg.OrderBy(p => p.productimg_id).Skip(index).FirstOrDefaultAsync(p => p.productimg_productid == productID);
+            productImg.productimg_img = productimages.productimg_img;
+            productImg.productimg_thumbnail = productimages.productimg_thumbnail;
+            await _context.SaveChangesAsync();
+            return productImg;
+        }
+
         public List<Product> GetProductByStatus(int status)
         {
             return _context.Tbl_Product.Include(p => p.Status).Include(p => p.Category).Include(p => p.User).Where(p => p.product_status == status).ToList();

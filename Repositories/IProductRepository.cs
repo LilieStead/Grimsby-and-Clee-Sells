@@ -25,6 +25,7 @@ namespace Grimsby_and_Clee_Sells.Repositories
 
         Product UpdateStatus (int id, UpdateProductStatusDTO updateProductStatusDTO);
         Product UpdateProduct(int productID, Product product);
+        Task<Productimg> UpdateImage(int productID, Productimg productimg, int index);
         Status ValidateStatus (int id);
 
         List<Product> SearchProducts(string product_name);

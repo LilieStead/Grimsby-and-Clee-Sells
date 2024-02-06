@@ -396,7 +396,10 @@ namespace Grimsby_and_Clee_Sells.Controllers
                         {
                             return NotFound(new { Message = "User contains no details" });
                         }
-
+                        if (userDM.users_balance < 100)
+                        {
+                            return BadRequest(new { Message = "Please enter a balance larger than 100" });
+                        }
 
                         var updateUser = _userRepository.UpdateUserDetails(userDM.users_id, userDM);
                         if (updateUser == null)

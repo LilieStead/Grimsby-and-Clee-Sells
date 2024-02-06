@@ -432,6 +432,20 @@ textarea{
     font-family: mainfnt;
 }
 
+
+.usersproduct h1 a{
+    font-size: 1.2rem;
+    color: #292F36;
+    transition: 0.5s;
+
+}
+
+.usersproduct h1 a:hover{
+    color: #D5A021;
+    transition: 0.5s;
+    text-decoration: none !important;
+}
+
 .productflex{
     display: flex;
     flex-wrap: wrap;

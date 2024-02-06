@@ -281,6 +281,121 @@ namespace Grimsby_and_Clee_Sells.Controllers
 
         }
 
+
+        [HttpPut]
+        [Route("/updateproductimg/{index:int}")]
+        public async Task<IActionResult> UpdateProductImg([FromForm] UpdateProductImgDTO updateProductImgDTO, [FromRoute] int index)
+        {
+            try
+            {
+
+                if (HttpContext.Session.TryGetValue("sessionid", out byte[] userbytes))
+                {
+                    string sessionid = Encoding.UTF8.GetString(userbytes);
+
+                    if (Request.Cookies.TryGetValue("usercookie", out string usertoken))
+                    {
+                        var getProduct = _ProductRepository.GetProductById(updateProductImgDTO.productimg_productid);
+                        if (getProduct == null)
+                        {
+                            return NotFound(new { Message = "No item found, please try again" });
+                        }
+                        if (getProduct.product_id != updateProductImgDTO.productimg_productid)
+                        {
+                            return Unauthorized(new { Message = "Item's identification does not match this image" });
+                        }
+
+
+
+                        List<productimgDTO> productimgs = new List<productimgDTO>();
+                        foreach(var image in updateProductImgDTO.productimg_img)
+                        {
+                            if (image == null || updateProductImgDTO.productimg_img == null)
+                            {
+                                return NoContent();
+                            }
+                            var productDM = new Productimg
+                            {
+                                productimg_img = await ConvetImgToByte(image),
+                                productimg_productid = updateProductImgDTO.productimg_productid
+                            };
+                            if (productDM.productimg_img == null)
+                            {
+                                return NotFound(new { Message = "No image was sent, please try again" });
+                            }
+
+                            var findImage = await _ProductRepository.GetProductImgsById(updateProductImgDTO.productimg_productid, index);
+                            if (findImage == null)
+                            {
+                                return BadRequest(new { Message = "Cannot edit image due to the image not existing" });
+                            }
+                            var openStream = image.OpenReadStream();
+                            var thumbnail = CreateThumbnail(660, 500, openStream);
+                            productDM.productimg_thumbnail = thumbnail;
+
+                            await _ProductRepository.UpdateImage(getProduct.product_id, productDM, index);
+                            var productDTO = new productimgDTO
+                            {
+                                productimg_id = findImage.productimg_id,
+                                productimg_img = productDM.productimg_img,
+                                productimg_productid = productDM.productimg_productid,
+                                productimg_thumbnail = thumbnail,
+                            };
+                            productimgs.Add(productDTO);
+                        }
+                        return Accepted(productimgs);
+                    }
+                    else
+                    {
+                        Response.Cookies.Delete("usercookie", new CookieOptions
+                        {
+                            HttpOnly = true,
+                            SameSite = SameSiteMode.None,
+                            Secure = true
+                        });
+                        Response.Cookies.Delete("usercookieexpiry", new CookieOptions
+                        {
+                            HttpOnly = false,
+                            SameSite = SameSiteMode.None,
+                            Secure = true
+                        });
+                        HttpContext.Session.Clear();
+                        return BadRequest(new
+                        {
+                            Message = "Cookie not found"
+                        });
+                    }
+
+
+                }
+                else
+                {
+                    Response.Cookies.Delete("usercookie", new CookieOptions
+                    {
+                        HttpOnly = true,
+                        SameSite = SameSiteMode.None,
+                        Secure = true
+                    });
+                    Response.Cookies.Delete("usercookieexpiry", new CookieOptions
+                    {
+                        HttpOnly = false,
+                        SameSite = SameSiteMode.None,
+                        Secure = true
+                    });
+                    HttpContext.Session.Clear();
+
+                    return Unauthorized(new
+                    {
+                        Message = "API has restarted token can not be decoded"
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = "Could not connect to database", error = ex.Message });
+            }
+        }
+
         private async Task<byte[]> ConvetImgToByte(IFormFile formFile)
         {
             using (var imgbyte = new MemoryStream())

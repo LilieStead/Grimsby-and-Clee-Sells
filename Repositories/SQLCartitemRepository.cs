@@ -33,7 +33,7 @@ namespace Grimsby_and_Clee_Sells.Repositories
         {
             return _context.Tbl_Cart.Where(p => p.cart_userid == userid).Include(p => p.product).ToList();
         }
-        public Cartitem DeleteCartitem(int userid, int productid) 
+        public Cartitem DeleteCartitem(int userid, int productid)
         {
             var deleteproduct = _context.Tbl_Cart.Where(p => p.cart_userid == userid).FirstOrDefault(p => p.cart_productid == productid);
             _context.Tbl_Cart.Remove(deleteproduct);
@@ -41,6 +41,7 @@ namespace Grimsby_and_Clee_Sells.Repositories
 
             return deleteproduct;
         }
+
         public Cartitem UpdateCartItem(int quantity, int userid, int productid)
         {
             var item = _context.Tbl_Cart.SingleOrDefault(p => p.cart_userid == userid && p.cart_productid == productid);
