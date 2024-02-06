@@ -4,6 +4,6 @@
     {
         public int orderstatus_id { get; set; }
 
-        public string orderstatus_name { get; set; }
+        public string orderstatus_status { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-
+2
 var user;
 
 
@@ -262,7 +262,6 @@ function editUserDetails (event){
                     loader.style.display = "none";
                     // If the response status is not OK, extract error message and reject the Promise
                     return response.json().then(error => {
-                        console.log(user);
                         const errorMessage = error.message || "An error occurred. Please try again later.";
                         return Promise.reject(errorMessage);
                     });

@@ -29,5 +29,7 @@ namespace Grimsby_and_Clee_Sells.Repositories
         Status ValidateStatus (int id);
 
         List<Product> SearchProducts(string product_name);
+
+        List<Product> TopProducts();
     }
 }

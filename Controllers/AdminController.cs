@@ -168,7 +168,7 @@ namespace Grimsby_and_Clee_Sells.Controllers
                 var adminDM = _adminRepository.GetAdminByUsername(username);
                 if (adminDM == null)
                 {
-                    return NotFound();
+                    return NotFound(new { Message = "Could not find user" });
                 }
 
                 bool verifyPass = BCryptNet.EnhancedVerify(password, adminDM.admin_password);

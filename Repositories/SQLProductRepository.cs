@@ -142,5 +142,10 @@ namespace Grimsby_and_Clee_Sells.Repositories
                 .ToList();
         }
 
+        public List<Product> TopProducts()
+        {
+            return _context.Tbl_Product.OrderByDescending(p => p.product_sold).Include(p => p.User).Include(p => p.Category).Where(p => p.product_status == 2).Take(5).ToList();
+        }
+
     }
 }

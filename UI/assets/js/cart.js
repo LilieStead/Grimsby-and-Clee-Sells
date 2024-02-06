@@ -1,5 +1,9 @@
 var user;
 var totalPrice = 0;
+const productToOrder = [];
+const quantityToOrder = [];
+
+
 async function getImages(data){
 
     const images = [];
@@ -71,6 +75,20 @@ function getCartItems(){
                         <h3>You have no products in your cart</h3>
                     <hr>
                 </div>`
+                    const address = document.getElementById("order_address");
+                    address.disabled = true;
+                    const postcode = document.getElementById("order_postcode")
+                    postcode.disabled = true;
+                    const name = document.getElementById("order_recipientname");
+                    name.disabled = true;
+                    const number = document.getElementById("order_detail1");
+                    number.disabled = true;
+                    const expiry = document.getElementById("order_detail2");
+                    expiry.disabled = true;
+                    const cvv = document.getElementById("order_detail3")
+                    cvv.disabled = true;
+                    const button = document.getElementById("orderbtn");
+                    button.disabled = true;
                 }
             })
             .then( data => {
@@ -81,6 +99,11 @@ function getCartItems(){
                     totalPrice += productTotal;
                     getImages(element.cart_productid).then(Image => {
                         console.log(Image[0].imgUrl);
+                        productToOrder.push({
+                            product: element.cart_productid,
+                            quantity: element.cart_quantity
+                        });
+                        
                         
                         console.log(totalPrice);
                         cartDiv.innerHTML += `
@@ -102,6 +125,8 @@ function getCartItems(){
                         `
                     })
                 });
+                console.log(productToOrder);
+                console.log(quantityToOrder);
                 totalPrice = totalPrice.toFixed(2);
                 totalPriceDiv.innerHTML = "&pound;" + totalPrice;
             })
@@ -174,12 +199,12 @@ function removeRequest(event, productid){
 function order (event){
     event.preventDefault();
     const form = new  FormData(document.getElementById("orderForm"));
-    const address = form.get(`address`);
-    const postcode = form.get(`postcode`);
-    const name = form.get(`name`);
-    const cardnumber = form.get(`cardnumber`);
-    const exp = form.get(`experror`);
-    const cvv = form.get(`CVV`);
+    const address = form.get(`order_address`);
+    const postcode = form.get(`order_postcode`);
+    const name = form.get(`order_recipientname`);
+    const cardnumber = form.get(`order_detail1`);
+    const exp = form.get(`order_detail2`);
+    const cvv = form.get(`order_detail3`);
 
 
     const addresserror = document.getElementById("addresserror");
@@ -232,13 +257,39 @@ function order (event){
     }else{
         cvverror.innerHTML = (null);
     }
-    if (!/^\d{2}\/\d{2}$/.test(exp)) {
+    if (!/^(0?[1-9]|1[0-2])\/\d{2}$/.test(exp)) {
         nopass = true;
         experror.innerHTML = 'Expiration date should be in the format MM/YY';
     }
     if(nopass){
         return;
     }
+
+    productToOrder.forEach(productitem => {
+        console.log(productitem);
+        form.append("productid", productitem.product);
+        form.append("quantity", productitem.quantity);
+    })
+    form.append("userid", user);
+
+
+    fetch(`https://localhost:44394/createorder`, {
+        method: "POST",
+        credentials: "include",
+        body: form
+    })
+    .then (response => {
+        if (response.status === 200 || response.status === 203){
+            return response.json();
+        }else{
+            console.error();
+        }
+    })
+    .then (order => {
+        window.location.href = "usersorder.html"
+    })
+
+
 }
 
 getCartItems();

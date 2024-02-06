@@ -1,5 +1,6 @@
 ﻿using Grimsby_and_Clee_Sells.Data;
 using Grimsby_and_Clee_Sells.Models.Domain;
+using Microsoft.EntityFrameworkCore;
 
 namespace Grimsby_and_Clee_Sells.Repositories
 {
@@ -42,7 +43,7 @@ namespace Grimsby_and_Clee_Sells.Repositories
 
         public Order GetOrderByID(int id)
         {
-            return _context.Tbl_Order.FirstOrDefault(p => p.order_id == id);
+            return _context.Tbl_Order.Include(p => p.Orderstatus).FirstOrDefault(p => p.order_id == id);
         }
 
         public Order DeleteOrder(int id)
@@ -59,6 +60,11 @@ namespace Grimsby_and_Clee_Sells.Repositories
             _context.Tbl_OrderProduct.Remove(product);
             _context.SaveChanges();
             return product;
+        }
+
+        public List<Order> GetOrderByUserId(int userId)
+        {
+            return _context.Tbl_Order.Where(p => p.order_userid == userId).Include(p => p.Orderstatus).ToList();
         }
     }
 }

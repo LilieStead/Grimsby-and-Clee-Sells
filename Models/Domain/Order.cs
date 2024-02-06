@@ -21,6 +21,7 @@
         public string order_detail3 { get; set; }
 
         public int order_orderstatusid { get; set; }
-        //public OrderStatus Orderstatus { get; set; }
+        
+        public OrderStatus Orderstatus { get; set; }
     }
 }

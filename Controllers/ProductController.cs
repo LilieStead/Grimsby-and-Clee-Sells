@@ -477,58 +477,113 @@ namespace Grimsby_and_Clee_Sells.Controllers
         [Route("/GetImgThumbnailByProductId/{id:int}/{index:int}")]
         public async Task<IActionResult> GetImgThumbnailByProductId([FromRoute] int id, int index)
         {
-            var productimgDM = await _ProductRepository.GetProductImgsThumbnailById(id, index);
-            if (productimgDM == null)
+            try
             {
-                return NoContent();
-            }
-            byte[] format = productimgDM.productimg_thumbnail;
+                var productimgDM = await _ProductRepository.GetProductImgsThumbnailById(id, index);
+                if (productimgDM == null)
+                {
+                    return NoContent();
+                }
+                byte[] format = productimgDM.productimg_thumbnail;
 
-            return File(format, "image/jpeg");
+                return File(format, "image/jpeg");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = "Could not connect to database", error = ex.Message });
+            }
+
         }
 
         [HttpGet]
         [Route("/GetProductsByStatus/{status:int}")]
         public IActionResult GetProductsByStatus([FromRoute] int status)
         {
-            var productDM = _ProductRepository.GetProductByStatus(status);
-            if (productDM.Count == 0)
+            try
             {
-                return NotFound();
+                var productDM = _ProductRepository.GetProductByStatus(status);
+                if (productDM.Count == 0)
+                {
+                    return NotFound();
+                }
+                return Ok(productDM);
             }
-            return Ok(productDM);
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = "Could not connect to database", error = ex.Message });
+            }
+
         }
 
         [HttpPut]
         [Route("/ChangeProductStatus/{id:int}")]
         public IActionResult UpdateProductStatus([FromRoute] int id, [FromForm] UpdateProductStatusDTO updateProductStatusDTO) 
         {
-            var validproduct = _ProductRepository.GetProductById(id);
-            if (validproduct == null)
+            try
             {
-                return NotFound(new { Message = "Product does not exist" });
+                var validproduct = _ProductRepository.GetProductById(id);
+                if (validproduct == null)
+                {
+                    return NotFound(new { Message = "Product does not exist" });
+                }
+                var validstatus = _ProductRepository.ValidateStatus(updateProductStatusDTO.product_status);
+                if (validstatus == null)
+                {
+                    return NotFound(new { Message = "Status does not exist" });
+                }
+                var productDM = _ProductRepository.UpdateStatus(id, updateProductStatusDTO);
+
+                return Ok(productDM);
             }
-            var validstatus = _ProductRepository.ValidateStatus(updateProductStatusDTO.product_status);
-            if (validstatus == null)
+            catch (Exception ex)
             {
-                return NotFound(new { Message = "Status does not exist" });
+                return BadRequest(new { Message = "Could not connect to database", error = ex.Message });
             }
-            var productDM = _ProductRepository.UpdateStatus(id, updateProductStatusDTO);
-            
-            return Ok(productDM);
+
         }
 
         [HttpGet]
         [Route("/SearchByProductName/{product_name}")]
         public IActionResult SearchProducts([FromRoute] string product_name)
         {
-            var productDM = _ProductRepository.SearchProducts(product_name);
-            if (productDM.Count == 0)
+            try
             {
-                return NotFound(new { Message = "No Products found" });
+                var productDM = _ProductRepository.SearchProducts(product_name);
+                if (productDM.Count == 0)
+                {
+                    return NotFound(new { Message = "No Products found" });
+                }
+                return Ok(productDM);
             }
-            return Ok(productDM);
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = "Could not connect to database", error = ex.Message });
+            }
+
+
+        }
+
+
+        [HttpGet]
+        [Route("GetTopProducts")]
+        public IActionResult GetTopProducts()
+        {
+            try
+            {
+                var productDM = _ProductRepository.TopProducts();
+                if (productDM.Count == 0)
+                {
+                    return NotFound(new { Message = "Could not find any products"});
+                }
+                return Ok(productDM);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = "Could not connect to database", error = ex.Message });
+            }
         }
     }
+
+    
 
 }

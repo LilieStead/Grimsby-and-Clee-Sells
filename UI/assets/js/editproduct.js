@@ -1,7 +1,7 @@
 var productid;
 var user;
 
-function validateUser() {
+function getProductinfo() {
     const param = new URLSearchParams(window.location.search);
     productid = param.get('id');
 
@@ -61,4 +61,105 @@ function validateUser() {
     });
 }
 
-validateUser();
+
+
+
+function editUsersProduct(event){
+
+
+    event.preventDefault();
+
+    const loader = document.getElementById("preloader");
+    const  editproductform = new FormData(document.getElementById("sellproduct"));
+    let nopass = false;
+
+    const name = editproductform.get("product_name");
+    const description = editproductform.get("product_description");
+    const category = editproductform.get("product_category");
+    const price = editproductform.get("product_price");
+
+    const nameerrorr = document.getElementById("nameerror");
+    const descriptionerror = document.getElementById("descriptionerror");
+    const categoryerror = document.getElementById("categoryerror");
+    const priceerror = document.getElementById("priceerror");
+    
+    if (name == "" || name == null){
+        nameerrorr.innerHTML = ("You need to enter in a name for your product");
+        nopass = true;
+        event.preventDefault();
+    }else if (name.length <= 10){
+        nameerrorr.innerHTML = ("You Products name needs to be more than 10 characters");
+        nopass = true;
+        event.preventDefault();
+    }else if (name.length > 50){
+        nameerrorr.innerHTML = ("Your products name can not be over 50 characters");
+        nopass = true;
+        event.preventDefault();
+    }else{
+        nameerrorr.innerHTML = (null);
+    }
+
+    // description validation
+
+    if (description == "" || description == null){
+        descriptionerror.innerHTML = ("You need to enter a product description");
+        nopass = true;
+        event.preventDefault();
+    }else if (description.length <= 25){
+        descriptionerror.innerHTML = ("Your product description needs to be over 25 characters");
+        nopass = true;
+        event.preventDefault();
+    }else if (description.length > 200){
+        descriptionerror.innerHTML = ("Your product description can not be more than 200 characters"); 
+    }else{
+        descriptionerror.innerHTML = (null);
+    }
+
+    // category validations
+
+    if (category == "" || category == null){
+        categoryerror.innerHTML = ("you need to select a category")
+        nopass = true;
+        event.preventDefault();
+    }else{
+        categoryerror.innerHTML = (null);
+    }
+
+    // Price validation 
+    if (price == "" || price == null){
+        priceerror.innerHTML = ("You need to enter your products price");
+        nopass = true;
+        event.preventDefault();
+    }else{
+        priceerror.innerHTML = (null);
+    }
+
+    if (nopass) {
+        return;
+    }else{
+        editproductform.append("product_userid", user);
+        editproductform.append("product_id", productid);
+        fetch(`https://localhost:44394/updateproduct`, {
+            method: "PUT",
+            credentials: "include",
+            body: editproductform
+        })
+        .then( response => {
+            if (response.status != 200){
+                return response.json().then(error => {
+                    const errorMessage = error.message || "An error occurred. Please try again later.";
+                    return Promise.reject(errorMessage);
+                })
+            }else {
+                window.location.href = "success.html";
+            }
+        })
+        .catch(error => {
+            return customPopup(error);
+        });
+
+
+    }   
+}
+getProductinfo();
+document.getElementById(`sellproduct`).addEventListener("submit", editUsersProduct);

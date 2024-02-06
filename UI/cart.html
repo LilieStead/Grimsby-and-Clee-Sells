@@ -22,25 +22,25 @@
                 <div class="col-lg-5 col-md-12 col-sm-12 index">
                     <h1>Order Now</h1>
                     <form id="orderForm" >
-                        <label for="address">Address<span id ="addresserror" class="error"></span></label>
-                        <input type="text" name="address">
+                        <label for="order_address">Address<span id ="addresserror" class="error"></span></label>
+                        <input type="text" name="order_address" id="order_address">
 
-                        <label for="postcode" >Post code<span id ="postcodeerror" class="error"></span></label>
-                        <input type="text" placeholder="eg. DN32 6LE" name="postcode">
+                        <label for="order_postcode" >Post code<span id ="postcodeerror" class="error"></span></label>
+                        <input type="text" placeholder="eg. DN32 6LE" name="order_postcode" id="order_postcode">
 
-                        <label for="name">Name<span id ="nameerror" class="error"></span></label>
-                        <input type="text" name="name">
+                        <label for="order_recipientname">Name<span id ="nameerror" class="error"></span></label>
+                        <input type="text" name="order_recipientname" id="order_recipientname">
 
-                        <label for="cardnumber">Card number<span id ="cardnumbererror" class="error"></span></label>
-                        <input type="number" name="cardnumber">
+                        <label for="order_detail1">Card number<span id ="cardnumbererror" class="error"></span></label>
+                        <input type="number" name="order_detail1" id="order_detail1">
 
-                        <label for="expirydate">expiry date <span id ="experror" class="error"></span></label>
-                        <input type="text" name="expirydate">
+                        <label for="order_detail2">expiry date <span id ="experror" class="error"></span></label>
+                        <input type="text" name="order_detail2" id="order_detail2">
 
-                        <label for="CVV">CVV <span id ="cvverror" class="error"></span></label>
-                        <input type="number" name="CVV" maxlength="3">
+                        <label for="order_detail3">CVV <span id ="cvverror" class="error"></span></label>
+                        <input type="number" name="order_detail3" id="order_detail3" maxlength="3">
 
-                        <input type="submit" value="Order">
+                        <input type="submit" id="orderbtn" value="Order">
                     </form>
                 </div>
             </div>

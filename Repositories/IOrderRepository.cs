@@ -10,5 +10,6 @@ namespace Grimsby_and_Clee_Sells.Repositories
         Order GetOrderByID(int orderID);
         Order DeleteOrder(int id);
         OrderProduct RemoveOrderedProducts(int orderID, int productID);
+        List<Order> GetOrderByUserId(int userid);
     }
 }

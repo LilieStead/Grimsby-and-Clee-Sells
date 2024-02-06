@@ -117,7 +117,7 @@ namespace Grimsby_and_Clee_Sells.Controllers
                             _OrderRepository.ProductIsSold(existingProduct, quantity);
                             
                             _CartitemRepository.DeleteCartitem(userExists.users_id, ordered.orderproducts_productid);
-                            var getOrder = _OrderRepository.GetOrderByID(createOrder.order_id);
+                            
                             
                         }
 
@@ -131,27 +131,10 @@ namespace Grimsby_and_Clee_Sells.Controllers
                             _OrderRepository.DeleteOrder(createOrder.order_id);
                             return BadRequest(new { Message = "Something went wrong, please try again" });
                         }
-                        
 
-                        var productDTO = new Order
-                        {
-                            order_id = createOrder.order_id,
-                            order_address = createOrderDTO.order_address,
-                            order_date = createOrder.order_date,
-                            order_detail1 = createOrderDTO.order_detail1,
-                            order_detail2 = createOrderDTO.order_detail2,
-                            order_detail3 = createOrderDTO.order_detail3,
-                            order_postcode = createOrderDTO.order_postcode,
-                            order_orderstatusid = createOrder.order_orderstatusid,
-                            order_userid = createOrderDTO.order_userid,
-                            order_recipientname = createOrderDTO.order_recipientname,
-                        };
+                        var productDTO = _OrderRepository.GetOrderByID(createOrder.order_id);
 
                         return Ok(new { Order = productDTO, OrderedProduct = orderedProducts});
-
-
-
-
                         
                     }
                     else
@@ -174,7 +157,6 @@ namespace Grimsby_and_Clee_Sells.Controllers
                             Message = "Cookie not found"
                         });
                     }
-
 
                 }
                 else
@@ -204,6 +186,26 @@ namespace Grimsby_and_Clee_Sells.Controllers
                 return BadRequest(new { Message = "Could not connect to database", error = ex.Message });
             }
             
+        }
+
+        [HttpGet]
+        [Route ("/GetOrderByUserId/{userid:int}")]
+        public IActionResult GetOrderByUserId([FromRoute] int userid)
+        {
+            try
+            {
+                var productDM = _OrderRepository.GetOrderByUserId(userid);
+                if (productDM.Count == 0)
+                {
+                    return NotFound(new {Message = "You have made no orders"});
+                }
+
+                return Ok(productDM);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = "Could not connect to database", error = ex.Message });
+            }
         }
     }
 }
