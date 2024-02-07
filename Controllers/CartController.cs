@@ -63,6 +63,10 @@ namespace Grimsby_and_Clee_Sells.Controllers
                 {
                     return Conflict(new { Message = "you can not have a quantity of less than 1" });
                 }
+                if (addCartitemDTO.cart_userid == productexsits.product_userid)
+                {
+                    return Unauthorized(new { Message = "You cannot add your own item to your cart" });
+                }
 
                 //validates that the product isnt already in the users cart 
                 var exsits = _cartitemRepository.SearchUserAndProduct(addCartitemDTO.cart_userid, addCartitemDTO.cart_productid);
@@ -71,6 +75,7 @@ namespace Grimsby_and_Clee_Sells.Controllers
                     return Conflict(new { Message = "The product is already in your cart" });
                 }
 
+                
 
                 var cartitemDM = new Cartitem
                 {

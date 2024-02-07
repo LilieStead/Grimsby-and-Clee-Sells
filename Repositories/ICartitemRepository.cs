@@ -13,7 +13,7 @@ namespace Grimsby_and_Clee_Sells.Repositories
         Cartitem DeleteCartitem(int userid, int productid);
 
         Cartitem UpdateCartItem( int quantity, int userid , int productid);
-
+        Cartitem GetCartItemByID(int id, int userID);
 
     }
 }

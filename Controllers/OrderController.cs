@@ -5,6 +5,7 @@ using Grimsby_and_Clee_Sells.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Grimsby_and_Clee_Sells.Controllers
 {
@@ -45,6 +46,20 @@ namespace Grimsby_and_Clee_Sells.Controllers
                             return Unauthorized(new { Message = "No user found, please try again"});
                         }
                         var product = createOrderDTO.productID;
+                        // Validation for the card number
+                        if (createOrderDTO.order_detail1.Length != 16)
+                        {
+                            return BadRequest(new { Message = "Please modify your card number to be 16 characters" });
+                        }
+                        // Validation for the expiry date
+                        if (!Regex.IsMatch(createOrderDTO.order_detail2, @"^(0[1-9]|1[0-2])\/\d{2}$"))
+                        {
+                            return BadRequest(new { Message = "Expiry date does not match the format of: MM/YY" });
+                        }
+                        if (createOrderDTO.order_detail3.Length != 3)
+                        {
+                            return BadRequest(new { Message = "Ensure your CVV is only 3 numbers" });
+                        }
 
                         var orderDM = new Order
                         {
@@ -61,6 +76,7 @@ namespace Grimsby_and_Clee_Sells.Controllers
                             order_orderstatusid = 1,
                             order_recipientname = createOrderDTO.order_recipientname,
                         };
+                        
                         if (orderDM == null)
                         {
                             return NotFound(new { Message = "Please select a valid item" });
@@ -81,6 +97,11 @@ namespace Grimsby_and_Clee_Sells.Controllers
                         else
                         {
                             orderDM.order_recipientname = createOrderDTO.order_recipientname;
+                        }
+                        
+                        if (userExists.users_balance < createOrderDTO.total_price)
+                        {
+                            return Conflict(new { Message = "You do not have enough money make an order, please add more to your balance and try again" });
                         }
 
 

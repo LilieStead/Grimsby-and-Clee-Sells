@@ -41,6 +41,7 @@ function displayAdmin(){
         .then(data => {
             username.innerHTML = "";
             username.innerHTML = data.username;
+            sessionStorage.setItem('IsAdmin', "UserIsAdmin");
             sessionStorage.setItem("username",data.username);
             sessionStorage.setItem("userid",data.userid);
             sessionStorage.setItem("firstname",data.firstname);
@@ -48,6 +49,7 @@ function displayAdmin(){
         })
         // details admin session storage if an error is present 
         .catch(error => {
+            sessionStorage.setItem('IsAdmin');
             sessionStorage.removeItem("username");
             sessionStorage.removeItem("userid");
             sessionStorage.removeItem("firstname");

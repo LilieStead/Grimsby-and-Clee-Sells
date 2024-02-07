@@ -198,6 +198,7 @@ function removeRequest(event, productid){
 
 function order (event){
     event.preventDefault();
+    const loader = document.getElementById("preloader");
     const form = new  FormData(document.getElementById("orderForm"));
     const address = form.get(`order_address`);
     const postcode = form.get(`order_postcode`);
@@ -271,7 +272,7 @@ function order (event){
         form.append("quantity", productitem.quantity);
     })
     form.append("userid", user);
-
+    loader.style.display = 'block';
 
     fetch(`https://localhost:44394/createorder`, {
         method: "POST",
@@ -286,6 +287,7 @@ function order (event){
         }
     })
     .then (order => {
+        loader.style.display = 'none';
         window.location.href = "usersorder.html"
     })
 

@@ -2,6 +2,52 @@
 const prama = new URLSearchParams(window.location.search);
 const productnamesearch = prama.get(`productname`);
 const htmldiv = document.getElementById('products')
+var user;
+
+
+fetch(`https://localhost:44394/api/User/decodetoken`, {
+            method: "GET", 
+            credentials: "include"
+        })
+        .then(response => {
+            if (response.status === 200){
+                return response.json();
+            }
+            // error handling 
+            else if(response.status === 500){
+                return response.json().then(error => {
+                    return Promise.reject(error.message);
+                })
+            }
+            // error handling 
+            else if(response.status === 400){
+                return response.json().then(error => {
+                    return Promise.reject(error.message);
+                })
+            }
+            // error handling 
+            else if(response.status === 401){
+                return response.json().then(error => {
+                    return Promise.reject(error.message);
+                })
+            }
+            // unplanned error 
+            else{
+                console.error(response.status);
+
+            }
+
+        })
+        // creates session storage with user details
+        .then(data => {
+            user = data.userid;
+        })
+        .catch(error => {
+            console.error(error);
+        })
+
+
+
 
 async function getImages(data){
 
@@ -39,7 +85,10 @@ fetch(`https://localhost:44394/SearchByProductName/${productnamesearch}`)
         console.log(item);
         getImages(item).then(image => {
             console.log(image);
-
+                var addToCartButton = `<button  onclick="addToCart(event, ${item.product_id})"><a href="#"><i class="fa fa-cart-plus" aria-hidden="true" ></i></a></button>`;
+                if (item.user.users_id == user){
+                    addToCartButton = "You cannot add your own item to your cart";
+                }
                 htmldiv.innerHTML += `
                 
                 <div class="usersproduct">
@@ -50,7 +99,7 @@ fetch(`https://localhost:44394/SearchByProductName/${productnamesearch}`)
                         <div class="productflex">
                             <h1>${item.product_name}</h1>
                             <form action="" class="addtocart">
-                                <button  onclick="addToCart(event, ${item.product_id})"><a href="#"><i class="fa fa-cart-plus" aria-hidden="true" ></i></a></button>
+                                ${addToCartButton}
                                 <input type="number" name="cart_quantity" value="1" maxlength="2" minvalue="0">
                             </form>
                         </div>

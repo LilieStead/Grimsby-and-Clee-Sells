@@ -9,7 +9,7 @@ function login(event){
     const loginusernameerror = document.getElementById("loginusernameerror");
     const loginpassworderror = document.getElementById("loginpassworderror");
 
-    nopass = false;
+    let nopass = false;
 
     if( username == null || username == ""){
         loginusernameerror.innerHTML = ("you need to enter your username");
