@@ -172,25 +172,25 @@ namespace Grimsby_and_Clee_Sells.Controllers
                     // validate format of phone number 
                     if (!System.Text.RegularExpressions.Regex.IsMatch(UserDM.users_phone, @"^07\d{9}$"))
                     {
-                        return BadRequest();
+                        return BadRequest(new { Message = "Phone number does not start with: 07"});
                     }
 
                     // validate format of email
                     if (!System.Text.RegularExpressions.Regex.IsMatch(UserDM.users_email, @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"))
                     {
-                        return BadRequest();
+                        return BadRequest(new { Message = "Email address is not of the correct format" });
                     }
                     // validate passowrd
                     if (!Regex.IsMatch(UserDM.users_password, @"[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]"))
                     {
-                        return BadRequest();
+                        return BadRequest(new { Message = "Password is not of the correct format, please make sure to include special characters like @ or !" });
                     }
 
                     // validate age
                     var minimumage = DateTime.Now.AddYears(-18);
                     if (UserDM.users_dob > minimumage)
                     {
-                        return BadRequest();
+                        return BadRequest(new { Message = "You are not old enough to create an account"});
                     }
 
                     // hash password

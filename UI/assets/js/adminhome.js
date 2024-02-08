@@ -108,6 +108,7 @@ function displayUsersOnSearch(){
                     <h5>email: <span class="details">${user.users_email}</span></h5>
                     <h5>phone number: <span class="details"> ${user.users_phone}</span></h5>
                     <h5>Date of birth: <span class="details"> ${formattedDate}</span></h5>
+                    <h5><a href="adminuseritems.html?id=${user.users_id}">View ${user.users_username}'s Items</a></h5>
                 </div>
             </div>
         </div>`

@@ -176,6 +176,13 @@ namespace Grimsby_and_Clee_Sells.Controllers
                     return BadRequest(new { Message = "Password is not of the correct format, please make sure to include special characters like @ or !"});
                 }
 
+                // validate age
+                var minimumage = DateTime.Now.AddYears(-18);
+                if (createAdminDTO.admin_dob > minimumage)
+                {
+                    return BadRequest(new { Message = "You are not old enough"});
+                }
+
                 string passwordHash = BCryptNet.EnhancedHashPassword(createAdminDTO.admin_password);
                 if (passwordHash == null)
                 {

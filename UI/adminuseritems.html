@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head id="head">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+</head>
+<header id="header">
+
+</header>
+
+<body id="adminuseritems">
+    
+    <div id="content">
+        <h2 id="pageusername"></h2>
+        <!-- <div id="approvedlist">
+        
+        </div> -->
+       
+        <div id="unapprovedlist">
+            <!-- content goes here -->
+        </div>
+        
+    </div>
+    
+
+
+    <div id="popupcontainer"></div>
+    <div id ="loading"></div>
+</body>
+
+<footer id="footer">
+
+</footer>
+
+
+
+
+
+<script>
+    $(document).ready(function(){
+      $("#head").load("assets/inc/head.html");
+      $("#footer").load("assets/inc/footer.html");
+      $("#popupcontainer").load("assets/inc/popup.html");
+      $("#loading").load("assets/inc/loading.html");
+      $("header").load("assets/inc/adminheader.html");
+
+    })
+  
+</script>
+
+<script src="assets/js/adminloginstatus.js"></script>
+<script src="assets/js/adminuseritems.js"></script>

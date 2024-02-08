@@ -582,4 +582,30 @@ hr{
     font-size: 1.2rem;
 }
 
+/* Admin Item Search Results */
+#adminuseritems .imgdiv{
+    display: flex;
+    flex-direction: column;
+}
+
+#adminuseritems #content{
+    display: block;
+}
+
+#adminuseritems #unapprovedlist{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#adminuseritems #pageusername{
+    text-align: center;
+}
+
 /* Create Admin */
+
+
+.usersproductinfo h1{
+    display: flex;
+    flex-direction: column;
+}

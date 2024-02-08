@@ -39,6 +39,24 @@ namespace Grimsby_and_Clee_Sells.Controllers
             return Ok(productDM);
         }
 
+        [HttpGet]
+        [Route("/getallproducts/user/{id:int}")]
+        public IActionResult GetAllProductsByUser([FromRoute] int id)
+        {
+            try
+            {
+                var productDM = _ProductRepository.GetProductByUserId(id);
+                if (productDM.Count == 0)
+                {
+                    return NotFound(new { Message = "No items found for this user" });
+                }
+                return Ok(productDM);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = "Could not connect to database", error = ex.Message });
+            }
+        }
 
         [HttpPost]
         [Route("/CreateProduct")]
@@ -281,7 +299,7 @@ namespace Grimsby_and_Clee_Sells.Controllers
 
         }
 
-
+        // Could not be utilised in the UI due to time constraints but it is fully functional
         [HttpPut]
         [Route("/updateproductimg/{index:int}")]
         public async Task<IActionResult> UpdateProductImg([FromForm] UpdateProductImgDTO updateProductImgDTO, [FromRoute] int index)
