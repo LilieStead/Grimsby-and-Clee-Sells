@@ -1,7 +1,7 @@
 function previewImage(imageNumber) {
     const imageInput = document.getElementById('images' + imageNumber);
     var gallery = document.getElementById('gallery');
- 
+ //gets images of each product 
     const file = imageInput.files[0];
    
     let reader = new FileReader();

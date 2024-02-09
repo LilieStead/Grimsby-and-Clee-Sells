@@ -45,15 +45,12 @@ function hasspecialcharacter(password) {
     if (username == '' || username == null){
         signupusernameerror.innerHTML = ("you need to enter a user name");
         nopass = true;
-        event.preventDefault();
     } else if (username.length <= 4){
         signupusernameerror.innerHTML = ("your username needs to be loner than 4 characters");
         nopass = true;
-        event.preventDefault();
     }else if (username.length > 20){
         signupusernameerror.innerHTML = ("your username can not be more than 20 characters");
         nopass = true;
-        event.preventDefault();
     }else{
         signupusernameerror.innerHTML = (null);
     }
@@ -64,15 +61,12 @@ function hasspecialcharacter(password) {
     if (firstname == '' || firstname == null){
         firstnameerror.innerHTML =("you need to enter your first name");
         nopass = true;
-        event.preventDefault();
     }else if (firstname.length < 3){
         firstnameerror.innerHTML = ("First name must be at least three characters long");
         nopass = true;
-        event.preventDefault();
     }else if (firstname.length > 20){
         firstnameerror.innerHTML = ("First name must not exceed 20 characters.");
         nopass = true;
-        event.preventDefault();
     }else{
         firstnameerror.innerHTML = (null);
     }
@@ -84,15 +78,12 @@ function hasspecialcharacter(password) {
     if (lastname == "" || lastname == null){
         lastnameerror.innerHTML = ("you need to enter your last name");
         nopass = true;
-        event.preventDefault();
     }else if(lastname.length < 4){
         lastnameerror.innerHTML = ("your last name can not be less than 4 characters");
         nopass = true;
-        event.preventDefault();
     }else if (lastname.length > 20){
         lastnameerror.innerHTML = ("your last name can not be more than 20 characters");
         nopass = true;
-        event.preventDefault();
     } else{
         lastnameerror.innerHTML = (null);
     }
@@ -106,11 +97,9 @@ function hasspecialcharacter(password) {
     if (email == "" || email == null){
         emailerror.innerHTML = ("you need to enter your email address");
         nopass = true;
-        event.preventDefault();
     } else if (!email.match(emailformat)){
         emailerror.innerHTML = ("your email does not follow the right format");
         nopass = true;
-        event.preventDefault();
     }else{
         emailerror.innerHTML = (null);
     }
@@ -126,11 +115,9 @@ function hasspecialcharacter(password) {
     if (phone == "" || phone == null){
         phoneerror.innerHTML = ("you need to enter your phone number");
         nopass = true;nopass = true;
-        event.preventDefault();
     } else if (!phone.match(phoneformat)){
         phoneerror.innerHTML = ("Please enter your phone number in the format 07262938121, without spaces or dashes")
         nopass = true;
-        event.preventDefault();
     }else {
         phoneerror.innerHTML = (null)
     }
@@ -142,19 +129,15 @@ function hasspecialcharacter(password) {
     if (password == '' || password == null){
         passworderror.innerHTML = ("you need to enter a password");
         nopass = true;
-        event.preventDefault();
     }else if (password.length > 25){
         passworderror.innerHTML = ("your password cannot be more than 25 charters");
         nopass = true;
-        event.preventDefault();
     }else if (password.length < 10){
         passworderror.innerHTML = ("your password cannot be less than 10 charters");
         nopass = true;
-        event.preventDefault();
     }else if (!hasspecialcharacter(password)){
         passworderror.innerHTML = ("Your password must contain a special character");
         nopass = true;
-        event.preventDefault();
     }else{
         passworderror.innerHTML = (null);
     }
@@ -182,7 +165,6 @@ function hasspecialcharacter(password) {
                 } else {
                     doberror.innerHTML = ("You need to be over 18 years old");
                     nopass = true;
-                    event.preventDefault();
                 } 
         } catch (error) {
             doberror.innerHTML = 'Your date of birth is in the wrong format';

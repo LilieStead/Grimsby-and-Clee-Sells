@@ -14,12 +14,14 @@ namespace Grimsby_and_Clee_Sells.Repositories
 
         public List<User> GetAllUsers()
         {
+            //gets a list of all users 
             return _context.Tbl_Users.ToList();
         }
 
 
         public  User UserSignUp(User user)
         {
+            //saves new user to database
             _context.Tbl_Users.Add(user);
             _context.SaveChanges();
             return user;
@@ -27,16 +29,19 @@ namespace Grimsby_and_Clee_Sells.Repositories
 
         public User GetUserByUsername(string username)
         {
+            //gets a user based on its user name
             return _context.Tbl_Users.FirstOrDefault(u => u.users_username == username);
         }
 
         public User UpdateUserDetails(int userID, User user)
         {
+            //update users details 
             var thisUser = _context.Tbl_Users.FirstOrDefault(p => p.users_id == userID);
             if (thisUser == null)
             {
                 return null;
             }
+            //swaps the user data
             thisUser.users_firstname = user.users_firstname;
             thisUser.users_lastname = user.users_lastname;
             thisUser.users_email = user.users_email;
@@ -44,12 +49,14 @@ namespace Grimsby_and_Clee_Sells.Repositories
             thisUser.users_phone = user.users_phone;
             thisUser.users_dob = user.users_dob;
             thisUser.users_balance = user.users_balance;
+            //saves user changes
             _context.SaveChanges();
             return thisUser;
         }
 
         public User RemoveAmount(double amount, int userID)
         {
+            //remove the users balnce
             var user = _context.Tbl_Users.FirstOrDefault(u => u.users_id == userID);
             if (user == null)
             {
@@ -57,11 +64,12 @@ namespace Grimsby_and_Clee_Sells.Repositories
             }
             user.users_balance -= amount;
             _context.SaveChanges();
+            //save the changes 
             return user;
         }
 
         public User GetUserByID(int id)
-        {
+        {//gets a user based on its user id
             return _context.Tbl_Users.FirstOrDefault(u => u.users_id == id);
         }
     }

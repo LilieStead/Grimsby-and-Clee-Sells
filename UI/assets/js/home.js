@@ -81,7 +81,7 @@ fetch(`https://localhost:44394/api/Product/GetTopProducts`)
             console.log(image);
                 var addToCartButton = `<button  onclick="addToCart(event, ${item.product_id})"><a href="#"><i class="fa fa-cart-plus" aria-hidden="true" ></i></a></button>`;
                 if (item.user.users_id == user){
-                    addToCartButton = "You cannot add your own item to your cart";
+                    addToCartButton = `<i class="fa fa-ban" aria-hidden="true"></i>`;
                 }
                 htmldiv.innerHTML += `
                 
@@ -97,9 +97,8 @@ fetch(`https://localhost:44394/api/Product/GetTopProducts`)
                                 <input type="number" name="cart_quantity" value="1" maxlength="2" minvalue="0">
                             </form>
                         </div>
-                        <h2><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i></h2>
                         <h3><i class="fa fa-user-o" aria-hidden="true"> </i>${item.user.users_username}</h3>
-                        <h1 class="info">${item.category.category_name} ||  &pound;${item.product_price}</h1>
+                        <h1 class="info">${item.category.category_name} ||  &pound;${item.product_price.toFixed(2)}</h1>
                         <p>${item.product_description}</p>
                     </div>
                 </div>     

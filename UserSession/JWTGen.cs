@@ -21,7 +21,7 @@ namespace Grimsby_and_Clee_Sells.UserSession
             {
                 KeyId = kid,
             };
-
+            // make key with userid username firstname and last name
             var desc = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new[]
@@ -31,10 +31,11 @@ namespace Grimsby_and_Clee_Sells.UserSession
                     new Claim("firstname", firstname),
                     new Claim("lastname", lastname)
                 }),
+                //add Expiry after 5 days 
                 Expires = DateTime.UtcNow.AddDays(5),
                 Issuer = "GrimsbyAndCleeSells",
                 SigningCredentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature)
-            };
+            };//create the token
             var create = tokenHandler.CreateToken(desc);
             return tokenHandler.WriteToken(create);
         }

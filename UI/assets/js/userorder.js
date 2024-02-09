@@ -38,7 +38,7 @@ function getOrders(){
         .then (data =>{
             user = data.userid
 
-
+//get orders from the api
             fetch(`https://localhost:44394/GetOrderByUserId/${user}`)
             .then (response =>{
                  if (response.status === 200){
@@ -60,6 +60,7 @@ function getOrders(){
                  }
             })
             .then (order => {
+                //for each set of data
                 order.forEach(orders =>{
                     console.log(orders);
                     

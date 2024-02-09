@@ -27,7 +27,8 @@ namespace Grimsby_and_Clee_Sells.UserSession
 
             try
             {
-               var validtoken = tokenhandler.ValidateToken(token, param, out SecurityToken validationToken);
+                //return validtoken,userID,Username, Firstname,Lastname 
+                var validtoken = tokenhandler.ValidateToken(token, param, out SecurityToken validationToken);
                 var userID = (validationToken as JwtSecurityToken)?.Claims?.FirstOrDefault(claim => claim.Type == "sub");
                 var Username = (validationToken as JwtSecurityToken)?.Claims?.FirstOrDefault(claim => claim.Type == "username");
                 var Firstname = (validationToken as JwtSecurityToken)?.Claims?.FirstOrDefault(claim => claim.Type == "firstname");
@@ -37,6 +38,7 @@ namespace Grimsby_and_Clee_Sells.UserSession
                 {
                     return(userID.Value,  Username.Value, Firstname.Value, Lastname.Value);
                 }
+                //error handing if api could return users details 
                 return (null, null, null, null);
             }
             catch (Exception ex)

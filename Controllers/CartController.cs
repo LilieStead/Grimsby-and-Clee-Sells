@@ -57,14 +57,17 @@ namespace Grimsby_and_Clee_Sells.Controllers
 
                 if (productexsits == null)
                 {
+                    //if api get here it means the product id give doesnt exsit in the database
                     return Conflict(new { Message = "product is not a registered product" });
                 }
                 if (addCartitemDTO.cart_quantity <= 0)
                 {
+                    //if api gets here it means the qunity is lower than 0
                     return Conflict(new { Message = "you can not have a quantity of less than 1" });
                 }
                 if (addCartitemDTO.cart_userid == productexsits.product_userid)
                 {
+                    //if api gets here it means the user has tried to buy there own product 
                     return Unauthorized(new { Message = "You cannot add your own item to your cart" });
                 }
 
@@ -72,11 +75,12 @@ namespace Grimsby_and_Clee_Sells.Controllers
                 var exsits = _cartitemRepository.SearchUserAndProduct(addCartitemDTO.cart_userid, addCartitemDTO.cart_productid);
                 if (exsits != null)
                 {
+                    //if api gets here it means that the product is in the users cart
                     return Conflict(new { Message = "The product is already in your cart" });
                 }
 
                 
-
+                //used to make a nre cart item
                 var cartitemDM = new Cartitem
                 {
                     cart_userid = addCartitemDTO.cart_userid,
@@ -86,9 +90,11 @@ namespace Grimsby_and_Clee_Sells.Controllers
                 //validate that it isnt the users product already
                 if (productexsits.product_userid == cartitemDM.cart_userid)
                 {
+                    //more validation to make sure the user doesnt by their own product 
                     return Conflict(new { Message = "You can not buy your own product" });
                 }
 
+                //add all fileds to database
                 _cartitemRepository.AddToCart(cartitemDM);
                 var cartitemDTO = new CartitemDTO
                 {
@@ -100,7 +106,7 @@ namespace Grimsby_and_Clee_Sells.Controllers
                 };
                 return Ok(cartitemDTO);
             }
-
+            //if API gets to this point it means it could not reach the database
             catch (Exception ex)
             {
                 return BadRequest(new { Message = "Could not connect to database", error = ex.Message });
@@ -114,21 +120,24 @@ namespace Grimsby_and_Clee_Sells.Controllers
         {
             try
             {
+                //validate that the userid is assigned to a user in database
                 var validateusers = _userRepository.GetUserByID(userid);
                 if (validateusers == null)
                 {
+                    //if api gets here it means the user does not exist 
                     return Conflict(new { Message = "User not registered" });
                 }
-
+                // vaildate that the user has products in their cart 
                 var CartDM = _cartitemRepository.GetCartitemByUserId(userid);
                 if (CartDM.Count == 0)
                 {
-
+                    //if the API gets to this point it means that user doesnt have items in thier cart
                     return NotFound(new { Message = "You have no products in your cart" });
                 }
-
+                //output cart items 
                 return Ok(CartDM);
             }
+            //if API gets to this point it means it could not reach the database
             catch (Exception ex)
             {
                 return BadRequest(new { Message = "Could not connect to database", error = ex.Message });
@@ -143,17 +152,21 @@ namespace Grimsby_and_Clee_Sells.Controllers
         {
             try
             {
+                //validate the the user and product are in a cart 
                 var vlaidateCart = _cartitemRepository.SearchUserAndProduct(deleteCartItemDTO.cart_userid, deleteCartItemDTO.cart_productid);
                 if (vlaidateCart == null)
                 {
+                    //if both in the same able do not exist send here
                     return NotFound(new { Message = "This product does not exist in your cart" });
                 }
                 try
                 {
+                    //try and remove
                     var removeProduct = _cartitemRepository.DeleteCartitem(deleteCartItemDTO.cart_userid, deleteCartItemDTO.cart_productid);
                     return Ok(removeProduct);
 
                 }
+                // if API cant remove the data it mean it could not connect to the database
                 catch
                 {
                     return BadRequest(new { Message = "Could not connect to database" });
@@ -161,6 +174,7 @@ namespace Grimsby_and_Clee_Sells.Controllers
             }
             catch (Exception ex)
             {
+                //if API gets to this point it means it could not reach the database
                 return BadRequest(new { Message = "Could not connect to database", error = ex.Message });
             }
 
@@ -174,19 +188,24 @@ namespace Grimsby_and_Clee_Sells.Controllers
         {
             try
             {
+                //validate the the user and product are in a cart 
                 var validateCart = _cartitemRepository.SearchUserAndProduct(updateCartItemDTO.cart_userid, updateCartItemDTO.cart_productid);
                 if (updateCartItemDTO.cart_quantity <= 0)
                 {
+                    //quantity is 0 send this to the user 
                     return Conflict(new { Message = "you can not have a quantity of less than 1" });
                 }
+                //if vaildate cart is null it means that the cart item in not in the database 
                 if (validateCart == null)
                 {
                     return NotFound(new { Message = "This product does not exist in your cart" });
                 }
+                //update the cart 
                 var update = _cartitemRepository.UpdateCartItem( updateCartItemDTO.cart_quantity, validateCart.cart_userid, validateCart.cart_productid);
                 return Ok(update);
 
             }
+            //if API gets to this point it means it could not reach the database
             catch (Exception ex)
             {
                 return BadRequest(new { Message = "Could not connect to database", error = ex.Message });

@@ -32,7 +32,7 @@ namespace Grimsby_and_Clee_Sells.Controllers
         public IActionResult DecodeToken () 
         {
             try
-            {
+            {// decode the toke 
                 if (HttpContext.Session.TryGetValue("sessionid", out byte[] userbytes))
                 {
                     string sessionid = Encoding.UTF8.GetString (userbytes);
@@ -41,7 +41,7 @@ namespace Grimsby_and_Clee_Sells.Controllers
                     {
                         var token = decodeJWT.DecodeToken(usertoken);
                         if (token.userid != null && token.username != null && token.firstname != null && token.lastname != null)
-                        {
+                        {//return the user details
                             return Ok(new
                             {
                                 Userid = token.userid,
@@ -51,7 +51,7 @@ namespace Grimsby_and_Clee_Sells.Controllers
                             });
                         }
                         else
-                        {
+                        {//return if the detials code not be found
                             return BadRequest (new
                             {
                                 Message = "Failed to decode token"
@@ -60,6 +60,7 @@ namespace Grimsby_and_Clee_Sells.Controllers
                     }
                     else
                     {
+                        //could not fide cookie so use log out 
                         Logout ();
                         return BadRequest(new
                         {
@@ -70,6 +71,7 @@ namespace Grimsby_and_Clee_Sells.Controllers
 
                 }
                 else
+                //delete cookies 
                 {
                     Response.Cookies.Delete("usercookie", new CookieOptions
                     {
@@ -92,6 +94,7 @@ namespace Grimsby_and_Clee_Sells.Controllers
                 }
             }
             catch (Exception ex)
+            //if API gets to this point it means it could not reach the database
             {
                 return StatusCode(500, new
                 {
@@ -111,12 +114,14 @@ namespace Grimsby_and_Clee_Sells.Controllers
             try
             {
                 var UserDM = _userRepository.GetAllUsers();
+                //get all the users and vaildate that users are found
                 if (UserDM.Count == 0)
                 {
                     return NotFound();
                 }
+                //return the users
                 return Ok(UserDM);
-            }
+            }//if API gets to this point it means it could not reach the database
             catch (Exception ex)
             {
                 return BadRequest(new { Message = "Could not connect to database", error = ex.Message });
@@ -132,10 +137,10 @@ namespace Grimsby_and_Clee_Sells.Controllers
         public IActionResult GetUserByID([FromRoute]int id)
         {
             try
-            {
+            {//get all users 
                 var UserDM = _userRepository.GetUserByID(id);
                 if (UserDM == null)
-                {
+                {// send not found if no users are found
                     return NotFound();
                 }
                 return Ok(UserDM);
@@ -143,7 +148,7 @@ namespace Grimsby_and_Clee_Sells.Controllers
             catch (Exception ex)
             {
                 return BadRequest(new { Message = "Could not connect to database", error = ex.Message });
-            }
+            }//if API gets to this point it means it could not reach the database
 
         }
 
@@ -157,6 +162,7 @@ namespace Grimsby_and_Clee_Sells.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    //put all data in a dm
                     var UserDM = new User
                     {
                         users_username = createUserDTO.users_username,
@@ -203,7 +209,7 @@ namespace Grimsby_and_Clee_Sells.Controllers
                     var usernameexists = _userRepository.GetAllUsers().Where(x => x.users_username == UserDM.users_username);
                     var useremailexists = _userRepository.GetAllUsers().Where(x => x.users_email == UserDM.users_email);
                     var userphoneexists = _userRepository.GetAllUsers().Where(x => x.users_phone == UserDM.users_phone);
-
+                    // vaildate that the user name isnt taken
                     foreach (var Users in usernameexists)
                     {
                         if (Users != null)
@@ -211,7 +217,7 @@ namespace Grimsby_and_Clee_Sells.Controllers
                             return Conflict(new { Message = "Username has been taken." });
                         }
                     }
-
+                    //vaildate the phone number isnt taken
                     foreach (var Phone in userphoneexists)
                     {
                         if (Phone != null)
@@ -219,7 +225,7 @@ namespace Grimsby_and_Clee_Sells.Controllers
                             return Conflict(new { Message = "Phone number is already in use." });
                         }
                     }
-
+                    // vaildate the email isnt taken
                     foreach (var Email in useremailexists)
                     {
                         if (Email != null)
@@ -227,6 +233,7 @@ namespace Grimsby_and_Clee_Sells.Controllers
                             return Conflict(new { Message = "Email Adress is already in use." });
                         }
                     }
+                    //put all data in the DTO
                     _userRepository.UserSignUp(UserDM);
                     var CreateUsersDTO = new UserDTO
                     {
@@ -240,19 +247,19 @@ namespace Grimsby_and_Clee_Sells.Controllers
                         users_balance = 10000
                     };
 
-
+                    //return the data
                     return CreatedAtAction("GetUserByID", new { id = CreateUsersDTO.users_id }, CreateUsersDTO);
 
                 }
                 else
-                {
+                {//basic error handling
                     return BadRequest();
                 }
             }
             catch (Exception ex)
             {
                 return BadRequest(new { Message = "Could not connect to database", error = ex.Message });
-            }
+            }//if API gets to this point it means it could not reach the database
 
         }
 
@@ -262,6 +269,7 @@ namespace Grimsby_and_Clee_Sells.Controllers
         public IActionResult UserLogin([FromRoute]string username, string password)
         {
             try
+                //delete exsiting cookies 
             {
                 Response.Cookies.Delete("usercookie", new CookieOptions
                 {
@@ -290,25 +298,28 @@ namespace Grimsby_and_Clee_Sells.Controllers
 
                 HttpContext.Session.Clear();
 
+
+                //get the username
                 var usersDM = _userRepository.GetUserByUsername(username);
                 if (usersDM == null)
-                {
+                {//make sure a user exsits 
                     return NotFound(new { Message = "user does not exist" });
                 }
-
+                //encrypt the password
                 bool verifyPass = BCryptNet.EnhancedVerify(password, usersDM.users_password);
                 if (!verifyPass)
+                    //match the password up with the users
                 {
                     return Unauthorized(new { Message = "password is incorrect" });
                 }
-
+                //gentrate cookie/key
                 var secret = new SecretKeyGen();
                 var jwtgen = new JWTGen(secret);
 
                 string jwttoken = jwtgen.Generate(usersDM.users_id.ToString(), usersDM.users_username.ToString(), usersDM.users_firstname.ToString(), usersDM.users_lastname.ToString());
-
+                //get the current day plus the next 5 days 
                 var exptime = DateTime.Now.AddDays(5);
-
+                // make a cookies
                 Response.Cookies.Append("usercookie", jwttoken, new CookieOptions
                 {
                     HttpOnly = true,
@@ -316,7 +327,7 @@ namespace Grimsby_and_Clee_Sells.Controllers
                     Secure = true,
                     Expires = exptime
                 });
-
+                // make cookie that logs user out in 5 days
                 Response.Cookies.Append("usercookieexpiry", exptime.ToString("R"), new CookieOptions
                 {
                     HttpOnly = false,
@@ -334,7 +345,7 @@ namespace Grimsby_and_Clee_Sells.Controllers
                 string sessionid = BitConverter.ToString(sessionidbytes).Replace("-", "");
 
                 HttpContext.Session.SetString("sessionid", sessionid);
-
+                //put data in dto 
                 var usersDTO = new UserDTO
                 {
                     users_id = usersDM.users_id,
@@ -358,7 +369,7 @@ namespace Grimsby_and_Clee_Sells.Controllers
             {
                 return BadRequest(new { Message = "Could not connect to database", error = ex.Message });
             }
-
+            //if API gets to this point it means it could not reach the database
         }
 
 
@@ -380,7 +391,7 @@ namespace Grimsby_and_Clee_Sells.Controllers
                         {
                             return Unauthorized(new { Message = "Please log in to update your details"});
                         }
-
+                        // put all data in DM
                         var userDM = new User
                         {
                             users_id = updateUserDTO.users_id,
@@ -393,25 +404,48 @@ namespace Grimsby_and_Clee_Sells.Controllers
                             users_balance = updateUserDTO.users_balance,
                         };
                         if (userDM == null)
-                        {
+                        {//vaildation if dm is blank
                             return NotFound(new { Message = "User contains no details" });
                         }
                         if (userDM.users_balance < 100)
-                        {
+                        {//vaildation telling for blance under 100
                             return BadRequest(new { Message = "Please enter a balance larger than 100" });
                         }
-
+                        //update the user
                         var updateUser = _userRepository.UpdateUserDetails(userDM.users_id, userDM);
                         if (updateUser == null)
-                        {
+                        {//vaildation if API could not update user
                             return BadRequest(new { Message = "Something went wrong when updating your details, please try again" });
                         }
+
+                        var secret = new SecretKeyGen();
+                        var jwtgen = new JWTGen(secret);
+
+                        string jwttoken = jwtgen.Generate(userDM.users_id.ToString(), userDM.users_username.ToString(), userDM.users_firstname.ToString(), userDM.users_lastname.ToString());
+                        //get the current day plus the next 5 days 
+                        var exptime = DateTime.Now.AddDays(5);
+                        // make a cookies
+                        Response.Cookies.Append("usercookie", jwttoken, new CookieOptions
+                        {
+                            HttpOnly = true,
+                            SameSite = SameSiteMode.None,
+                            Secure = true,
+                            Expires = exptime
+                        });
+                        // make cookie that logs user out in 5 days
+                        Response.Cookies.Append("usercookieexpiry", exptime.ToString("R"), new CookieOptions
+                        {
+                            HttpOnly = false,
+                            SameSite = SameSiteMode.None,
+                            Secure = true,
+                            Expires = exptime
+                        });
 
                         return Ok(userDM);
 
                     }
                     else
-                    {
+                    {//vaildation if cookie could not be found
                         Logout();
                         return BadRequest(new
                         {
@@ -421,7 +455,7 @@ namespace Grimsby_and_Clee_Sells.Controllers
 
 
                 }
-                else
+                else//delete cookie
                 {
                     Response.Cookies.Delete("usercookie", new CookieOptions
                     {
@@ -444,7 +478,7 @@ namespace Grimsby_and_Clee_Sells.Controllers
                 }
             }
             catch (Exception ex)
-            {
+            {//if API gets to this point it means it could not reach the database
                 return BadRequest(new { Message = "Could not connect to database", error = ex.Message });
             }
         }
@@ -455,7 +489,7 @@ namespace Grimsby_and_Clee_Sells.Controllers
         public IActionResult Logout() 
         {
             try
-            {
+            {// delete cookie
                 if (HttpContext.Session.TryGetValue("sessionid", out byte[] userbytes))
                 {
                     string sessionid = Encoding.UTF8.GetString(userbytes);
@@ -476,12 +510,12 @@ namespace Grimsby_and_Clee_Sells.Controllers
                 }
 
                 else
-                {
+                {//vaidation if user isnt logged in
                     return BadRequest("user is not signed in");
                 }
             }
             catch (Exception ex)
-            {
+            {//if API gets to this point it means it could not reach the database
                 return BadRequest(new { Message = "Could not connect to database", error = ex.Message });
             }
 

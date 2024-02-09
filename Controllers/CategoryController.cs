@@ -28,11 +28,13 @@ namespace Grimsby_and_Clee_Sells.Controllers
             {
                 var CategoryDM = _categoryRepository.GetAllCategory();
                 if (CategoryDM == null)
-                {
+                {//find all category and if none are found return not found 
                     return NotFound();
                 }
+                // if found return them all
                 return Ok(CategoryDM);
             }
+            //if API gets to this point it means it could not reach the database
             catch (Exception ex)
             {
                 return BadRequest(new { Message = "Could not connect to database", error = ex.Message });

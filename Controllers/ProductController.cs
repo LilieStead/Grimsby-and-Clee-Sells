@@ -29,13 +29,16 @@ namespace Grimsby_and_Clee_Sells.Controllers
             _UserRepository = userRepository;
             _CategoryRepository = categoryRepository;
         }
+        //used to get all products 
         [HttpGet("GetAllProducts")]
         public IActionResult GetAllProduct() {
             var productDM = _ProductRepository.GetAllProduct();
             if (productDM.Count == 0)
+                //validation if no products was found
             {
                 return NotFound();
             }
+            //return found product
             return Ok(productDM);
         }
 
@@ -45,13 +48,15 @@ namespace Grimsby_and_Clee_Sells.Controllers
         {
             try
             {
+                //get products by the user id 
                 var productDM = _ProductRepository.GetProductByUserId(id);
                 if (productDM.Count == 0)
                 {
+                    //validate if no products was found 
                     return NotFound(new { Message = "No items found for this user" });
                 }
                 return Ok(productDM);
-            }
+            }//if API gets to this point it means it could not reach the database
             catch (Exception ex)
             {
                 return BadRequest(new { Message = "Could not connect to database", error = ex.Message });
@@ -70,6 +75,7 @@ namespace Grimsby_and_Clee_Sells.Controllers
                 if (ModelState.IsValid)
                 {
                     var ProductDM = new Product
+                    //store all info
                     {
                         product_name = createProductDTO.product_name,
                         product_description = createProductDTO.product_description,
@@ -84,6 +90,7 @@ namespace Grimsby_and_Clee_Sells.Controllers
 
                     if (!userexits.Any())
                     {
+                        //valdiate the user is a vaild user
                         return Conflict(new { Message = "User not registered" });
                     }
 
@@ -91,6 +98,7 @@ namespace Grimsby_and_Clee_Sells.Controllers
 
                     if (!catgoryexsits.Any())
                     {
+                        //error hading if the category doesnt exist
                         return Conflict(new { Message = "category does not exisit" });
                     }
 
@@ -101,11 +109,13 @@ namespace Grimsby_and_Clee_Sells.Controllers
 
                     string test = ProductDM.product_price.ToString();
 
+                // vaildate the price formate
+
                     if (!System.Text.RegularExpressions.Regex.IsMatch(test, priceformate))
                     {
                         return BadRequest();
                     }
-
+                    //create the product 
 
                     _ProductRepository.CreateProduct(ProductDM);
                     var CreateProductDTO = new ProductDTO
@@ -125,10 +135,12 @@ namespace Grimsby_and_Clee_Sells.Controllers
                 }
                 else
                 {
+                    // basic error handing
                     return BadRequest();
                 }
             }
             catch (Exception ex)
+            //if API gets to this point it means it could not reach the database
             {
                 return BadRequest(new { Message = "Could not connect to database", error = ex.Message });
             }
@@ -151,6 +163,7 @@ namespace Grimsby_and_Clee_Sells.Controllers
                         return Conflict(new { Message = "This is not a valid item, please try again" });
                     
                     }
+                    //store all data in a productDM
                     var productDM = new Product
                     {
                         product_id = updateProductDTO.product_id,
@@ -162,6 +175,7 @@ namespace Grimsby_and_Clee_Sells.Controllers
                         product_userid = updateProductDTO.product_userid,
                         
                     };
+                    //if the productDM has nothing in it return error message
                     if (productDM == null)
                     {
                         return NotFound(new { Message = "No item found, please try again" });
@@ -169,24 +183,28 @@ namespace Grimsby_and_Clee_Sells.Controllers
                     var userExists = _UserRepository.GetUserByID(productDM.product_userid);
                     var productExists = _ProductRepository.GetProductById(productDM.product_id);
                     if (userExists == null)
+                        // validate user is vaild
                     {
                         return NotFound(new { Message = "No user found" });
                     }
+                    //make sure the product is the users
                     if (userExists.users_id != productExists.product_userid)
                     {
                         return Unauthorized(new { Message = "You are attempting to modify an item that is not yours"});
                     }
-
+                    // Update product
                     var updateProduct = _ProductRepository.UpdateProduct(productDM.product_id, productDM);
                     if (updateProduct == null)
                     {
+                        //if it couldnt update product return 
                         return BadRequest(new { Message = "Something went wrong when updating your product, please try again" });
                     }
-
+                    //return results 
                     return Ok(productDM);
 
                 }
                 else
+                //delete cookies
                 {
                     Response.Cookies.Delete("usercookie", new CookieOptions
                     {
@@ -209,7 +227,7 @@ namespace Grimsby_and_Clee_Sells.Controllers
 
 
             }
-            else
+            else//delete cookies
             {
                 Response.Cookies.Delete("usercookie", new CookieOptions
                 {
@@ -242,12 +260,14 @@ namespace Grimsby_and_Clee_Sells.Controllers
 
                 if (ProductDM == null)
                 {
+                    //vaildate the product exist
                     return NotFound();
                 }
-
+                
                 return Ok(ProductDM);
             }
             catch (Exception ex)
+            //if API gets to this point it means it could not reach the database
             {
                 return BadRequest(new { Message = "Could not connect to database", error = ex.Message });
             }
@@ -262,19 +282,23 @@ namespace Grimsby_and_Clee_Sells.Controllers
             try
             {
                 List<productimgDTO> productimgDTOs = new List<productimgDTO>();
+                // for each image
                 foreach (var img in createProductimgDTO.productimg_img)
-                {
+                {// create a new DM
                     var ProductDM = new Productimg
                     {
+                        //contver the img
                         productimg_img = await ConvetImgToByte(img),
                         productimg_productid = createProductimgDTO.productimg_productid
                     };
                     if (ProductDM == null)
                     {
+                        //if nothing is found 
                         return NotFound();
                     }
                     else
                     {
+                        //make a smaller image
                         var stream = img.OpenReadStream();
                         var thumbnail = CreateThumbnail(660, 500, stream);
                         ProductDM.productimg_thumbnail = thumbnail;
@@ -293,6 +317,7 @@ namespace Grimsby_and_Clee_Sells.Controllers
                 return Ok(productimgDTOs);
             }
             catch (Exception ex)
+            //if API gets to this point it means it could not reach the database
             {
                 return BadRequest(new { Message = "Could not connect to database", error = ex.Message });
             }
@@ -363,7 +388,7 @@ namespace Grimsby_and_Clee_Sells.Controllers
                         }
                         return Accepted(productimgs);
                     }
-                    else
+                    else//reomve cookie
                     {
                         Response.Cookies.Delete("usercookie", new CookieOptions
                         {
@@ -386,7 +411,7 @@ namespace Grimsby_and_Clee_Sells.Controllers
 
 
                 }
-                else
+                else//reomve cookie
                 {
                     Response.Cookies.Delete("usercookie", new CookieOptions
                     {
@@ -409,11 +434,12 @@ namespace Grimsby_and_Clee_Sells.Controllers
                 }
             }
             catch (Exception ex)
-            {
+            {//if API gets to this point it means it could not reach the database
                 return BadRequest(new { Message = "Could not connect to database", error = ex.Message });
             }
         }
 
+        //image converter 
         private async Task<byte[]> ConvetImgToByte(IFormFile formFile)
         {
             using (var imgbyte = new MemoryStream())
@@ -423,7 +449,7 @@ namespace Grimsby_and_Clee_Sells.Controllers
             }
         }
 
-
+        // used to make smaller images
         private byte[] CreateThumbnail(int width , int height, Stream image)
         {
             try
@@ -445,14 +471,14 @@ namespace Grimsby_and_Clee_Sells.Controllers
         [HttpGet]
         [Route("/getproductimgbyid/{id:int}")]
         public async Task<IActionResult>GetProductimgById([FromRoute]int id)
-        {
+        {// vaildate that the product has images 
             var productimgDM = await _ProductRepository.GetProductImgById(id);
             if (productimgDM == null)
             {
                 return NotFound();
             }
             byte[] format = productimgDM.productimg_img;
-
+            //return image
             return File(format,"image/jpeg");
         }
 
@@ -460,7 +486,7 @@ namespace Grimsby_and_Clee_Sells.Controllers
         [Route("/GetImgByProductId/{id:int}/{index:int}")]
         public async Task<IActionResult> GetImgByProductId([FromRoute] int id, int index)
         {
-
+            //vaildate that images exist
             var productimgDM = await _ProductRepository.GetProductImgsById(id, index);
             if (productimgDM == null)
             {
@@ -478,6 +504,7 @@ namespace Grimsby_and_Clee_Sells.Controllers
             try
             {
                 var ProductDM = _ProductRepository.GetProductByUserId(userid);
+                //vaildate that products exist
                 if (ProductDM.Count == 0)
                 {
                     return NotFound(new { Message = "No items found"});
@@ -485,6 +512,7 @@ namespace Grimsby_and_Clee_Sells.Controllers
                 return Ok(ProductDM);
             }
             catch (Exception ex)
+            //if API gets to this point it means it could not reach the database
             {
                 return BadRequest(new { Message = "Could not connect to database", error = ex.Message });
             }
@@ -497,6 +525,7 @@ namespace Grimsby_and_Clee_Sells.Controllers
         {
             try
             {
+                //vaildate that the thumbnail exsists
                 var productimgDM = await _ProductRepository.GetProductImgsThumbnailById(id, index);
                 if (productimgDM == null)
                 {
@@ -507,7 +536,7 @@ namespace Grimsby_and_Clee_Sells.Controllers
                 return File(format, "image/jpeg");
             }
             catch (Exception ex)
-            {
+            {//if API gets to this point it means it could not reach the database
                 return BadRequest(new { Message = "Could not connect to database", error = ex.Message });
             }
 
@@ -519,15 +548,16 @@ namespace Grimsby_and_Clee_Sells.Controllers
         {
             try
             {
+                //get all products that a statys 
                 var productDM = _ProductRepository.GetProductByStatus(status);
                 if (productDM.Count == 0)
-                {
+                {//if no products have that status return
                     return NotFound();
                 }
                 return Ok(productDM);
             }
             catch (Exception ex)
-            {
+            {//if API gets to this point it means it could not reach the database
                 return BadRequest(new { Message = "Could not connect to database", error = ex.Message });
             }
 
@@ -539,22 +569,23 @@ namespace Grimsby_and_Clee_Sells.Controllers
         {
             try
             {
+                // look for the product and store it 
                 var validproduct = _ProductRepository.GetProductById(id);
-                if (validproduct == null)
+                if (validproduct == null)//if it doesnt exsit send error
                 {
                     return NotFound(new { Message = "Product does not exist" });
                 }
                 var validstatus = _ProductRepository.ValidateStatus(updateProductStatusDTO.product_status);
                 if (validstatus == null)
                 {
-                    return NotFound(new { Message = "Status does not exist" });
+                    return NotFound(new { Message = "Status does not exist" });// make sure the status exists
                 }
                 var productDM = _ProductRepository.UpdateStatus(id, updateProductStatusDTO);
-
+                //update the products status
                 return Ok(productDM);
             }
             catch (Exception ex)
-            {
+            {//if API gets to this point it means it could not reach the database
                 return BadRequest(new { Message = "Could not connect to database", error = ex.Message });
             }
 
@@ -565,19 +596,19 @@ namespace Grimsby_and_Clee_Sells.Controllers
         public IActionResult SearchProducts([FromRoute] string product_name)
         {
             try
-            {
+            {//look for the product
                 var productDM = _ProductRepository.SearchProducts(product_name);
                 if (productDM.Count == 0)
-                {
+                {//send error if the product was not found
                     return NotFound(new { Message = "No Products found" });
                 }
-                
+                //return the products found
                 return Ok(productDM);
             }
             catch (Exception ex)
             {
                 return BadRequest(new { Message = "Could not connect to database", error = ex.Message });
-            }
+            }//if API gets to this point it means it could not reach the database
 
 
         }
@@ -589,17 +620,19 @@ namespace Grimsby_and_Clee_Sells.Controllers
         {
             try
             {
+                //look for products form most sold
                 var productDM = _ProductRepository.TopProducts();
                 if (productDM.Count == 0)
-                {
+                {//if none found return an error 
                     return NotFound(new { Message = "Could not find any products"});
                 }
                 return Ok(productDM);
+                //return products 
             }
             catch (Exception ex)
             {
                 return BadRequest(new { Message = "Could not connect to database", error = ex.Message });
-            }
+            }//if API gets to this point it means it could not reach the database
         }
     }
 

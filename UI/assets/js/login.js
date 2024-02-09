@@ -75,7 +75,7 @@ function checkAdminLogin(){
 // used so the users doest get stuck going from index to adminlogin 
 function preventLoginLoop(){
     const adminCookie = getCookie('admincookieexpiry');
-
+//api link
     if(adminCookie){
         fetch(`https://localhost:44394/api/Admin/decodeadmin`, {
             method: "GET",
@@ -85,7 +85,7 @@ function preventLoginLoop(){
             if (response.status === 200){
                 return response.json();
             }
-            else{
+            else{//send error to pop up 
                 console.error(response.status);
             }
         })

@@ -1,10 +1,9 @@
 function sellproduct(event) {
     console.log(event);
     event.preventDefault();
-
+//gets all html docs 
     const loader = document.getElementById("preloader");
     const sellproductform = new FormData(document.getElementById("sellproduct"));
-
 
     const name = sellproductform.get("product_name");
     const description = sellproductform.get("product_description");
@@ -29,7 +28,6 @@ function sellproduct(event) {
     if (!check){
         imageerror.innerHTML = ("You need to enter an image for your product");
         nopass = true;
-        event.preventDefault();
     }else{
         imageerror.innerHTML =(null);
     }
@@ -37,15 +35,12 @@ function sellproduct(event) {
     if (name == "" || name == null){
         nameerrorr.innerHTML = ("You need to enter in a name for your product");
         nopass = true;
-        event.preventDefault();
     }else if (name.length <= 10){
         nameerrorr.innerHTML = ("You Products name needs to be more than 10 characters");
         nopass = true;
-        event.preventDefault();
     }else if (name.length > 50){
         nameerrorr.innerHTML = ("Your products name can not be over 50 characters");
         nopass = true;
-        event.preventDefault();
     }else{
         nameerrorr.innerHTML = (null);
     }
@@ -55,11 +50,11 @@ function sellproduct(event) {
     if (description == "" || description == null){
         descriptionerror.innerHTML = ("You need to enter a product description");
         nopass = true;
-        event.preventDefault();
+        
     }else if (description.length <= 25){
         descriptionerror.innerHTML = ("Your product description needs to be over 25 characters");
         nopass = true;
-        event.preventDefault();
+        
     }else if (description.length > 200){
         descriptionerror.innerHTML = ("Your product description can not be more than 200 characters"); 
     }else{
@@ -71,7 +66,7 @@ function sellproduct(event) {
     if (category == "" || category == null){
         categoryerror.innerHTML = ("you need to select a category")
         nopass = true;
-        event.preventDefault();
+        
     }else{
         categoryerror.innerHTML = (null);
     }
@@ -80,7 +75,7 @@ function sellproduct(event) {
     if (price == "" || price == null){
         priceerror.innerHTML = ("You need to enter your products price");
         nopass = true;
-        event.preventDefault();
+        
     }else{
         priceerror.innerHTML = (null);
     }

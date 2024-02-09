@@ -147,6 +147,7 @@ function editUsersProduct(event){
         .then( response => {
             if (response.status != 200){
                 return response.json().then(error => {
+                    //if api runs into an error
                     const errorMessage = error.message || "An error occurred. Please try again later.";
                     return Promise.reject(errorMessage);
                 })

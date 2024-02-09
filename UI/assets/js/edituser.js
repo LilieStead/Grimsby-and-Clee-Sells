@@ -246,7 +246,7 @@ function editUserDetails (event){
 
 
         console.log(userData);
-
+//api connection 
         fetch(`https://localhost:44394/updateuser/details`, {
             method: "PUT",
             headers: {
@@ -256,7 +256,10 @@ function editUserDetails (event){
         })
             .then(response => {
                 if (response.ok) {
+
+
                     // If the response status is OK (200 or 201), redirect to home.html
+                    
                     window.location.href = "home.html";
                 } else {
                     loader.style.display = "none";
@@ -267,6 +270,7 @@ function editUserDetails (event){
                     });
                 }
             })
+            //error handling 
             .catch(error => {
                 loader.style.display = "none";
                 console.error(error);

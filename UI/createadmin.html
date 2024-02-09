@@ -10,35 +10,42 @@
 <body>
     
     <div class="centercontents" id="content">
-        <div id="createadmindiv">
-            <form method="post" id="createadmin">
-                <label for="username">username <span id="usernameerror" class="error"></span></label>
-                <input type="text" name="admin_username" id="signupusername">
-
-                <label for="firstname">first name <span id="firstnameerror" class="error"></span></label>
-                <input type="text" name="admin_firstname" id="firstname">
-
-
-                <label for="lastname">last name <span id="lastnameerror" class="error"></span></label>
-                <input type="text" name="admin_lastname" id="lastname">
-
-                <label for="dob">date of birth <span id="doberror" class="error"></span></label>
-                <input type="date" name="admin_dob" id="dob">
-
-                <label for="email">email <span id="emailerror" class="error"></span></label>
-                <input type="text" name="admin_email" id="email">
-
-                <label for="phone">phone number <span id="phoneerror" class="error"></span></label>
-                <input type="number" name="admin_phone" id="phone">
-                
-
-                <label for="password">password <span id="passworderror" class="error"></span></label>
-                <input type="password" name="admin_password" id="signuppassword">
-                <div class="flexcontainer">
-                    <input type="submit">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-1 "></div>
+                <div id="createadmindiv" class="index col-lg-10 ">
+                    <h1>Create an admin</h1>
+                    <form method="post" id="createadmin">
+                        <label for="username">username <span id="usernameerror" class="error"></span></label>
+                        <input type="text" name="admin_username" id="signupusername">
+        
+                        <label for="firstname">first name <span id="firstnameerror" class="error"></span></label>
+                        <input type="text" name="admin_firstname" id="firstname">
+        
+        
+                        <label for="lastname">last name <span id="lastnameerror" class="error"></span></label>
+                        <input type="text" name="admin_lastname" id="lastname">
+        
+                        <label for="dob">date of birth <span id="doberror" class="error"></span></label>
+                        <input type="date" name="admin_dob" id="dob">
+        
+                        <label for="email">email <span id="emailerror" class="error"></span></label>
+                        <input type="text" name="admin_email" id="email">
+        
+                        <label for="phone">phone number <span id="phoneerror" class="error"></span></label>
+                        <input type="number" name="admin_phone" id="phone">
+                        
+        
+                        <label for="password">password <span id="passworderror" class="error"></span></label>
+                        <input type="password" name="admin_password" id="signuppassword">
+                        <div class="flexcontainer">
+                            <input type="submit">
+                        </div>
+                        
+                    </form>
                 </div>
-                
-            </form>
+                <div class="col-lg-1 "></div>
+            </div>
         </div>
         
     </div>
@@ -58,6 +65,9 @@
 
 
 <script>
+    document.getElementById('dob').max = new Date().toISOString().split('T')[0];
+
+
     $(document).ready(function(){
       $("#head").load("assets/inc/head.html");
       $("#footer").load("assets/inc/footer.html");

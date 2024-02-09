@@ -1,7 +1,7 @@
 const urlFile = window.location.pathname;
 var file = urlFile.substring(urlFile.lastIndexOf("/") + 1);
+//if the file is admin home , do the following 
 if (file === "adminhome.html"){
-
     async function imageFetch(product){
         console.log(product);
         const images = [];
@@ -12,6 +12,7 @@ if (file === "adminhome.html"){
         const imgArray = await response.arrayBuffer();
         let img = new Blob([imgArray], {type: "image/jpeg"});
         let imgUrl = URL.createObjectURL(img);
+        //push the images so they can be used else where
         images.push({imgUrl, product});
 
         console.log(images)
@@ -21,11 +22,14 @@ if (file === "adminhome.html"){
     
         
         function displayUnapprovedProducts(){
+            //api connection
             fetch(`https://localhost:44394/GetProductsByStatus/1`)
             .then(response => {
                 if (response.status === 200){
                     return response.json();
+
                 } else if (response.status === 404){
+                    //error handling 
                     return response.json().then(error => {
                         return Promise.reject(error.message);
                     });
@@ -40,6 +44,7 @@ if (file === "adminhome.html"){
                 data.forEach(item => {
                     imageFetch(item).then(image => {
                         console.log(image);
+                        //html for each part of data 
                         prodDiv.innerHTML += `
                     
                     
@@ -53,13 +58,14 @@ if (file === "adminhome.html"){
                             <div class="statusoptions">
                                 <h1><a onclick ="updateStatus(${item.product_id});">Approve</a></h1> <h1><a onclick ="rejectStatus(${item.product_id});">Rejected</a></h1>
                             </div>
-                            <h1 class="info">${item.category.category_name} || &pound;${item.product_price}</h1>
+                            <h1 class="info">${item.category.category_name} || &pound;${item.product_price.toFixed(2)}</h1>
                             <p>${item.product_description}</p>
                         </div>
                     </div>`
                     })
                 })
             })
+            //error handling 
             .catch(error => {
                 console.error(error);
                 return customPopup(error);
@@ -68,13 +74,15 @@ if (file === "adminhome.html"){
         displayUnapprovedProducts();
    
 } else if (file === "adminusersearch.html"){
+    //if it is adminusersearch
 function displayUsersOnSearch(){
     const userSearch = document.getElementById('usersearch').value;
-
+//api connection
     fetch(`https://localhost:44394/adminsearch/users?users=${userSearch}`)
     .then(response => {
         if (response.status === 200){
             return response.json();
+            //send error code 
         } else if (response.status === 404){
             return response.json().then(error => {
                 return Promise.reject(error.message);
@@ -90,6 +98,7 @@ function displayUsersOnSearch(){
         if (data == null || data == "" ){
             return customPopup("No users found")
         }else{
+            //for each part of data 
             data.forEach(user => {
                 var dob = user.users_dob;
                 var convert = new Date(dob);
@@ -137,6 +146,7 @@ function updateStatus (item){
     const statusData = new FormData();
     statusData.append("product_status", statusId);
     console.log(item);
+    //update status to approve
     fetch(`https://localhost:44394/ChangeProductStatus/${item}`,{
         method: "PUT",
         body: statusData
@@ -157,7 +167,7 @@ function updateStatus (item){
         console.error(error);
     })
 }
-
+//update status to reject
 function rejectStatus(item){
     const statusId = 3;
     const statusData = new FormData();
@@ -175,6 +185,7 @@ function rejectStatus(item){
             customPopup("An unexpected error has occurred");
         }
     })
+    
     .then(data => {
         console.log(statusId);
         window.location.reload();

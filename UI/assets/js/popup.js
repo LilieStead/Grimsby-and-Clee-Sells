@@ -1,3 +1,5 @@
+
+//used to display errors
 function customPopup(message){
     const popup = document.getElementById('custom-popup');
     const popupMessage = document.getElementById('popup-message');

@@ -16,6 +16,7 @@ namespace Grimsby_and_Clee_Sells.Repositories
         public List<Category> GetAllCategory()
         {
             return _context.Tbl_Category.ToList();
+            //get all the categorys
         }
 
     }

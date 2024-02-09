@@ -25,6 +25,7 @@ async function getImages(data){
 function getCartItems(){
     const cartDiv = document.getElementById("cartproduct");
     const totalPriceDiv = document.getElementById("total");
+    //get the user id by decoding the token
     fetch(`https://localhost:44394/api/User/decodetoken`, {
             method: "GET", 
             credentials: "include"
@@ -75,6 +76,7 @@ function getCartItems(){
                         <h3>You have no products in your cart</h3>
                     <hr>
                 </div>`
+                //block making an order if not products are in the cart 
                     const address = document.getElementById("order_address");
                     address.disabled = true;
                     const postcode = document.getElementById("order_postcode")
@@ -136,24 +138,29 @@ function getCartItems(){
         })
 }
 
-
+//update the cart
 function updateRequest(event, productid){
     event.preventDefault();
+    //gets the closets form as there is many on the page
     var formElement = event.target.closest(`form`);
     var quantityInput = formElement.querySelector(`input[name="cart_quantity"]`)
     var quantity = quantityInput.value;
     const formData = new FormData();
+    //make a form
     formData.append("cart_userid", user);
     formData.append("cart_productid", productid);
     formData.append("cart_quantity", quantity);
+    //api connection 
     fetch(`https://localhost:44394/api/Cart/EditCartItemQuantity`,{
         method: "PUT",
         body: formData,
     })
     .then(response => {
         if (response.ok){
+            //reload the window if response is ok
             window.location.reload();
         }else if(response.status === 409){
+            //anything else return 
             return response.json().then(error => {
                 return Promise.reject(error.message);
             })
@@ -164,6 +171,7 @@ function updateRequest(event, productid){
             throw new Error("Error adding item to cart");
         }
     })
+    //show user a pop with the error
     .catch(error => {
         console.error(error);
         customPopup(error);
@@ -176,6 +184,7 @@ function removeRequest(event, productid){
     const formData = new FormData();
     formData.append("cart_userid", user);
     formData.append("cart_productid", productid);
+    //api connection 
     fetch(`https://localhost:44394/api/Cart/DeleteUsersCart`,{
         method: "DELETE",
         body: formData,
@@ -183,12 +192,13 @@ function removeRequest(event, productid){
     .then(response => {
         if (response.ok){
             window.location.reload();
+            //reload if ok
         }else{
             customPopup("Unable to delete item from cart")
             console.error(response.status);
             throw new Error("Error deleting item to cart");
         }
-    })
+    })//show user popup if an error 
     .catch(error => {
         console.error(error);
         customPopup("An error occurred while deleting the item from your cart");
@@ -198,6 +208,7 @@ function removeRequest(event, productid){
 
 function order (event){
     event.preventDefault();
+    //get all html elements needed 
     const loader = document.getElementById("preloader");
     const form = new  FormData(document.getElementById("orderForm"));
     const address = form.get(`order_address`);
@@ -216,17 +227,17 @@ function order (event){
     const cvverror = document.getElementById("cvverror")
 
     let nopass = false;
-    
+    //validate name
     if (address == null || address == ``){
         nopass = true;
         addresserror.innerHTML = (`You need to enter your address`)
-    }else if (address.length >= 101 || address.length <= 20){
+    }else if (address.length >= 100 || address.length <= 20){
         nopass = true;
         addresserror.innerHTML = (`you address neeeds to be inbetween 20 & 100`)
     }else{
         addresserror.innerHTML = null;
     }
-
+    //validate postcode
     if (postcode == null || postcode == ''){
         nopass = true;
         postcodeerror.innerHTML = (`You need to enter your postcode`)
@@ -236,7 +247,7 @@ function order (event){
     }else{
         postcodeerror.innerHTML = null
     }
-
+    //validate name
     if (name == null || name == ``){
         nopass = true;
         nameerror.innerHTML = (`you need to enter the name on the card`);
@@ -244,36 +255,40 @@ function order (event){
         nopass = true;
         nameerror.innerHTML = ("Name needs to be between 10 & 70")
     }
-
+    //validate card number
     if (!/^\d{16}$/.test(cardnumber)) {
         nopass = true;
         cardnumbererror.innerHTML = 'Your card number needs to be 16 digits and contain only numbers';
     } else {
         cardnumbererror.innerHTML = null;
     }
-    
+        //validate cvv
     if (!/^\d{3}$/.test(cvv)) {
         nopass = true;
         cvverror.innerHTML = 'CVV should be a 3-digit number';
     }else{
         cvverror.innerHTML = (null);
-    }
+    }//validate exp date
     if (!/^(0?[1-9]|1[0-2])\/\d{2}$/.test(exp)) {
         nopass = true;
         experror.innerHTML = 'Expiration date should be in the format MM/YY';
+    }else{
+        experror.innerHTML = null;
     }
     if(nopass){
         return;
+
     }
+    //continue
 
     productToOrder.forEach(productitem => {
         console.log(productitem);
         form.append("productid", productitem.product);
         form.append("quantity", productitem.quantity);
     })
-    form.append("userid", user);
+    form.append("order_userid", user);
     loader.style.display = 'block';
-
+//api connection
     fetch(`https://localhost:44394/createorder`, {
         method: "POST",
         credentials: "include",
@@ -283,14 +298,16 @@ function order (event){
         if (response.status === 200 || response.status === 203){
             return response.json();
         }else{
-            console.error();
+            console.error(response.status);
         }
     })
     .then (order => {
         loader.style.display = 'none';
         window.location.href = "usersorder.html"
     })
-
+    .catch(error => {
+        console.error(error);
+    })
 
 }
 

@@ -56,10 +56,13 @@ namespace Grimsby_and_Clee_Sells.Controllers
                         {
                             return BadRequest(new { Message = "Expiry date does not match the format of: MM/YY" });
                         }
+                        //validate cvv is there numbers
                         if (createOrderDTO.order_detail3.Length != 3)
                         {
                             return BadRequest(new { Message = "Ensure your CVV is only 3 numbers" });
                         }
+
+                        //store all inputs form user in orderDM
 
                         var orderDM = new Order
                         {
@@ -77,19 +80,25 @@ namespace Grimsby_and_Clee_Sells.Controllers
                             order_recipientname = createOrderDTO.order_recipientname,
                         };
                         
+                        //if its null return an error
                         if (orderDM == null)
                         {
                             return NotFound(new { Message = "Please select a valid item" });
                         }
+                        // validate the user 
                         var userExists = _UserRepository.GetUserByID(orderDM.order_userid);
                         if (userExists == null)
                         {
                             return NotFound(new { Message = "No user found" });
                         }
+
+                        // make sure the user has enough balance to make that order
                         if (userExists.users_balance < createOrderDTO.total_price)
                         {
                             return BadRequest(new { Message = "You do not have enough balance to purchase this item, please add more and try again" });
                         }
+
+                        //if the name was not passed through use the users first and last name
                         if (orderDM.order_recipientname == null)
                         {
                             orderDM.order_recipientname = userExists.users_firstname + userExists.users_lastname;
@@ -98,13 +107,13 @@ namespace Grimsby_and_Clee_Sells.Controllers
                         {
                             orderDM.order_recipientname = createOrderDTO.order_recipientname;
                         }
-                        
+                        // make sure the user has enough balance to make that order
                         if (userExists.users_balance < createOrderDTO.total_price)
                         {
                             return Conflict(new { Message = "You do not have enough money make an order, please add more to your balance and try again" });
                         }
 
-
+                        // create an order
                         var createOrder = _OrderRepository.CreateOrder(orderDM);
 
                         List<OrderProduct> orderedProducts = new List<OrderProduct>();
@@ -115,12 +124,13 @@ namespace Grimsby_and_Clee_Sells.Controllers
                             var quantity = createOrderDTO.quantity[i];
                             if (existingProduct == null)
                             {
+                                //error handling 
                                 _OrderRepository.DeleteOrder(createOrder.order_id);
                                 return NotFound(new { Message = "An error occurred when creating your order, please try again" });
                             }
                             var checkCart = _CartitemRepository.SearchUserAndProduct(userExists.users_id, existingProduct);
                             if (checkCart == null)
-                            {
+                            {// validation if a user doesnt have an item in a cart
                                 _OrderRepository.DeleteOrder(createOrder.order_id);
                                 return BadRequest(new { Message = "Please add this item to your cart before proceeding" });
                             }
@@ -144,21 +154,23 @@ namespace Grimsby_and_Clee_Sells.Controllers
 
                         var pay = _UserRepository.RemoveAmount(createOrderDTO.total_price, userExists.users_id);
                         if (pay == null)
-                        {
+                        {//add to list for the order
                             foreach(var products in createOrderDTO.productID)
                             {
                                 _OrderRepository.RemoveOrderedProducts(createOrder.order_id, products);
                             }
+                            //error handing
                             _OrderRepository.DeleteOrder(createOrder.order_id);
                             return BadRequest(new { Message = "Something went wrong, please try again" });
                         }
-
+                        //get the otder that api just made
                         var productDTO = _OrderRepository.GetOrderByID(createOrder.order_id);
 
                         return Ok(new { Order = productDTO, OrderedProduct = orderedProducts});
                         
                     }
                     else
+                    //delete cookie
                     {
                         Response.Cookies.Delete("usercookie", new CookieOptions
                         {
@@ -182,6 +194,7 @@ namespace Grimsby_and_Clee_Sells.Controllers
                 }
                 else
                 {
+                    // delete cookie if can not make order
                     Response.Cookies.Delete("usercookie", new CookieOptions
                     {
                         HttpOnly = true,
@@ -202,6 +215,7 @@ namespace Grimsby_and_Clee_Sells.Controllers
                     });
                 }
             }
+            //if API gets to this point it means it could not reach the database
             catch (Exception ex)
             {
                 return BadRequest(new { Message = "Could not connect to database", error = ex.Message });
@@ -215,6 +229,7 @@ namespace Grimsby_and_Clee_Sells.Controllers
         {
             try
             {
+                //validate to see if the user has orders
                 var productDM = _OrderRepository.GetOrderByUserId(userid);
                 if (productDM.Count == 0)
                 {
@@ -224,6 +239,7 @@ namespace Grimsby_and_Clee_Sells.Controllers
                 return Ok(productDM);
             }
             catch (Exception ex)
+            //if API gets to this point it means it could not reach the database
             {
                 return BadRequest(new { Message = "Could not connect to database", error = ex.Message });
             }

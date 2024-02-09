@@ -2,6 +2,7 @@
 {
     public class AddCartitemDTO
     {
+        
         public int cart_userid { get; set; }
 
         public int cart_productid { get; set; }

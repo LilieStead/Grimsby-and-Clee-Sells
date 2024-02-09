@@ -29,7 +29,27 @@ function getUserItems(){
         if (response.status === 200){
             return response.json();
         } else if (response.status === 404){
+            fetch(`https://localhost:44394/getuserbyid/${userID}`)
+            .then ( response =>{
+                if (response.ok){
+                    return response.json();
+                }
+                else{
+                    console.error(response.status)
+                }
+            })
+            .then (user =>{
+                console.log(user);
+                document.getElementById('pageusername').innerHTML = `${user.users_username}`;
+            })
+            .catch (error => {
+                console.error(response.status);
+                window.location.href = "adminhome.html";
+                
+            })
+
             return response.json().then(error =>{
+                
                 return Promise.reject(error.message);
             })
         } else{
